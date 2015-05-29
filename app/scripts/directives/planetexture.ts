@@ -31,6 +31,7 @@ module avionmakeApp {
       ctx.rect( 0, 0, scope.part.width, scope.part.height );
       ctx.fill();
       element.append(canvas);
+      scope.part.textureBitmap = canvas.toDataURL();
     }
   }
 
