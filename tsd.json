@@ -1,0 +1,45 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "jquery/jquery.d.ts": {
+      "commit": "f3244190e20af6901e865f4cc58127d19216baa1"
+    },
+    "angularjs/angular.d.ts": {
+      "commit": "f3244190e20af6901e865f4cc58127d19216baa1"
+    },
+    "angularjs/angular-resource.d.ts": {
+      "commit": "aadd63ecae3feb76ea2d4be80511e266b5c2c4a7"
+    },
+    "angularjs/angular-route.d.ts": {
+      "commit": "f23cd55e319a0f67362ca0dbc4cf3e2ec1339f4e"
+    },
+    "angularjs/angular-mocks.d.ts": {
+      "commit": "f23cd55e319a0f67362ca0dbc4cf3e2ec1339f4e"
+    },
+    "angularjs/angular-cookies.d.ts": {
+      "commit": "f23cd55e319a0f67362ca0dbc4cf3e2ec1339f4e"
+    },
+    "angularjs/angular-sanitize.d.ts": {
+      "commit": "f23cd55e319a0f67362ca0dbc4cf3e2ec1339f4e"
+    },
+    "jasmine/jasmine.d.ts": {
+      "commit": "f23cd55e319a0f67362ca0dbc4cf3e2ec1339f4e"
+    },
+    "angular-translate/angular-translate.d.ts": {
+      "commit": "86d1044eb34dfb80b86a7aa181ed1bd95116cbbe"
+    },
+    "angular-material/angular-material.d.ts": {
+      "commit": "86d1044eb34dfb80b86a7aa181ed1bd95116cbbe"
+    },
+    "webrtc/MediaStream.d.ts": {
+      "commit": "86d1044eb34dfb80b86a7aa181ed1bd95116cbbe"
+    },
+    "dat-gui/dat-gui.d.ts": {
+      "commit": "2d4c4679bc2b509f27435a4f9da5e2de11258571"
+    }
+  }
+}
