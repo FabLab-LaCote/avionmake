@@ -15,20 +15,21 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="avionmakeApp" layout="row" ng-cloak>
+  <body ng-app="avionmakeApp"  layout="column"  layout-fill ng-cloak>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-
-
-    <div layout="column" tabIndex="-1" role="main" flex>
-      <md-toolbar layout-padding>
-        <h3>avion:make</h3>
-      </md-toolbar>
-      <md-content ng-view="" md-scroll-y flex layout-padding></md-content>
-    </div>
+      <header>
+        <md-toolbar layout-padding>
+          <h3>avion:make</h3>
+        </md-toolbar>
+      </header>
+      <md-content ng-view="" md-scroll-y flex layout-padding  role="main" ></md-content>
+      <footer>
+        <md-toolbar layout-padding>test</md-toolbar>
+      </footer>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -58,6 +59,8 @@
     <script src="bower_components/threejs/examples/js/controls/OrbitControls.js"></script>
     <script src="scripts/lib/d3threeD.js"></script>
     <script src="bower_components/dat-gui/build/dat.gui.min.js"></script>
+    <script src="bower_components/bower-pdfkit/blob-stream-v0.1.2.js"></script>
+    <script src="bower_components/bower-pdfkit/pdfkit-0.7.0.js"></script>
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->

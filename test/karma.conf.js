@@ -32,6 +32,8 @@ module.exports = function(config) {
       'bower_components/angular-aria/angular-aria.js',
       'bower_components/angular-material/angular-material.js',
       'bower_components/angular-translate/angular-translate.js',
+      'bower_components/bower-pdfkit/pdfkit-0.7.0.js',
+      'bower_components/bower-pdfkit/blob-stream-v0.1.2.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
