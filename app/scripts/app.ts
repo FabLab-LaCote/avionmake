@@ -2,6 +2,7 @@
 /// <reference path="../../typings/angularjs/angular-route.d.ts" />
 /// <reference path="../../typings/angular-translate/angular-translate.d.ts" />
 /// <reference path="../../typings/dat-gui/dat-gui.d.ts" />
+/// <reference path="../../typings/threejs/three.d.ts" />
 /// <reference path="services/planes.ts" />
 
 'use strict';

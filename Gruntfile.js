@@ -168,10 +168,12 @@ module.exports = function (grunt) {
 
     // Automatically inject Bower components into the app
     wiredep: {
+      /*
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
       },
+      */
       test: {
         devDependencies: true,
         src: '<%= karma.unit.configFile %>',

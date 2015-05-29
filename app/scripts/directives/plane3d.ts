@@ -1,5 +1,4 @@
 /// <reference path="../app.ts" />
-/// <reference path="../../../typings/threejs/three.d.ts" />
 'use strict';
 
 declare module THREE {export var OrbitControls}
@@ -62,11 +61,12 @@ module avionmakeApp {
         
         light = new THREE.DirectionalLight(0xffffff, 0.8);
         light.position.set(0, 1, 0);
-        this.scene.add(light);        
-/*                
+        this.scene.add(light);
+        /*
+                
         var light2 = new THREE.AmbientLight(0xFFFFFFF);
         this.scene.add(light2);
-  */      
+      */
         
 
         
@@ -104,7 +104,7 @@ module avionmakeApp {
         var axes = new THREE.AxisHelper(50);
         axes.position = mesh.position;
         this.scene.add(axes);
-        */
+        
         
         var gridXZ = new THREE.GridHelper(100, 10);
         gridXZ.setColors(0x006600, 0x006600);
@@ -122,6 +122,7 @@ module avionmakeApp {
         gridYZ.rotation.z = Math.PI/2;
         gridYZ.setColors( 0x660000, 0x660000 );
         this.scene.add(gridYZ);
+        */
 
         this.animate();
         this.onWindowResize();
@@ -143,15 +144,32 @@ module avionmakeApp {
         this.controls.update();
       }
       
+      private colorMaterial = new THREE.MeshLambertMaterial({
+          color: 0xFF0000
+        });
+      
       partToMesh(part:Part){
         var path = $d3g.transformSVGPath( part.path );
         var simpleShapes = path.toShapes(true);
         var len1 = simpleShapes.length;
-        var color = 0xFFFFFF;
-        var material = new THREE.MeshLambertMaterial({
-          //map: texture1,
-          color: color,
-        });
+        part.texture = new THREE.Texture(part.textureCanvas);
+        if(part.hasOwnProperty('textureFlipY')){
+          part.texture.flipY = part.textureFlipY;  
+        }
+        part.texture.needsUpdate = true;
+        
+        var materials = [
+            new THREE.MeshLambertMaterial({
+              map: part.textureBottom ? part.texture : undefined,
+              color: 0xffffff}),
+            this.colorMaterial,
+            new THREE.MeshLambertMaterial({
+              map: part.textureTop ? part.texture : undefined,
+              color: 0xffffff //0x0051ba
+            }),
+            this.colorMaterial
+        ];
+
         
         //fix UV texture alignement
         for (var j = 0; j < len1; ++j) {
@@ -171,7 +189,9 @@ module avionmakeApp {
           var faces = geometry.faces;
 
           for (var i = 0; i < geometry.faces.length ; i++) {
-
+            if (faces[ i ].normal.z > 0.9){
+              faces[ i ].materialIndex = 2;
+            } 
             var v1 = geometry.vertices[faces[i].a];
             var v2 = geometry.vertices[faces[i].b];
             var v3 = geometry.vertices[faces[i].c];
@@ -185,7 +205,8 @@ module avionmakeApp {
           }
           geometry.uvsNeedUpdate = true;
           //return first...
-          return new THREE.Mesh(geometry, material);
+          
+          return new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
       }   
     }
   }
@@ -205,7 +226,10 @@ module avionmakeApp {
     
     link = (scope: IPlaneScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {
       var plane =  new Plane3dScene(scope.plane);
-      plane.init(<HTMLDivElement>element[0]);
+      setTimeout(()=>{
+        plane.init(<HTMLDivElement>element[0]);  
+      }, 1000)
+      
     }
 
   }
