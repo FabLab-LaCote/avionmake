@@ -110,6 +110,18 @@
               <md-icon md-svg-src="images/icons/ic_menu_white_24px.svg"></md-icon>
             </md-button>
             <h1 class="md-toolbar-tools" hide-gt-md>avion:make</h1>
+            <span flex></span>
+            <div layout="row">
+                <md-select ng-model="app.planes.selectedPalette">
+                  <md-option ng-value="key" ng-repeat="(key,values) in app.planes.palettes">{{ key }}</md-option>
+                </md-select>
+              <div>
+                <span class="color" ng-style="{'background-color':'rgb(' + p.join() + ')'}"
+                      ng-repeat="p in app.planes.palettes[app.planes.selectedPalette]"
+                      ng-click="app.planes.brushColor=p"></span>
+              </div>                      
+              <md-slider  style="width:200px" md-discrete ng-model="app.planes.brushSize" step="2" min="6" max="40"></md-slider>
+            </div>  
         	  <span flex></span>
         	   <md-button ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
       	   </div>

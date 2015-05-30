@@ -12,11 +12,14 @@ module avionmakeApp {
   export class Planes {
     constructor(private $http:ng.IHttpBackendService){
       console.log($http);
+      this.brushSize = 14
+      this.brushColor = [0,0,0];
     }
-    
-    
+        
     currentPlane:Plane;
-    
+    brushSize:number;
+    brushColor:number[];
+        
     createPlane(type:string):Plane{
       return new Plane(type, this.templates[type]);
     }
@@ -27,6 +30,16 @@ module avionmakeApp {
       plane3: Planes.plane1,
       plane4: Planes.plane1
     }
+    
+    palettes:any = {
+      'basic':[[0,0,0],[255,255,255]],
+      'clrs.cc':[[255,255,255],[0, 31, 63],[0, 116, 217],[127, 219, 255],[57, 204, 204],[61, 153, 112],[46, 204, 64],[1, 255, 112],[255, 220, 0],
+      [255, 133, 27],[255, 65, 54],[133, 20, 75],[240, 18, 190],[177, 13, 201],[17, 17, 17],[170, 170, 170],[221, 221, 221]],
+      'drawingboard.js-pastel':[[255, 255, 255],[255, 127, 254],[255, 127, 191],[255, 127, 127],[255, 191, 127],[254, 255, 127],[191, 255, 127],[127, 255, 127],[127, 255, 191],[127, 254, 255],[127, 191, 255],[127, 127, 255],[191, 127, 255]],
+      'ww2-plane':[[255,255,255],[72,83,77],[113,94,61],[78,95,79],[139,121,85],[23,43,76],[133,81,70],[208,175,80],[0,0,0]],
+      'eurocopter':[[255,255,255],[101,74,47],[41,43,42],[138,165,122],[163,121,83],[28,28,28],[131,156,117]],
+      'sky':[[255,255,255],[133,163,174],[28,41,83],[84,94,119],[90,106,131],[5,27,66],[120,173,239]]
+    };
     
     static plane1:Part[]= [
       {
@@ -219,8 +232,10 @@ module avionmakeApp {
         if(part.textureTop || part.textureBottom){
            part.texture = new THREE.Texture(part.textureCanvas);
            part.texture.minFilter = THREE.NearestFilter;
+           part.texture.needsUpdate = true;
            part.bumpTexture = new THREE.Texture(part.bumpTextureCanvas);
            part.bumpTexture.minFilter = THREE.NearestFilter;
+           part.bumpTexture.needsUpdate = true;
         }
       });
     }

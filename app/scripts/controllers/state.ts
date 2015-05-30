@@ -10,14 +10,13 @@ module avionmakeApp {
   export class StateCtrl {
   
     state:string;
-    
+    brushSize:number;
     constructor (private $scope: IStateScope, 
       private $location:ng.ILocationService,
       private planes:Planes,
       private $mdSidenav:angular.material.MDSidenavService) {
       $scope.$on('$routeChangeSuccess',()=>{
         this.state = $location.path();
-        console.log(this.state);
       });
     }
     openMenu(){

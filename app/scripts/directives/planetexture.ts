@@ -29,15 +29,18 @@ module avionmakeApp {
     scope = {
       'part': '=part'
     };
+    constructor(private planes: avionmakeApp.Planes ){}
+    
     link = (scope: ITextureScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {
       scope.isRotate = false;
       scope.getTransform = () => {
         var styles = {};
         if(scope.isRotate){
-          styles['transform'] = 'rotate(90deg) translateY(' + (-element.height()/2) +'px) translateX(' + (element.width()/2) +'px)';
+          styles['transform'] = 'rotate(90deg) translateY(' + (-element[0].clientHeight/2) +'px) translateX(' + (element[0].clientWidth/2) +'px)';
         }
         return styles;
       };
+      
       var canvas = scope.part.textureCanvas;
       var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');
       element.append(canvas); 
@@ -55,7 +58,8 @@ module avionmakeApp {
                       y: (e.offsetY != null) ? e.offsetY : e.originalEvent.layerY};
       };
 
-      el.onmousemove = function(e) {
+      var self:Planetexture = this;
+      el.onmousemove = (e) => {
         if (!isDrawing) return;
         var currentPoint = { x: (e.offsetX != null) ? e.offsetX : e.originalEvent.layerX,
                              y: (e.offsetY != null) ? e.offsetY : e.originalEvent.layerY};
@@ -66,19 +70,22 @@ module avionmakeApp {
           x = lastPoint.x + (Math.sin(angle) * i);
           y = lastPoint.y + (Math.cos(angle) * i);
           
-          var radgrad = ctx.createRadialGradient(x,y,10,x,y,20);
+          var radgrad = ctx.createRadialGradient(x,y,self.planes.brushSize/4,x,y,self.planes.brushSize/2);
           
-          radgrad.addColorStop(0, 'rgba(0,0,0,1)');
-          radgrad.addColorStop(0.5, 'rgba(0,0,0,0.5)');
-          radgrad.addColorStop(1, 'rgba(0,0,0,0)');
+          var color = 'rgba(' +  self.planes.brushColor.join(',');
+          
+          radgrad.addColorStop(0, color + ',1)');
+          radgrad.addColorStop(0.5, color + ',0.5)');
+          radgrad.addColorStop(1, color + ',0)');
           
           ctx.fillStyle = radgrad;
-          ctx.fillRect(x-20, y-20, 40, 40);
+          ctx.fillRect(x-self.planes.brushSize/2, y-self.planes.brushSize/2, self.planes.brushSize, self.planes.brushSize);
         }
         
         lastPoint = currentPoint;
         scope.part.texture.needsUpdate = true;
       };
+      
       /*
       el.onmouseout = function(){
         isDrawing = false;
@@ -96,17 +103,19 @@ module avionmakeApp {
           element.append(div);
           div.text(d.text);
           div.css({'transform': 'translate('+ d.x +'px,'+ d.y +'px) rotate('+ d.angle+ 'deg) ',
-          'font-size': d.size});
+          'font-size': d.size + 'px'});
         });
       }
     }
   }
 
   export function planeTextureFactory() {
-    return new avionmakeApp.Planetexture();
+    var directive = (planes: avionmakeApp.Planes) => new avionmakeApp.Planetexture(planes);
+    directive.$inject = ['planes'];
+    return directive;
   }
 
 }
 
 angular.module('avionmakeApp')
-  .directive('planeTexture', avionmakeApp.planeTextureFactory);
+  .directive('planeTexture', avionmakeApp.planeTextureFactory());

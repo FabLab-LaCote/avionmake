@@ -5,6 +5,7 @@
 /// <reference path="../../typings/dat-gui/dat-gui.d.ts" />
 /// <reference path="../../typings/threejs/three.d.ts" />
 /// <reference path="services/planes.ts" />
+/// <reference path="controllers/state.ts" />
 
 'use strict';
 
