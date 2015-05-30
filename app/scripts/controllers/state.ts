@@ -13,7 +13,8 @@ module avionmakeApp {
     
     constructor (private $scope: IStateScope, 
       private $location:ng.ILocationService,
-      private $mdSidenav:any) {
+      private planes:Planes,
+      private $mdSidenav:angular.material.MDSidenavService) {
       $scope.$on('$routeChangeSuccess',()=>{
         this.state = $location.path();
       });

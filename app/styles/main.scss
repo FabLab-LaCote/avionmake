@@ -112,6 +112,10 @@
   }
   
   .active{
+    
+    a.md-button.md-default-theme:not([disabled]), .md-button.md-default-theme:not([disabled]) {
+      background-color: rgba(158,158,158,0.2);
+    }
     .menu-item-content{
       max-height: 2000px;
     }    

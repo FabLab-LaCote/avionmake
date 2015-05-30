@@ -1,5 +1,6 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../typings/angularjs/angular-route.d.ts" />
+/// <reference path="../../typings/angular-material/angular-material.d.ts" />
 /// <reference path="../../typings/angular-translate/angular-translate.d.ts" />
 /// <reference path="../../typings/dat-gui/dat-gui.d.ts" />
 /// <reference path="../../typings/threejs/three.d.ts" />
@@ -51,7 +52,13 @@ angular.module('avionmakeApp', [
          'STEP5_TEXT': 'Glue and fold together your plane.',
          'STEP6': '6. Fly',
          'STEP6_TEXT': 'Test the result! How far does it fly?',
-         'PREVIEW': 'Preview'
+         'PREVIEW': 'Preview',
+         'CONFIRM_NEWPLANE_TITLE':'New plane?',
+         'CONFIRM_NEWPLANE_CONTENT':'Replace the current plane with this new one? (Current plane will be lost)',
+         'CONFIRM_NEWPLANE_OK':'Yes, continue!',
+         'CONFIRM_NEWPLANE_CANCEL':'Cancel'
+         
+         
       });
       $translateProvider.preferredLanguage('en');
   });

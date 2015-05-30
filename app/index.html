@@ -22,7 +22,6 @@
 
     <!-- Add your site or application content here -->
      <md-sidenav class="menu md-sidenav-left md-whiteframe-z1" md-component-id="left"
-          
           md-is-locked-open="$mdMedia('gt-md')">
       <md-toolbar>
         <h1 class="md-toolbar-tools">avion:make</h1>
@@ -53,7 +52,7 @@
             </div>
           </div>
           <div ng-class="{active:state=='/preview'}">
-            <md-button ng-disabled="true" arial-label="step3">
+            <md-button href="#/preview" ng-disabled="!app.planes.currentPlane" arial-label="step3">
               <div layout="row">
                 <span translate="STEP3"></span>
                 <span flex></span>
@@ -65,7 +64,7 @@
             </div>
           </div>
           <div ng-class="{active:state=='/cut'}">
-            <md-button arial-label="step4">
+            <md-button href="#/cut" arial-label="step4">
               <div layout="row">
                 <span translate="STEP4"></span>
                 <span flex></span>
@@ -77,7 +76,7 @@
             </div>
           </div>
           <div ng-class="{active:state=='/assemble'}">
-            <md-button arial-label="step5">
+            <md-button href="#/assemble" arial-label="step5">
               <div layout="row">
                 <span translate="STEP5"></span>
                 <span flex></span>
@@ -111,7 +110,7 @@
             </md-button>
             <h1 class="md-toolbar-tools" hide-gt-md>avion:make</h1>
         	  <span flex></span>
-        	   <md-button ng-show="ctrl.state == 'draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
+        	   <md-button ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
       	   </div>
         </md-toolbar>
       </header>
