@@ -9,10 +9,8 @@ module avionmakeApp {
 
   export class ToolbarCtrl {
 
-    state:string;
-
     constructor (private $scope: IToolbarScope) {
-      this.state = 'draw'; 
+       
     }
   }
 }

@@ -40,7 +40,7 @@
             </div>
           </div>
           <div ng-class="{active:app.state=='/draw'}">
-            <md-button href="#/draw" class="md-button" arial-label="step2">
+            <md-button href="#/draw" ng-disabled="!app.planes.currentPlane" class="md-button" arial-label="step2">
               <div layout="row">
                 <span translate="STEP2"></span>
                 <span flex></span>
@@ -51,7 +51,7 @@
               <p translate="STEP2_TEXT"></p>
             </div>
           </div>
-          <div ng-class="{active:state=='/preview'}">
+          <div ng-class="{active:app.state=='/preview'}">
             <md-button href="#/preview" ng-disabled="!app.planes.currentPlane" arial-label="step3">
               <div layout="row">
                 <span translate="STEP3"></span>
@@ -63,7 +63,8 @@
               <p translate="STEP3_TEXT"></p>
             </div>
           </div>
-          <div ng-class="{active:state=='/cut'}">
+          <md-divider></md-divider>
+          <div ng-class="{active:app.state=='/cut'}">
             <md-button href="#/cut" arial-label="step4">
               <div layout="row">
                 <span translate="STEP4"></span>
@@ -75,7 +76,7 @@
               <p translate="STEP4_TEXT"></p>
             </div>
           </div>
-          <div ng-class="{active:state=='/assemble'}">
+          <div ng-class="{active:app.state=='/assemble'}">
             <md-button href="#/assemble" arial-label="step5">
               <div layout="row">
                 <span translate="STEP5"></span>
@@ -87,8 +88,8 @@
               <p translate="STEP5_TEXT"></p>
             </div>
           </div>
-          <div ng-class="{active:state=='/fly'}">
-            <md-button arial-label="step6">
+          <div ng-class="{active:app.state=='/fly'}">
+            <md-button href="#/fly" arial-label="step6">
               <div layout="row">
                 <span translate="STEP6"></span>
                 <span flex></span>
@@ -98,7 +99,7 @@
             <div class="menu-item-content">
               <p translate="STEP6_TEXT"></p>
             </div>
-          </div>                              
+          </div>                      
       </md-content>
     </md-sidenav>
     <div layout="column" flex>

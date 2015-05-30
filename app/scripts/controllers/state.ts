@@ -17,6 +17,7 @@ module avionmakeApp {
       private $mdSidenav:angular.material.MDSidenavService) {
       $scope.$on('$routeChangeSuccess',()=>{
         this.state = $location.path();
+        console.log(this.state);
       });
     }
     openMenu(){

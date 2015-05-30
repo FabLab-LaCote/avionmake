@@ -32,12 +32,21 @@ angular.module('avionmakeApp', [
         templateUrl: 'views/preview.html',
         controller: 'PreviewCtrl'
       })
+      .when('/cut', {
+        templateUrl: 'views/cut.html'
+      })
+      .when('/assemble', {
+        templateUrl: 'views/assemble.html'
+      })
+      .when('/fly', {
+        templateUrl: 'views/fly.html'
+      })
       .otherwise({
         redirectTo: '/'
       });
-      
   })
   .config(($translateProvider:angular.translate.ITranslateProvider) =>{
+    $translateProvider.useSanitizeValueStrategy('escaped');
     $translateProvider
       .translations('en', {
          'STEP1': '1. Choose',
