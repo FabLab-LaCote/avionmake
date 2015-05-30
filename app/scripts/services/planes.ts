@@ -158,6 +158,8 @@ module avionmakeApp {
     drawTexture?:boolean;
     textureCanvas?:HTMLCanvasElement;
     texture?:THREE.Texture;
+    bumpTextureCanvas?:HTMLCanvasElement;
+    bumpTexture?:THREE.Texture;
     textureTop?:boolean;
     textureBottom?:boolean;
     textureFlipY?:boolean;

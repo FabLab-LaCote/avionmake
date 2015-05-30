@@ -153,18 +153,22 @@ module avionmakeApp {
         var simpleShapes = path.toShapes(true);
         var len1 = simpleShapes.length;
         part.texture = new THREE.Texture(part.textureCanvas);
+        part.bumpTexture = new THREE.Texture(part.textureCanvas);
         if(part.hasOwnProperty('textureFlipY')){
-          part.texture.flipY = part.textureFlipY;  
+          part.texture.flipY = part.textureFlipY;
+          part.bumpTexture.flipY = part.textureFlipY;
         }
         part.texture.needsUpdate = true;
         
         var materials = [
-            new THREE.MeshLambertMaterial({
+            new THREE.MeshPhongMaterial({
               map: part.textureBottom ? part.texture : undefined,
+              bumpMap: part.textureBottom ? part.bumpTexture : undefined,
               color: 0xffffff}),
             this.colorMaterial,
-            new THREE.MeshLambertMaterial({
+            new THREE.MeshPhongMaterial({
               map: part.textureTop ? part.texture : undefined,
+              bumpMap: part.textureBottom ? part.bumpTexture : undefined,
               color: 0xffffff //0x0051ba
             }),
             this.colorMaterial

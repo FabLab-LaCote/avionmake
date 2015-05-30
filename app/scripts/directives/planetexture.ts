@@ -9,6 +9,10 @@ interface CanvasRenderingContext2D{
    webkitImageSmoothingEnabled:any;
 }
 
+interface MouseEvent {
+  originalEvent:any;
+}
+
 module avionmakeApp {
 
   export interface ITextureScope extends ng.IScope {
@@ -54,13 +58,14 @@ module avionmakeApp {
       
       el.onmousedown = function(e) {
         isDrawing = true;
-        lastPoint = { x: e.pageX - $canvas.offset().left, y: e.pageY - $canvas.offset().top};
+        lastPoint = { x: (e.offsetX != null) ? e.offsetX : e.originalEvent.layerX,
+                      y: (e.offsetY != null) ? e.offsetY : e.originalEvent.layerY};
       };
 
       el.onmousemove = function(e) {
         if (!isDrawing) return;
-        
-        var currentPoint = { x: e.pageX - $canvas.offset().left, y: e.pageY - $canvas.offset().top};
+        var currentPoint = { x: (e.offsetX != null) ? e.offsetX : e.originalEvent.layerX,
+                             y: (e.offsetY != null) ? e.offsetY : e.originalEvent.layerY};
         var dist = distanceBetween(lastPoint, currentPoint);
         var angle = angleBetween(lastPoint, currentPoint);
         
@@ -71,9 +76,9 @@ module avionmakeApp {
           
           var radgrad = ctx.createRadialGradient(x,y,10,x,y,20);
           
-          radgrad.addColorStop(0, 'rgba(255,0,0,1)');
-          radgrad.addColorStop(0.5, 'rgba(255,0,0,0.5)');
-          radgrad.addColorStop(1, 'rgba(255,0,0,0)');
+          radgrad.addColorStop(0, 'rgba(0,0,0,1)');
+          radgrad.addColorStop(0.5, 'rgba(0,0,0,0.5)');
+          radgrad.addColorStop(1, 'rgba(0,0,0,0)');
           
           ctx.fillStyle = radgrad;
            ctx.fillRect(x-20, y-20, 40, 40);
