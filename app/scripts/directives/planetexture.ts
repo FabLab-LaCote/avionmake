@@ -89,15 +89,25 @@ module avionmakeApp {
           scope.part.texture.needsUpdate = true;
         }
       };
-      
+      /*
       el.onmouseout = function(){
         isDrawing = false;
       }
+      */
       
       el.onmouseup = function() {
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
       };
+      
+      if(scope.part.decals){
+        scope.part.decals.forEach((d:Decal) =>{
+          var div = $('<div class="decal"></div>').appendTo(element);
+          div.text(d.text);
+          div.css({'transform': 'translate('+ d.x +'px,'+ d.y +'px) rotate('+ d.angle+ 'deg) ',
+          'font-size': d.size});
+        });
+      }
     }
   }
 

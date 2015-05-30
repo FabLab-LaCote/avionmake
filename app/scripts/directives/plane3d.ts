@@ -56,7 +56,7 @@ module avionmakeApp {
         this.scene.add(light);
         
         light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(0, -1, 0);
+        light.position.set(0.5, -1, 0);
         this.scene.add(light);
         
         light = new THREE.DirectionalLight(0xffffff, 0.8);
@@ -153,12 +153,41 @@ module avionmakeApp {
         var simpleShapes = path.toShapes(true);
         var len1 = simpleShapes.length;
         part.texture = new THREE.Texture(part.textureCanvas);
-        part.bumpTexture = new THREE.Texture(part.textureCanvas);
+        //TODO move 
+        var canvas:HTMLCanvasElement = document.createElement('canvas');
+        var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+        canvas.width = part.width;
+        canvas.height = part.height;
+        
+        //debug
+        //document.body.appendChild(canvas);
+        ctx.fillStyle = "#ffffff";
+        ctx.rect( 0, 0, part.width, part.height );
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'black';
+        
+        if(part.decals){
+          part.decals.forEach((d:Decal)=>{
+            ctx.save();
+            ctx.translate(d.x,d.y); 
+            ctx.rotate(d.angle*Math.PI/180);
+            if(d.text){
+              ctx.font = d.size + 'px Arial';
+              ctx.strokeText(d.text, 0, 0);
+            }
+            ctx.restore();
+          });  
+        }
+        part.bumpTextureCanvas = canvas;
+        part.bumpTexture = new THREE.Texture(part.bumpTextureCanvas);
+        
         if(part.hasOwnProperty('textureFlipY')){
           part.texture.flipY = part.textureFlipY;
           part.bumpTexture.flipY = part.textureFlipY;
         }
         part.texture.needsUpdate = true;
+        part.bumpTexture.needsUpdate = true;
         
         var materials = [
             new THREE.MeshPhongMaterial({
@@ -168,7 +197,7 @@ module avionmakeApp {
             this.colorMaterial,
             new THREE.MeshPhongMaterial({
               map: part.textureTop ? part.texture : undefined,
-              bumpMap: part.textureBottom ? part.bumpTexture : undefined,
+              bumpMap: part.textureTop ? part.bumpTexture : undefined,
               color: 0xffffff //0x0051ba
             }),
             this.colorMaterial

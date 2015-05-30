@@ -28,29 +28,94 @@ module avionmakeApp {
          .lineWidth(1)
          .stroke('red');
       
+            //CUSTOM FIX textures
+      //copy cockpit
+      var p = planes.currentPlane.getPart('fuselage');
+      var c = planes.currentPlane.getPart('cockpit');
+      var l = planes.currentPlane.getPart('left_side');
+      var r = planes.currentPlane.getPart('right_side');
+      
+      var wy = 172;
+      var ww = 370;
+      l.decals = [];
+      r.decals = [];
+      c.decals = [];
+      p.decals.forEach((d:Decal) =>{
+        if(d.y > wy){
+          if(d.x < ww){
+            var c1 = angular.copy(d);
+            c1.y = c1.y-52;
+            c.decals.push(c1);
+          }
+          var dl = angular.copy(d);
+          dl.y = dl.y-60;
+          l.decals.push(dl);
+        }
+      });
+      
+     
+      var canvas:HTMLCanvasElement = document.createElement('canvas');
+      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+      canvas.width = c.width;
+      canvas.height = c.height;
+      var img = new Image();
+      img.src = p.textureBitmap;
+      ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, 120, ww, p.height-wy);
+      ctx.scale(1, -1);
+      ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, -0, ww, -(p.height-wy));
+      c.textureBitmap = canvas.toDataURL();
+      
+      //copy left
+      
+      var canvas:HTMLCanvasElement = document.createElement('canvas');
+      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+      canvas.width = l.width;
+      canvas.height = l.height;
+      ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, p.width, p.height-wy);
+      
+      c.textureBitmap = canvas.toDataURL();
+      
+      //copy right
+      var canvas:HTMLCanvasElement = document.createElement('canvas');
+      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+      canvas.width = r.width;
+      canvas.height = r.height;
+      ctx.scale(-1, 1);
+      ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, -p.width, p.height-wy);
+      c.textureBitmap = canvas.toDataURL();
+      
+      
+      //svg + decals
+      
       planes.currentPlane.parts.forEach((part:Part) => {
         if(part.hasOwnProperty('position2D')){
           doc.translate(part.position2D.x, part.position2D.y);
           doc.path(part.path);
           doc.stroke();
+          //TODO
+          //draw decals
+          if(part.hasOwnProperty('decals')){
+            part.decals.forEach((d:Decal)=>{              
+              // draw text
+              if(d.text){
+                doc.rotate(d.angle,{origin:[d.x,d.y]});
+                doc.font('Helvetica', d.size)
+                   .stroke('red')
+                   .lineWidth(1)
+                   .text(d.text, d.x, d.y, {
+                     stroke: true,
+                     fill: false,
+                     lineBreak:false
+                   });   
+               doc.rotate(-d.angle,{origin:[d.x,d.y]});
+              }   
+              //draw symbols
+            });
+          }
           doc.translate(-part.position2D.x, -part.position2D.y);
         }
       });
-      
-      
-
-      //TODO
-      // draw symbols
-      
-      // draw fonts
-         
-      doc.font('Helvetica', 32)
-         .stroke('red')
-         .lineWidth(1)
-         .text('more texte', 60, 200, {
-           stroke: true,
-           fill: false
-         });    
+          
       
       //print page
       //doc.addPage();
@@ -62,43 +127,10 @@ module avionmakeApp {
          
       doc.image(avionmakeApp.fablab_logo,1650,0);
       
-      //CUSTOM FIX textures
-      //copy cockpit
-      var p = planes.currentPlane.getPart('fuselage');
+
       
-      var c = planes.currentPlane.getPart('cockpit');
-      var canvas:HTMLCanvasElement = document.createElement('canvas');
-      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-      canvas.width = c.width;
-      canvas.height = c.height;
-      var img = new Image();
-      img.src = p.textureBitmap;
-      var wy = 172;
-      var ww = 370;
-      ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, 120, ww, p.height-wy);
-      ctx.scale(1, -1);
-      ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, -0, ww, -(p.height-wy));
-      c.textureBitmap = canvas.toDataURL();
       
-      //copy left
-      var c = planes.currentPlane.getPart('left_side');
-      var canvas:HTMLCanvasElement = document.createElement('canvas');
-      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-      canvas.width = c.width;
-      canvas.height = c.height;
-      ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, p.width, p.height-wy);
-      
-      c.textureBitmap = canvas.toDataURL();
-      
-      //copy right
-      var c = planes.currentPlane.getPart('right_side');
-      var canvas:HTMLCanvasElement = document.createElement('canvas');
-      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-      canvas.width = c.width;
-      canvas.height = c.height;
-      ctx.scale(-1, 1);
-      ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, -p.width, p.height-wy);
-      c.textureBitmap = canvas.toDataURL();
+
            
       planes.currentPlane.parts.forEach((part:Part) => {
         if(part.hasOwnProperty('position2D') && part.hasOwnProperty('textureBitmap')){
