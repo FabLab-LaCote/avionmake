@@ -214,6 +214,16 @@ module avionmakeApp {
     }
     
     //TODO create part class?
+    createTextures():void{
+      this.parts.forEach((part:Part)=>{
+        if(part.textureTop || part.textureBottom){
+           part.texture = new THREE.Texture(part.textureCanvas);
+           part.texture.minFilter = THREE.NearestFilter;
+           part.bumpTexture = new THREE.Texture(part.bumpTextureCanvas);
+           part.bumpTexture.minFilter = THREE.NearestFilter;
+        }
+      });
+    }
     clearTextures():void{
       this.parts.forEach((part:Part)=>{
         if(part.textureTop || part.textureBottom){

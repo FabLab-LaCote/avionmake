@@ -10,13 +10,14 @@ module avionmakeApp {
   export class ChoiceCtrl {
     
     planesCatalog:Plane[]; 
-    constructor (private $scope: IChoiceScope, private planes:Planes) {
+    constructor (private $scope: IChoiceScope, private planes:Planes, private $location:ng.ILocationService) {
       this.planesCatalog =  Object.keys(planes.templates).map((type)=>{
         return planes.createPlane(type);
       });
     }
     selectPlane(plane:Plane){
       this.planes.currentPlane = plane;
+      this.$location.path('draw');      
     }
   }
 }
