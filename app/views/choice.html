@@ -1,0 +1,12 @@
+<md-content layout="row" layout-align="center start" layout-wrap>
+	<md-card ng-repeat="plane in ctrl.planesCatalog" class="plane-card">
+		<plane3d plane="plane"  class="md-card-image" ></plane3d>
+		<md-card-content>
+			 <h2 class="md-title">{{plane.type}}</h2>
+	        <p>Lorem ipsum</p>
+		</md-card-content>
+		<div class="md-actions" layout="row" layout-align="end center">
+	        <md-button class="md-primary" ng-click="ctrl.selectPlane(plane)">Choose</md-button>
+	      </div>	
+	</md-card>
+</md-content>

@@ -133,10 +133,12 @@ module avionmakeApp {
       }
         
       onWindowResize() {
-        this.camera.aspect =  this.element.offsetWidth / this.element.offsetHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize( this.element.offsetWidth, this.element.offsetHeight );
-        this.render();
+        if(this.element){
+          this.camera.aspect =  this.element.clientWidth / this.element.clientHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize( this.element.clientWidth, this.element.clientHeight );
+          this.render();
+        }
       }
 
       animate() {
@@ -152,52 +154,24 @@ module avionmakeApp {
         var path = $d3g.transformSVGPath( part.path );
         var simpleShapes = path.toShapes(true);
         var len1 = simpleShapes.length;
-        part.texture = new THREE.Texture(part.textureCanvas);
-        //TODO move 
-        var canvas:HTMLCanvasElement = document.createElement('canvas');
-        var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-        canvas.width = part.width;
-        canvas.height = part.height;
         
-        //debug
-        //document.body.appendChild(canvas);
-        ctx.fillStyle = "#ffffff";
-        ctx.rect( 0, 0, part.width, part.height );
-        ctx.fill();
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'black';
-        
-        if(part.decals){
-          part.decals.forEach((d:Decal)=>{
-            ctx.save();
-            ctx.translate(d.x,d.y); 
-            ctx.rotate(d.angle*Math.PI/180);
-            if(d.text){
-              ctx.font = d.size + 'px Arial';
-              ctx.strokeText(d.text, 0, 0);
-            }
-            ctx.restore();
-          });  
-        }
-        part.bumpTextureCanvas = canvas;
-        part.bumpTexture = new THREE.Texture(part.bumpTextureCanvas);
         
         if(part.hasOwnProperty('textureFlipY')){
           part.texture.flipY = part.textureFlipY;
           part.bumpTexture.flipY = part.textureFlipY;
         }
         part.texture.needsUpdate = true;
-        part.bumpTexture.needsUpdate = true;
+        
         
         var materials = [
             new THREE.MeshPhongMaterial({
-              map: part.textureBottom ? part.texture : undefined,
-              bumpMap: part.textureBottom ? part.bumpTexture : undefined,
+              map: part.textureBottom ? part.texture : null,
+              bumpMap: part.textureBottom ? part.bumpTexture : null,
               color: 0xffffff}),
             this.colorMaterial,
             new THREE.MeshPhongMaterial({
-              map: part.textureTop ? part.texture : undefined,
-              bumpMap: part.textureTop ? part.bumpTexture : undefined,
+              map: part.textureTop ? part.texture : null,
+              bumpMap: part.textureTop ? part.bumpTexture : null,
               color: 0xffffff //0x0051ba
             }),
             this.colorMaterial
@@ -253,16 +227,20 @@ module avionmakeApp {
     restrict = 'E';
     replace = true;
     scope = {
-      'plane': '='
+      'plane': '=',
+      'refresh':'='
     }
     constructor( private $window: ng.IWindowService, planes: avionmakeApp.Planes ){}
     
     link = (scope: IPlaneScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {
       var plane =  new Plane3dScene(scope.plane);
-      setTimeout(()=>{
-        plane.init(<HTMLDivElement>element[0]);  
-      }, 1000)
-      
+      plane.init(<HTMLDivElement>element[0]);
+      scope.$watch('refresh', ()=>{
+        console.log('refresh');
+        setTimeout(()=>{
+          plane.onWindowResize();
+        },500);
+      });
     }
 
   }

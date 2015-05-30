@@ -19,13 +19,17 @@ angular.module('avionmakeApp', [
   .config(($routeProvider:ng.route.IRouteProvider) => {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'views/choice.html',
+        controller: 'ChoiceCtrl',
+        controllerAs: 'ctrl'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+      .when('/draw', {
+        templateUrl: 'views/draw.html',
+        controller: 'DrawCtrl'
+      })
+      .when('/preview', {
+        templateUrl: 'views/preview.html',
+        controller: 'PreviewCtrl'
       })
       .otherwise({
         redirectTo: '/'

@@ -2,13 +2,6 @@
 
 'use strict';
 
-declare function Path2D(path:string):void;
-interface CanvasRenderingContext2D{
-   clip(path:any, clip:string):void;
-   stroke(path:any):void;
-   webkitImageSmoothingEnabled:any;
-}
-
 interface MouseEvent {
   originalEvent:any;
 }
@@ -17,6 +10,8 @@ module avionmakeApp {
 
   export interface ITextureScope extends ng.IScope {
     part: Part;
+    getTransform:Function;
+    isRotate: boolean;
   }
 
   export function distanceBetween(point1, point2) {
@@ -28,31 +23,30 @@ module avionmakeApp {
   }
   
   export class Planetexture implements ng.IDirective {
-    template = '<div class="texture md-whiteframe-z2" layout-padding></div>';
+    template = '<div class="texture md-whiteframe-z2" layout-padding ng-style="getTransform()"><md-button class="md-icon-button" aria-label="rotate" ng-click="isRotate = !isRotate"><md-icon md-svg-src="images/icons/ic_rotate_90_degrees_ccw_black_48px.svg"></md-icon></md-button></div>';
     restrict = 'E';
     replace = true;
     scope = {
       'part': '=part'
     };
     link = (scope: ITextureScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {
-      var canvas:HTMLCanvasElement = document.createElement('canvas');
-      var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-      ctx.globalCompositeOperation = 'source-atop';
-      canvas.width = scope.part.width;
-      canvas.height = scope.part.height;
-      ctx.lineWidth = 4;
-      ctx.stroke(new Path2D(scope.part.path));
-      ctx.clip(new Path2D(scope.part.path), 'nonzero');
-      ctx.fillStyle = "#ffffff";
-      ctx.rect( 0, 0, scope.part.width, scope.part.height );
-      ctx.fill();
+      scope.isRotate = false;
+      scope.getTransform = () => {
+        console.log('transform');
+        var styles = {};
+        if(scope.isRotate){
+          styles['transform'] = 'rotate(90deg) translateY(' + (-element.height()/2) +'px) translateX(' + (element.width()/2) +'px)';
+        }
+        return styles;
+      };
+      var canvas = scope.part.textureCanvas;
+      var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');
       element.append(canvas); 
       ctx.lineJoin = ctx.lineCap = 'round';
       
       var isDrawing, lastPoint;
       var el = canvas;
       var x,y;
-      var $canvas = $(canvas);
       
       scope.part.textureCanvas = el;
       
@@ -68,7 +62,6 @@ module avionmakeApp {
                              y: (e.offsetY != null) ? e.offsetY : e.originalEvent.layerY};
         var dist = distanceBetween(lastPoint, currentPoint);
         var angle = angleBetween(lastPoint, currentPoint);
-        
         for (var i = 0; i < dist; i+=5) {
           
           x = lastPoint.x + (Math.sin(angle) * i);
@@ -81,13 +74,11 @@ module avionmakeApp {
           radgrad.addColorStop(1, 'rgba(0,0,0,0)');
           
           ctx.fillStyle = radgrad;
-           ctx.fillRect(x-20, y-20, 40, 40);
+          ctx.fillRect(x-20, y-20, 40, 40);
         }
         
         lastPoint = currentPoint;
-        if(scope.part.texture){
-          scope.part.texture.needsUpdate = true;
-        }
+        scope.part.texture.needsUpdate = true;
       };
       /*
       el.onmouseout = function(){

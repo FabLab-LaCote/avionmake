@@ -2,6 +2,12 @@
 
 'use strict';
 
+declare function Path2D(path:string):void;
+interface CanvasRenderingContext2D{
+   clip(path:any, clip:string):void;
+   stroke(path:any):void;
+}
+
 module avionmakeApp {
   export class Planes {
     constructor(private $http:ng.IHttpBackendService){
@@ -11,12 +17,15 @@ module avionmakeApp {
     
     currentPlane:Plane;
     
-    createPlane(type:string){
-      this.currentPlane = new Plane(type, angular.copy(this.templates[type]));
+    createPlane(type:string):Plane{
+      return new Plane(type, this.templates[type]);
     }
     
     templates:PlaneTemplateMap={
-      plane1: Planes.plane1
+      plane1: Planes.plane1,
+      plane2: Planes.plane1,
+      plane3: Planes.plane1,
+      plane4: Planes.plane1
     }
     
     static plane1:Part[]= [
@@ -39,7 +48,6 @@ module avionmakeApp {
           x: 500,
           y: 100
         },
-        drawTexture: true ,
         textureTop: true,
         textureBottom: true,
         textureFlipY: false,
@@ -86,7 +94,6 @@ module avionmakeApp {
           x: 200,
           y: 150
         },
-        drawTexture:true,
         textureTop:true,
         decals:[
           {
@@ -117,7 +124,6 @@ module avionmakeApp {
           x: 1750,
           y: 400
         },
-        drawTexture: true,
         textureTop: true
       },
       {
@@ -169,9 +175,35 @@ module avionmakeApp {
     parts:Part[]=[];
     type:string;
     constructor(type:string, parts:Part[]){
-      this.parts = parts;
+      this.parts = angular.copy(parts);
       this.type = type;
+      //augment template with missing objects
+      this.parts.forEach((part:Part)=>{
+        if(part.textureTop || part.textureBottom){
+          part.drawTexture = true;
+          var canvas:HTMLCanvasElement = document.createElement('canvas');
+          var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          ctx.globalCompositeOperation = 'source-atop';
+          canvas.width = part.width;
+          canvas.height = part.height;          
+          part.textureCanvas = canvas;
+          part.texture = new THREE.Texture(part.textureCanvas);
+          part.texture.minFilter = THREE.NearestFilter;
+          
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = part.width;
+          canvas.height = part.height;
+          part.bumpTextureCanvas = canvas;
+          part.bumpTexture = new THREE.Texture(part.bumpTextureCanvas);
+          part.bumpTexture.minFilter = THREE.NearestFilter;
+          //part.decals = [];  
+        }
+      });
+      this.clearTextures();
+      this.updateBumpTextures();
     }
+    
     getPart(name:string):Part{
       for(var p=0; p< this.parts.length; p++){
         if(this.parts[p].name === name){
@@ -179,6 +211,49 @@ module avionmakeApp {
         }
       }
       return null;
+    }
+    
+    //TODO create part class?
+    clearTextures():void{
+      this.parts.forEach((part:Part)=>{
+        if(part.textureTop || part.textureBottom){
+            console.log(part.name);
+            var ctx = <CanvasRenderingContext2D>  part.textureCanvas.getContext('2d');
+            ctx.lineWidth = 4;
+            ctx.stroke(new Path2D(part.path));
+            ctx.clip(new Path2D(part.path), 'nonzero');
+            ctx.fillStyle = "#ffffff";
+            ctx.rect( 0, 0, part.width, part.height );
+            ctx.fill();
+            part.texture.needsUpdate = true;
+        }
+      });
+    }
+    
+    updateBumpTextures():void{
+      this.parts.forEach((part:Part)=>{
+        if(part.textureTop || part.textureBottom){
+             var ctx = <CanvasRenderingContext2D>  part.bumpTextureCanvas.getContext('2d');
+              ctx.fillStyle = "#ffffff";
+              ctx.rect( 0, 0, part.width, part.height );
+              ctx.fill();
+             ctx.lineWidth = 1;
+             ctx.strokeStyle = 'black';        
+             if(part.decals){
+                part.decals.forEach((d:Decal)=>{
+                  ctx.save();
+                  ctx.translate(d.x,d.y); 
+                  ctx.rotate(d.angle*Math.PI/180);
+                  if(d.text){
+                    ctx.font = d.size + 'px Arial';
+                    ctx.strokeText(d.text, 0, 0);
+                  }
+                  ctx.restore();
+                });
+             }
+            part.bumpTexture.needsUpdate = true;
+        }
+      });
     }
   };
   
@@ -206,7 +281,6 @@ module avionmakeApp {
         z: number
     };
     textureBitmap?:string
-    drawTexture?:boolean;
     textureCanvas?:HTMLCanvasElement;
     texture?:THREE.Texture;
     bumpTextureCanvas?:HTMLCanvasElement;
@@ -215,6 +289,7 @@ module avionmakeApp {
     textureBottom?:boolean;
     textureFlipY?:boolean;
     decals?:Decal[];
+    drawTexture?:boolean;
   }
   
   export interface Decal{

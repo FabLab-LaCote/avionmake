@@ -15,22 +15,36 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="avionmakeApp"  layout="column"  layout-fill ng-cloak>
+  <body ng-app="avionmakeApp"  layout="row"  layout-fill ng-cloak>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
+     <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+      <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools">avion:make</h1>
+      </md-toolbar>
+      <md-content layout-padding>
+          <h2>1. Choose</h2>
+            <h2>2. Draw</h2>
+            <h2>3. Print</h2>
+            <h2>4. Cut</h2>
+            <h2>5. Assemble</h2>
+            <h2>6. Fly</h2>
+      </md-content>
+    </md-sidenav>
+    <div layout="column" flex>
       <header>
-        <md-toolbar layout-padding>
-          <h3>avion:make</h3>
+      	<md-toolbar class="md-whiteframe-z2" layout="row" ng-controller="ToolbarCtrl as ctrl">
+      	  <div class="md-toolbar-tools">
+        	  <span flex></span>
+        	   <md-button ng-show="ctrl.state == 'draw'" class="md-raised md-primary">Preview</md-button>
+      	   </div>
         </md-toolbar>
       </header>
-      <md-content ng-view="" md-scroll-y flex layout-padding  role="main" ></md-content>
-      <footer>
-        <md-toolbar layout-padding>test</md-toolbar>
-      </footer>
-
+       <md-content ng-view="" md-scroll flex role="main" layout-padding></md-content>
+    </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -66,11 +80,13 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/draw.js"></script>
+        <script src="scripts/controllers/preview.js"></script>
         <script src="scripts/services/planes.js"></script>
         <script src="scripts/directives/plane3d.js"></script>
         <script src="scripts/directives/planetexture.js"></script>
+        <script src="scripts/controllers/choice.js"></script>
+        <script src="scripts/controllers/toolbar.js"></script>
         <!-- endbuild -->
 </body>
 </html>

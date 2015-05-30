@@ -1,0 +1,7 @@
+<div id="design-plane-preview" ng-class="{'fullscreen': isPreviewFullscreen}" layout="column" class="md-whiteframe-z2">
+	<plane3d plane="plane" refresh="isPreviewFullscreen" flex></plane3d>
+	<md-button class="md-icon-button" aria-label="fullscreen" ng-click="isPreviewFullscreen = !isPreviewFullscreen">
+        <md-icon md-svg-icon="images/icons/{{isPreviewFullscreen ? 'ic_fullscreen_exit_black_48px.svg' : 'ic_fullscreen_black_48px.svg'}}"></md-icon>
+    </md-button>
+</div>
+<plane-texture part="part" ng-repeat="part in plane.parts|filter:{drawTexture:true}"></plane-texture>	

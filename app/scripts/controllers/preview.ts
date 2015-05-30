@@ -10,7 +10,7 @@ module avionmakeApp {
   declare function PDFDocument(args:any):void;
   declare function blobStream():void;
 
-  export class AboutCtrl {
+  export class PreviewCtrl {
 
     constructor (private $scope: IAboutScope, planes:Planes) {
       planes.createPlane('plane1');
@@ -73,7 +73,7 @@ module avionmakeApp {
       canvas.height = l.height;
       ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, p.width, p.height-wy);
       
-      c.textureBitmap = canvas.toDataURL();
+      l.textureBitmap = canvas.toDataURL();
       
       //copy right
       var canvas:HTMLCanvasElement = document.createElement('canvas');
@@ -82,7 +82,7 @@ module avionmakeApp {
       canvas.height = r.height;
       ctx.scale(-1, 1);
       ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, -p.width, p.height-wy);
-      c.textureBitmap = canvas.toDataURL();
+      r.textureBitmap = canvas.toDataURL();
       
       
       //svg + decals
@@ -149,4 +149,4 @@ module avionmakeApp {
 }
 
 angular.module('avionmakeApp')
-  .controller('AboutCtrl', avionmakeApp.AboutCtrl);
+  .controller('PreviewCtrl', avionmakeApp.PreviewCtrl);
