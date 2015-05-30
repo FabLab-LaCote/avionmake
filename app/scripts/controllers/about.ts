@@ -13,7 +13,8 @@ module avionmakeApp {
   export class AboutCtrl {
 
     constructor (private $scope: IAboutScope, planes:Planes) {
-      $scope.plane = planes.plane1;
+      planes.createPlane('plane1');
+      $scope.plane = planes.currentPlane;
       setTimeout(()=>{
       var doc = new PDFDocument({size:'A4', layout:'landscape'});
       var stream = doc.pipe(blobStream());
@@ -27,7 +28,7 @@ module avionmakeApp {
          .lineWidth(1)
          .stroke('red');
       
-      planes.plane1.forEach((part:Part) => {
+      planes.currentPlane.parts.forEach((part:Part) => {
         if(part.hasOwnProperty('position2D')){
           doc.translate(part.position2D.x, part.position2D.y);
           doc.path(part.path);
@@ -63,9 +64,9 @@ module avionmakeApp {
       
       //CUSTOM FIX textures
       //copy cockpit
-      var p = planes.getPart(planes.plane1, 'fuselage');
+      var p = planes.currentPlane.getPart('fuselage');
       
-      var c = planes.getPart(planes.plane1, 'cockpit');
+      var c = planes.currentPlane.getPart('cockpit');
       var canvas:HTMLCanvasElement = document.createElement('canvas');
       var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
       canvas.width = c.width;
@@ -80,7 +81,7 @@ module avionmakeApp {
       c.textureBitmap = canvas.toDataURL();
       
       //copy left
-      var c = planes.getPart(planes.plane1, 'left_side');
+      var c = planes.currentPlane.getPart('left_side');
       var canvas:HTMLCanvasElement = document.createElement('canvas');
       var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
       canvas.width = c.width;
@@ -90,7 +91,7 @@ module avionmakeApp {
       c.textureBitmap = canvas.toDataURL();
       
       //copy right
-      var c = planes.getPart(planes.plane1, 'right_side');
+      var c = planes.currentPlane.getPart('right_side');
       var canvas:HTMLCanvasElement = document.createElement('canvas');
       var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
       canvas.width = c.width;
@@ -99,7 +100,7 @@ module avionmakeApp {
       ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, -p.width, p.height-wy);
       c.textureBitmap = canvas.toDataURL();
            
-      planes.plane1.forEach((part:Part) => {
+      planes.currentPlane.parts.forEach((part:Part) => {
         if(part.hasOwnProperty('position2D') && part.hasOwnProperty('textureBitmap')){
           doc.image(part.textureBitmap, part.position2D.x, part.position2D.y);
         }

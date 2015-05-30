@@ -8,17 +8,18 @@ module avionmakeApp {
       console.log($http);
     }
     
-    getPart(plane:Plane, name:string):Part{
-      for(var p=0; p< plane.length; p++){
-        if(plane[p].name === name){
-          return plane[p];
-        }
-      }
-      return null;
+    
+    currentPlane:Plane;
+    
+    createPlane(type:string){
+      this.currentPlane = new Plane(type, angular.copy(this.templates[type]));
     }
     
+    templates:PlaneTemplateMap={
+      plane1: Planes.plane1
+    }
     
-    plane1:Plane= [
+    static plane1:Part[]= [
       {
         name: 'fuselage',
         path: 'M 36.163334,268.05405 C 66.863734,283.12005 96.096533,292.23085 128.32893,296.35125 227.56052,309.03685 308.34332,260.01885 428.73951,239.63145 518.73211,224.39245 569.65791,226.23405 569.65791,226.23405 L 1172.2356,226.23405 1214.0854,181.23895 1075.9722,186.12715 1076.0762,179.07545 1184.8716,174.58095 C 1184.8716,174.58095 1126.2232,0.78671926 1116.8226,0.38891926 1001.6776,-4.4842807 1042.305,86.144523 967.3809,129.11209 892.4567,172.07955 861.5963,176.24275 833.1677,176.18455 735.1503,175.98355 373.30532,174.69855 373.30532,174.69855 L 372.96232,182.51115 289.19532,183.63275 288.89132,174.97655 227.25732,173.41265 C 227.25732,173.41265 71.326934,197.70665 35.985934,205.83645 -5.4182561,215.36105 -17.716476,241.61345 36.163934,268.05425 Z',
@@ -128,12 +129,30 @@ module avionmakeApp {
         }
       }  
     ];
-    
-    
+        
   }
   
   
-  export interface Plane extends Array<Part>{};
+  export class Plane {
+    parts:Part[]=[];
+    type:string;
+    constructor(type:string, parts:Part[]){
+      this.parts = parts;
+      this.type = type;
+    }
+    getPart(name:string):Part{
+      for(var p=0; p< this.parts.length; p++){
+        if(this.parts[p].name === name){
+          return this.parts[p];
+        }
+      }
+      return null;
+    }
+  };
+  
+  export interface PlaneTemplateMap{
+    [index: string]: Part[];
+  }
   
   export interface Part{
     name: string;

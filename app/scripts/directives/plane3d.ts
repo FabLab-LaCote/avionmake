@@ -72,7 +72,7 @@ module avionmakeApp {
         
         var scale:number = 0.75;
         //add meshs
-        this.plane.filter((part:Part)=>{
+        this.plane.parts.filter((part:Part)=>{
           return part.hasOwnProperty('position3D') && part.hasOwnProperty('rotation3D');
         })
         .forEach((part:Part)=>{

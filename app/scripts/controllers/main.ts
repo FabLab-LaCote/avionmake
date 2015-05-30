@@ -10,7 +10,8 @@ module avionmakeApp {
   export class MainCtrl {
 
     constructor (private $scope: IMainScope, planes: avionmakeApp.Planes) {
-      $scope.plane = planes.plane1;
+      planes.createPlane('plane1');
+      $scope.plane = planes.currentPlane;
       $scope.awesomeThings = [
         'HTML5 Boilerplate',
         'AngularJS',
