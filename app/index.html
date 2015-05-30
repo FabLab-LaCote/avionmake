@@ -15,31 +15,103 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="avionmakeApp"  layout="row"  layout-fill ng-cloak>
+  <body ng-app="avionmakeApp"  layout="row"  layout-fill ng-cloak ng-controller="StateCtrl as app">
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-     <md-sidenav class="md-sidenav-left md-whiteframe-z1" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-      <md-toolbar class="md-theme-indigo">
+     <md-sidenav class="menu md-sidenav-left md-whiteframe-z1" md-component-id="left"
+          
+          md-is-locked-open="$mdMedia('gt-md')">
+      <md-toolbar>
         <h1 class="md-toolbar-tools">avion:make</h1>
       </md-toolbar>
       <md-content layout-padding>
-          <h2>1. Choose</h2>
-            <h2>2. Draw</h2>
-            <h2>3. Print</h2>
-            <h2>4. Cut</h2>
-            <h2>5. Assemble</h2>
-            <h2>6. Fly</h2>
+          <div ng-class="{active:app.state=='/'}">
+            <md-button href="#/" class="md-button" arial-label="step1">
+              <div layout="row">
+                <span translate="STEP1"></span>
+                <span flex></span>
+                <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+              </div>
+            </md-button>
+            <div class="menu-item-content">
+              <p translate="STEP1_TEXT"></p>
+            </div>
+          </div>
+          <div ng-class="{active:app.state=='/draw'}">
+            <md-button href="#/draw" class="md-button" arial-label="step2">
+              <div layout="row">
+                <span translate="STEP2"></span>
+                <span flex></span>
+                <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+              </div>
+            </md-button>
+            <div class="menu-item-content">
+              <p translate="STEP2_TEXT"></p>
+            </div>
+          </div>
+          <div ng-class="{active:state=='/preview'}">
+            <md-button ng-disabled="true" arial-label="step3">
+              <div layout="row">
+                <span translate="STEP3"></span>
+                <span flex></span>
+                <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+              </div>
+            </md-button>
+            <div class="menu-item-content">
+              <p translate="STEP3_TEXT"></p>
+            </div>
+          </div>
+          <div ng-class="{active:state=='/cut'}">
+            <md-button arial-label="step4">
+              <div layout="row">
+                <span translate="STEP4"></span>
+                <span flex></span>
+                <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+              </div>
+            </md-button>
+            <div class="menu-item-content">
+              <p translate="STEP4_TEXT"></p>
+            </div>
+          </div>
+          <div ng-class="{active:state=='/assemble'}">
+            <md-button arial-label="step5">
+              <div layout="row">
+                <span translate="STEP5"></span>
+                <span flex></span>
+                <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+              </div>
+            </md-button>
+            <div class="menu-item-content">
+              <p translate="STEP5_TEXT"></p>
+            </div>
+          </div>
+          <div ng-class="{active:state=='/fly'}">
+            <md-button arial-label="step6">
+              <div layout="row">
+                <span translate="STEP6"></span>
+                <span flex></span>
+                <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+              </div>
+            </md-button>
+            <div class="menu-item-content">
+              <p translate="STEP6_TEXT"></p>
+            </div>
+          </div>                              
       </md-content>
     </md-sidenav>
     <div layout="column" flex>
       <header>
       	<md-toolbar class="md-whiteframe-z2" layout="row" ng-controller="ToolbarCtrl as ctrl">
       	  <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" hide-gt-md ng-click="app.openMenu();">
+              <md-icon md-svg-src="images/icons/ic_menu_white_24px.svg"></md-icon>
+            </md-button>
+            <h1 class="md-toolbar-tools" hide-gt-md>avion:make</h1>
         	  <span flex></span>
-        	   <md-button ng-show="ctrl.state == 'draw'" class="md-raised md-primary">Preview</md-button>
+        	   <md-button ng-show="ctrl.state == 'draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
       	   </div>
         </md-toolbar>
       </header>
@@ -59,7 +131,6 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -87,6 +158,7 @@
         <script src="scripts/directives/planetexture.js"></script>
         <script src="scripts/controllers/choice.js"></script>
         <script src="scripts/controllers/toolbar.js"></script>
+        <script src="scripts/controllers/state.js"></script>
         <!-- endbuild -->
 </body>
 </html>

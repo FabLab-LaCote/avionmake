@@ -34,11 +34,24 @@ angular.module('avionmakeApp', [
       .otherwise({
         redirectTo: '/'
       });
+      
   })
   .config(($translateProvider:angular.translate.ITranslateProvider) =>{
     $translateProvider
       .translations('en', {
-         
+         'STEP1': '1. Choose',
+         'STEP1_TEXT': 'Which model do you want?',
+         'STEP2': '2. Draw',
+         'STEP2_TEXT': 'Customize your plane.',
+         'STEP3': '3. Print',
+         'STEP3_TEXT': 'Confirm preview?',
+         'STEP4': '4. Cut',
+         'STEP4_TEXT': 'Observe the laser cutting',
+         'STEP5': '5. Assemble',
+         'STEP5_TEXT': 'Glue and fold together your plane.',
+         'STEP6': '6. Fly',
+         'STEP6_TEXT': 'Test the result! How far does it fly?',
+         'PREVIEW': 'Preview'
       });
       $translateProvider.preferredLanguage('en');
   });

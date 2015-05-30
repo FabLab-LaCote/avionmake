@@ -91,6 +91,37 @@
      height: 250px;
    } 
 }
+
+.menu{
+  .md-button{
+    display: block;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+    text-rendering: optimizeLegibility;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 0.8em, 0, 0.8em, 0;
+    
+  }
+  .menu-item-content{
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+    transition-property: max-height;
+  }
+  
+  .active{
+    .menu-item-content{
+      max-height: 2000px;
+    }    
+    md-icon{
+      transform: rotate(180deg);
+      transition: transform 0.3s ease-in-out; 
+    }
+  }
+}
+
 .at-view-emerge.ng-enter {
     -webkit-transition-property: opacity, -webkit-transform;
     -moz-transition-property: opacity, -moz-transform;

@@ -227,7 +227,6 @@ module avionmakeApp {
     clearTextures():void{
       this.parts.forEach((part:Part)=>{
         if(part.textureTop || part.textureBottom){
-            console.log(part.name);
             var ctx = <CanvasRenderingContext2D>  part.textureCanvas.getContext('2d');
             ctx.lineWidth = 4;
             ctx.stroke(new Path2D(part.path));

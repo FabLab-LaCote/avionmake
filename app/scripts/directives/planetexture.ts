@@ -32,7 +32,6 @@ module avionmakeApp {
     link = (scope: ITextureScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {
       scope.isRotate = false;
       scope.getTransform = () => {
-        console.log('transform');
         var styles = {};
         if(scope.isRotate){
           styles['transform'] = 'rotate(90deg) translateY(' + (-element.height()/2) +'px) translateX(' + (element.width()/2) +'px)';
@@ -93,7 +92,8 @@ module avionmakeApp {
       
       if(scope.part.decals){
         scope.part.decals.forEach((d:Decal) =>{
-          var div = $('<div class="decal"></div>').appendTo(element);
+          var div = angular.element('<div class="decal"></div>');
+          element.append(div);
           div.text(d.text);
           div.css({'transform': 'translate('+ d.x +'px,'+ d.y +'px) rotate('+ d.angle+ 'deg) ',
           'font-size': d.size});
