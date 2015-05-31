@@ -29,6 +29,7 @@ module avionmakeApp {
     scope = {
       'part': '=part'
     };
+
     constructor(private planes: avionmakeApp.Planes ){}
     
     link = (scope: ITextureScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {

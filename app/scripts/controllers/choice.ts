@@ -16,7 +16,8 @@ module avionmakeApp {
 
   export class ChoiceCtrl {
     
-    planesCatalog:Plane[]; 
+    planesCatalog:Plane[];
+    /*@ngInject*/
     constructor (private $scope: IChoiceScope, private planes:Planes, private $location:ng.ILocationService,
                   private $mdDialog: angular.material.MDDialogService, private $translate:angular.translate.ITranslateService) {
       this.planesCatalog =  Object.keys(planes.templates).map((type)=>{

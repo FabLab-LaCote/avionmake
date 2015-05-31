@@ -7,7 +7,7 @@ module avionmakeApp {
   }
 
   export class DrawCtrl {
-
+    /*@ngInject*/
     constructor (private $scope: IMainScope,
       private planes: avionmakeApp.Planes,
       private $location:ng.ILocationService) {

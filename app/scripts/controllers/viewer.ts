@@ -8,7 +8,7 @@ module avionmakeApp {
   }
 
   export class ViewerCtrl {
-
+    /*@ngInject*/
     constructor (private $scope: IViewerScope) {
       $scope.awesomeThings = [
         'HTML5 Boilerplate',

@@ -230,6 +230,7 @@ module avionmakeApp {
       'plane': '=',
       'refresh':'='
     }
+
     constructor( private $window: ng.IWindowService, planes: avionmakeApp.Planes ){}
     
     link = (scope: IPlaneScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {

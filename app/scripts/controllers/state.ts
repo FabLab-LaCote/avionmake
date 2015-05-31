@@ -10,6 +10,7 @@ module avionmakeApp {
   
     state:string;
     brushSize:number;
+    /*@ngInject*/
     constructor (private $scope: IStateScope, 
       private $location:ng.ILocationService,
       private planes:Planes,

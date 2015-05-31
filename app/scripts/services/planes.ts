@@ -13,6 +13,7 @@ module avionmakeApp {
   export enum PrintState{NONE,PREVIEW,PRINT,CUT};
   
   export class Planes {
+    /*@ngInject*/
     constructor(private $http:ng.IHttpBackendService){
       console.log($http);
       this.brushSize = 14

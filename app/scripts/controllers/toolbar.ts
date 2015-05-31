@@ -8,7 +8,7 @@ module avionmakeApp {
   }
 
   export class ToolbarCtrl {
-
+    /*@ngInject*/
     constructor (private $scope: IToolbarScope) {
        
     }

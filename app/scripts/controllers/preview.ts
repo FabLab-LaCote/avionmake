@@ -12,7 +12,7 @@ module avionmakeApp {
   declare function blobStream():void;
 
   export class PreviewCtrl {
-
+    /*@ngInject*/
     constructor (private $scope: IAboutScope, planes:Planes) {
       $scope.planesService = planes;
       var createPDF = ()=>{
