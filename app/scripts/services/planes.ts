@@ -204,9 +204,11 @@ module avionmakeApp {
   export class Plane {
     parts:Part[]=[];
     type:string;
+    printState:number;
     constructor(type:string, parts:Part[]){
       this.parts = angular.copy(parts);
       this.type = type;
+      this.printState = 0;
       //augment template with missing objects
       this.parts.forEach((part:Part)=>{
         if(part.textureTop || part.textureBottom){

@@ -151,7 +151,9 @@ module avionmakeApp {
             $scope.showPDF = true;
           });
         }
-        
+        $scope.$apply(()=>{
+          plane.printState = 1;
+        });
       });
       
       }

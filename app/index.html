@@ -117,7 +117,7 @@
             </md-button>
             <h1 class="md-toolbar-tools" hide-gt-md>avion:make</h1>
             <span flex></span>
-            <div layout="row">
+            <div layout="row" ng-show="app.state == '/draw'">
                 <md-select ng-model="app.planes.selectedPalette">
                   <md-option ng-value="key" ng-repeat="(key,values) in app.planes.palettes">{{ key }}</md-option>
                 </md-select>
@@ -129,7 +129,8 @@
               <md-slider  style="width:200px" md-discrete ng-model="app.planes.brushSize" step="2" min="6" max="40"></md-slider>
             </div>  
         	  <span flex></span>
-        	   <md-button ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
+        	   <md-button href="#/preview" ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
+             <md-button  ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
       	   </div>
         </md-toolbar>
       </header>
