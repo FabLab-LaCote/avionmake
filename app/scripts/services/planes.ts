@@ -328,6 +328,7 @@ module avionmakeApp {
           var img = new Image();
           img.src = part.textureBitmap; 
           ctx.drawImage(img, 0, 0);
+          localPart.textureBitmap = part.textureBitmap;
           localPart.texture.needsUpdate = true;
       });
       this.updateBumpTextures();
