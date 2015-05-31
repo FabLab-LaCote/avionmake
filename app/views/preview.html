@@ -1,1 +1,5 @@
-<iframe id="pdf" style="width:100%;height:800px"></iframe>
+<md-content layout-align="center center" layout="column" flex ng-hide="showPDF">
+	<h1 translate="GENERATING_PDF"></h1>
+	<md-progress-linear md-mode="indeterminate"></md-progress-linear>
+</md-content>
+<iframe id="pdf" flex ng-show="showPDF"></iframe>

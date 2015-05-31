@@ -5,6 +5,7 @@
 module avionmakeApp {
   export interface IAboutScope extends ng.IScope {
     plane: Plane;
+    showPDF: boolean;
   }
 
   declare function PDFDocument(args:any):void;
@@ -16,11 +17,11 @@ module avionmakeApp {
       var plane:Plane = planes.currentPlane; 
       if(plane){
         //CUSTOM FIX textures
-        if(plane.type === 'plane1'){  
-          var p = planes.currentPlane.getPart('fuselage');
-          var c = planes.currentPlane.getPart('cockpit');
-          var l = planes.currentPlane.getPart('left_side');
-          var r = planes.currentPlane.getPart('right_side');
+        if(plane.type === 'plane1'){
+          var p = plane.getPart('fuselage');
+          var c = plane.getPart('cockpit');
+          var l = plane.getPart('left_side');
+          var r = plane.getPart('right_side');
           
           //copy decals
           var wy = 172;
@@ -72,7 +73,7 @@ module avionmakeApp {
           ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, -p.width, p.height-wy);
           r.textureBitmap = canvas.toDataURL();
         }
-        
+
         //create PDF
         var doc = new PDFDocument({size:'A4', layout:'landscape'});
         var stream = doc.pipe(blobStream());
@@ -94,12 +95,11 @@ module avionmakeApp {
         doc.image(avionmakeApp.fablab_logo,1650,0);
         
              
-        planes.currentPlane.parts.forEach((part:Part) => {
+        plane.parts.forEach((part:Part) => {
           if(part.hasOwnProperty('position2D') && part.hasOwnProperty('textureBitmap')){
             doc.image(part.textureBitmap, part.position2D.x, part.position2D.y);
           }
         });
-
 
       //cut out page
       //TODO: option 1page merge or 2pages split
@@ -112,7 +112,7 @@ module avionmakeApp {
       
       //svg + decals
       
-      planes.currentPlane.parts.forEach((part:Part) => {
+      plane.parts.forEach((part:Part) => {
         if(part.hasOwnProperty('position2D')){
           doc.translate(part.position2D.x, part.position2D.y);
           doc.path(part.path);
@@ -140,14 +140,18 @@ module avionmakeApp {
           doc.translate(-part.position2D.x, -part.position2D.y);
         }
       });
-      
       // end and display the document in the iframe to the right
       doc.end();
       stream.on('finish', function() {
-        (<HTMLIFrameElement>document.getElementById('pdf')).src = stream.toBlobURL('application/pdf');
         if(window.navigator.msSaveOrOpenBlob){
           window.navigator.msSaveOrOpenBlob(stream.toBlob(),'avion.pdf');
+        }else{
+          (<HTMLIFrameElement>document.getElementById('pdf')).src = stream.toBlobURL('application/pdf');
+          $scope.$apply(()=>{
+            $scope.showPDF = true;
+          });
         }
+        
       });
       
       }

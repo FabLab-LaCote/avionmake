@@ -1,6 +1,7 @@
 /// <reference path="../app.ts" />
 
 'use strict';
+
 declare module angular.material {
   interface MDConfirmDialog{
      targetEvent:Function;

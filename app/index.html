@@ -99,7 +99,13 @@
             <div class="menu-item-content">
               <p translate="STEP6_TEXT"></p>
             </div>
-          </div>                      
+          </div>
+          <md-divider></md-divider>
+          <p layout="row" class="languages" layout-align="space-around start">
+            <md-button ng-class="{active:app.$translate.use()=='fr'}" ng-click="app.changeLanguage('fr')">Français</md-button>
+            <md-button ng-class="{active:app.$translate.use()=='de'}" ng-click="app.changeLanguage('de')">Deutsch</md-button>
+            <md-button ng-class="{active:app.$translate.use()=='en'}" ng-click="app.changeLanguage('en')">English</md-button>
+          </p>                    
       </md-content>
     </md-sidenav>
     <div layout="column" flex>
@@ -127,7 +133,7 @@
       	   </div>
         </md-toolbar>
       </header>
-       <md-content class="at-view-emerge at-view-scale-out" ng-view="" md-scroll-xy flex role="main" layout-padding></md-content>
+       <md-content class="at-view-emerge at-view-scale-out" ng-view="" md-scroll-xy flex role="main" layout-padding layout="column"></md-content>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -155,7 +161,7 @@
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/raphael/raphael.js"></script>
-    <script src="bower_components/canvas-5-polyfill/canvas.js"></script>
+    <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
     <!-- endbower -->
     <script src="bower_components/raphael.free_transform/raphael.free_transform.js"></script>
     <script src="bower_components/threejs/examples/js/controls/OrbitControls.js"></script>

@@ -37,6 +37,7 @@ module.exports = function(config) {
       'bower_components/bower-pdfkit/blob-stream-v0.1.2.js',
       'bower_components/raphael.free_transform/raphael.free_transform.js',
       'bower_components/raphael/raphael.js',
+      'bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

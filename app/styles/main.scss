@@ -126,9 +126,19 @@
     transition-property: max-height;
   }
   
+  .languages .md-button{
+    font-size: 1em;
+    font-style: normal;
+    text-transform: none;
+    text-align: center;
+    display: inline;
+  }
+  
   .active{
     
-    a.md-button.md-default-theme:not([disabled]), .md-button.md-default-theme:not([disabled]) {
+    a.md-button.md-default-theme:not([disabled]),
+    .md-button.md-default-theme:not([disabled]),
+     {
       background-color: rgba(158,158,158,0.2);
     }
     .menu-item-content{
@@ -138,6 +148,9 @@
       transform: rotate(180deg);
       transition: transform 0.3s ease-in-out; 
     }
+  }
+  .active.md-button.md-default-theme:not([disabled]){
+    background-color: rgba(158,158,158,0.2);
   }
 }
 
