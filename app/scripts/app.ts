@@ -43,9 +43,17 @@ angular.module('avionmakeApp', [
       .when('/fly', {
         templateUrl: 'views/fly.html'
       })
+      .when('/v', {
+        templateUrl: 'views/viewer.html'
+      })
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .config(function($mdThemingProvider:angular.material.MDThemingProvider) {
+    $mdThemingProvider.theme('default')
+      .primaryPalette('blue')
+      .accentPalette('light-green');
   })
   .config(($translateProvider:angular.translate.ITranslateProvider) =>{
     $translateProvider.useSanitizeValueStrategy('escaped');
@@ -65,11 +73,16 @@ angular.module('avionmakeApp', [
          'CHOOSE': 'Choose',
          'PREVIEW': 'Preview',
          'PRINT': 'Print',
+         'GENERATING_PDF':'Generating PDF',
+         'MERGE_PDF':'Merge PDF to cut out by hand.',
          'CONFIRM_NEWPLANE_TITLE':'New plane?',
          'CONFIRM_NEWPLANE_CONTENT':'Replace the current plane with this new one? (Current plane will be lost)',
          'CONFIRM_NEWPLANE_OK':'Yes, continue!',
          'CONFIRM_NEWPLANE_CANCEL':'Cancel',
-         'GENERATING_PDF':'Generating PDF'
+         'CONFIRM_PRINT_TITLE':'Ready to Print?',
+         'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
+         'CONFIRM_PRINT_OK':'Print!',
+         'CONFIRM_PRINT_CANCEL':'Cancel'
       })
     .translations('fr', {
          'STEP1': '1. Choisir',
@@ -87,11 +100,16 @@ angular.module('avionmakeApp', [
          'CHOOSE': 'Choisir',
          'PREVIEW': 'Aperçu',
          'PRINT': 'Imprimer',
+         'MERGE_PDF':'Merge PDF to cut out by hand.',
+         'GENERATING_PDF':'Création du PDF',
          'CONFIRM_NEWPLANE_TITLE':'New plane?',
          'CONFIRM_NEWPLANE_CONTENT':'Replace the current plane with this new one? (Current plane will be lost)',
          'CONFIRM_NEWPLANE_OK':'Yes, continue!',
          'CONFIRM_NEWPLANE_CANCEL':'Cancel',
-         'GENERATING_PDF':'Création du PDF'
+         'CONFIRM_PRINT_TITLE':'Ready to Print?',
+         'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
+         'CONFIRM_PRINT_OK':'Print!',
+         'CONFIRM_PRINT_CANCEL':'Cancel'
       })
       .registerAvailableLanguageKeys(['en', 'de'], {
         'en_US': 'en',

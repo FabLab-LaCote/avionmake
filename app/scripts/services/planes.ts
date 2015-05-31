@@ -9,18 +9,23 @@ interface CanvasRenderingContext2D{
 }
 
 module avionmakeApp {
+  
+  export enum PrintState{NONE,PREVIEW,PRINT,CUT};
+  
   export class Planes {
     constructor(private $http:ng.IHttpBackendService){
       console.log($http);
       this.brushSize = 14
       this.brushColor = [0,0,0];
       this.loadLocal();
-      
+      this.selectedPalette = 'clrs.cc';
     }
         
     currentPlane:Plane;
     brushSize:number;
     brushColor:number[];
+    selectedPalette:string;
+    mergePDF:boolean;
         
     createPlane(type:string):Plane{
       return new Plane(type, this.templates[type]);
@@ -204,11 +209,12 @@ module avionmakeApp {
   export class Plane {
     parts:Part[]=[];
     type:string;
-    printState:number;
+    printState:PrintState;
+    
     constructor(type:string, parts:Part[]){
       this.parts = angular.copy(parts);
       this.type = type;
-      this.printState = 0;
+      this.printState = PrintState.NONE;
       //augment template with missing objects
       this.parts.forEach((part:Part)=>{
         if(part.textureTop || part.textureBottom){
@@ -234,7 +240,7 @@ module avionmakeApp {
       this.clearTextures();
       this.updateBumpTextures();
     }
-    
+        
     getPart(name:string):Part{
       for(var p=0; p< this.parts.length; p++){
         if(this.parts[p].name === name){
@@ -302,9 +308,11 @@ module avionmakeApp {
       });
     }
     
+    
     toJSON():string{
       var json = {
         type: this.type,
+        printState: this.printState,
         parts:[]
       };
       //save parts with textures and decals
@@ -321,6 +329,7 @@ module avionmakeApp {
     }
     
     fromJSON(obj):void{
+      this.printState = obj.printState;
       obj.parts.forEach((part:Part)=>{
           var localPart = this.getPart(part.name);
           //update decals

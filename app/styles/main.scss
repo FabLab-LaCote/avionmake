@@ -14,6 +14,8 @@
 
 .plane3d{
   display:block;
+  background-color: black;
+  overflow: hidden;
 }
 
 .texture{
@@ -96,11 +98,6 @@
    } 
 }
 
-.color{
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-}
 
 .menu{
     background-image: url(../images/fablab_la_cote.png);
@@ -108,7 +105,7 @@
     background-position: 0px 100%;
     background-repeat: no-repeat;
   
-  .md-button{
+   .menu-item > .md-button{
     display: block;
     width: 100%;
     margin: 0;
@@ -117,7 +114,6 @@
     font-size: 1.4em;
     font-weight: bold;
     margin: 0.8em, 0, 0.8em, 0;
-    
   }
   .menu-item-content{
     max-height: 0;
@@ -134,10 +130,10 @@
     display: inline;
   }
   
-  .active{
+  .menu-item.active{
     
-    a.md-button.md-default-theme:not([disabled]),
-    .md-button.md-default-theme:not([disabled]),
+    > a.md-button.md-default-theme:not([disabled]),
+    > .md-button.md-default-theme:not([disabled]),
      {
       background-color: rgba(158,158,158,0.2);
     }
@@ -152,6 +148,42 @@
   .active.md-button.md-default-theme:not([disabled]){
     background-color: rgba(158,158,158,0.2);
   }
+}
+
+.toolbar-paint{
+  margin: 8px 0;
+  .small-size{
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.8);
+    margin: 20px 5px;
+  }
+  .large-size{
+    width: 38px;
+    height: 38px;
+    border-radius: 38px;
+    background-color: rgba(0,0,0,0.8);
+    margin: 5px;
+  }
+  .color{
+    display: inline-block;
+    width: 40px;
+    height: 32px;
+    border-bottom: 8px solid rgba(0,0,0,0.12);
+  }
+  
+  .color.active{
+    border-bottom-color: rgba(0,0,0,0.4);
+  }
+  
+  .size-choice{
+    margin-left: 40px;
+  }
+  
+}
+.toolbar-paint  > div{
+  padding: 4px 8px;
 }
 
 .at-view-emerge.ng-enter {

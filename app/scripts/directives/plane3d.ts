@@ -96,7 +96,7 @@ module avionmakeApp {
           this.scene.add(mesh);
         });
         
-        
+        this.renderer.domElement.setAttribute('flex','');
         element.appendChild(this.renderer.domElement);
         window.addEventListener( 'resize', this.onWindowResize.bind(this), false );
         
@@ -223,7 +223,7 @@ module avionmakeApp {
   }
 
   export class Plane3d implements ng.IDirective {
-    template = '<div class="plane3d"></div>';
+    template = '<div class="plane3d" layout="column" layout-align="center center"></div>';
     restrict = 'E';
     replace = true;
     scope = {
@@ -239,7 +239,7 @@ module avionmakeApp {
         console.log('refresh');
         setTimeout(()=>{
           plane.onWindowResize();
-        },500);
+        },501);
       });
     }
 

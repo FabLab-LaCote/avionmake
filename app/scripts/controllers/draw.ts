@@ -3,16 +3,23 @@
 
 module avionmakeApp {
   export interface IMainScope extends ng.IScope {
-    plane: any;
+    plane: Plane;
   }
 
   export class DrawCtrl {
 
-    constructor (private $scope: IMainScope, planes: avionmakeApp.Planes) {
+    constructor (private $scope: IMainScope,
+      private planes: avionmakeApp.Planes,
+      private $location:ng.ILocationService) {
       if(!planes.currentPlane){
         planes.currentPlane = planes.createPlane('plane1');  
       }
       $scope.plane = planes.currentPlane;
+      if($scope.plane.printState >= PrintState.PRINT){
+        setTimeout(()=>{
+          $location.path('cut');
+        },1);
+      }
     }
   }
 }

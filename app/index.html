@@ -22,12 +22,12 @@
 
     <!-- Add your site or application content here -->
      <md-sidenav class="menu md-sidenav-left md-whiteframe-z1" md-component-id="left"
-          md-is-locked-open="$mdMedia('gt-md')">
+          md-is-locked-open="$mdMedia('gt-md') && app.state !='/v'">
       <md-toolbar>
         <h1 class="md-toolbar-tools">avion:make</h1>
       </md-toolbar>
       <md-content layout-padding>
-          <div ng-class="{active:app.state=='/'}">
+          <div class="menu-item" ng-class="{active:app.state=='/'}">
             <md-button href="#/" class="md-button" arial-label="step1">
               <div layout="row">
                 <span translate="STEP1"></span>
@@ -39,7 +39,7 @@
               <p translate="STEP1_TEXT"></p>
             </div>
           </div>
-          <div ng-class="{active:app.state=='/draw'}">
+          <div class="menu-item" ng-class="{active:app.state=='/draw'}">
             <md-button href="#/draw" ng-disabled="!app.planes.currentPlane" class="md-button" arial-label="step2">
               <div layout="row">
                 <span translate="STEP2"></span>
@@ -49,9 +49,16 @@
             </md-button>
             <div class="menu-item-content">
               <p translate="STEP2_TEXT"></p>
+              <md-input-container>
+                <span class="md-caption">Color palette to use</span>
+                <md-select ng-model="app.planes.selectedPalette">
+                  <md-option ng-value="key" ng-repeat="(key,values) in app.planes.palettes">{{ key }}</md-option>
+                </md-select>
+              </md-input-container>  
+                
             </div>
           </div>
-          <div ng-class="{active:app.state=='/preview'}">
+          <div class="menu-item" ng-class="{active:app.state=='/preview'}">
             <md-button href="#/preview" ng-disabled="!app.planes.currentPlane" arial-label="step3">
               <div layout="row">
                 <span translate="STEP3"></span>
@@ -61,10 +68,16 @@
             </md-button>
             <div class="menu-item-content">
               <p translate="STEP3_TEXT"></p>
+              <md-switch ng-model="app.planes.mergePDF" aria-label="Switch 1">
+                {{'MERGE_PDF'|translate}}
+              </md-switch>
+              <div layout="row" layout-align="center center">
+                <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
+              </div>
             </div>
           </div>
           <md-divider></md-divider>
-          <div ng-class="{active:app.state=='/cut'}">
+          <div class="menu-item" ng-class="{active:app.state=='/cut'}">
             <md-button href="#/cut" arial-label="step4">
               <div layout="row">
                 <span translate="STEP4"></span>
@@ -76,7 +89,7 @@
               <p translate="STEP4_TEXT"></p>
             </div>
           </div>
-          <div ng-class="{active:app.state=='/assemble'}">
+          <div class="menu-item" ng-class="{active:app.state=='/assemble'}">
             <md-button href="#/assemble" arial-label="step5">
               <div layout="row">
                 <span translate="STEP5"></span>
@@ -88,7 +101,7 @@
               <p translate="STEP5_TEXT"></p>
             </div>
           </div>
-          <div ng-class="{active:app.state=='/fly'}">
+          <div class="menu-item" ng-class="{active:app.state=='/fly'}">
             <md-button href="#/fly" arial-label="step6">
               <div layout="row">
                 <span translate="STEP6"></span>
@@ -112,29 +125,17 @@
       <header>
       	<md-toolbar class="md-whiteframe-z2" layout="row" ng-controller="ToolbarCtrl as ctrl">
       	  <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" hide-gt-md ng-click="app.openMenu();">
+            <md-button class="md-icon-button" ng-hide="$mdMedia('gt-md') && app.state !='/v'" ng-click="app.openMenu();">
               <md-icon md-svg-src="images/icons/ic_menu_white_24px.svg"></md-icon>
             </md-button>
-            <h1 class="md-toolbar-tools" hide-gt-md>avion:make</h1>
-            <span flex></span>
-            <div layout="row" ng-show="app.state == '/draw'">
-                <md-select ng-model="app.planes.selectedPalette">
-                  <md-option ng-value="key" ng-repeat="(key,values) in app.planes.palettes">{{ key }}</md-option>
-                </md-select>
-              <div>
-                <span class="color" ng-style="{'background-color':'rgb(' + p.join() + ')'}"
-                      ng-repeat="p in app.planes.palettes[app.planes.selectedPalette]"
-                      ng-click="app.planes.brushColor=p"></span>
-              </div>                      
-              <md-slider  style="width:200px" md-discrete ng-model="app.planes.brushSize" step="2" min="6" max="40"></md-slider>
-            </div>  
+            <h1 class="md-toolbar-tools"  ng-hide="$mdMedia('gt-md') && app.state !='/v'">avion:make</h1>
         	  <span flex></span>
         	   <md-button href="#/preview" ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
-             <md-button  ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
+             <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
       	   </div>
         </md-toolbar>
       </header>
-       <md-content class="at-view-emerge at-view-scale-out" ng-view="" md-scroll-xy flex role="main" layout-padding layout="column"></md-content>
+       <md-content class="at-view-emerge at-view-scale-out" ng-view="" md-scroll-xy flex role="main" layout="column"></md-content>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -182,6 +183,7 @@
         <script src="scripts/controllers/choice.js"></script>
         <script src="scripts/controllers/toolbar.js"></script>
         <script src="scripts/controllers/state.js"></script>
+        <script src="scripts/controllers/viewer.js"></script>
         <!-- endbuild -->
 </body>
 </html>
