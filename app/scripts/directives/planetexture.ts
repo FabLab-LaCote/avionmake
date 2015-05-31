@@ -52,17 +52,44 @@ module avionmakeApp {
       
       scope.part.textureCanvas = el;
       
+      var self:Planetexture = this;
+      
+      var getPoint = (e) => {
+        var touch = e.changedTouches[0];
+        var totalOffsetX = 0;
+  			var totalOffsetY = 0;
+  			var currentElement = (<HTMLElement>touch.target);
+  			
+  			do{
+  				totalOffsetX += currentElement.offsetLeft;
+  				totalOffsetY += currentElement.offsetTop;
+  			} while(currentElement = <HTMLElement>currentElement.offsetParent)
+        var $canvas = $(touch.target);
+        var points = {x: touch.clientX - $canvas.offset().left, y:touch.clientY - $canvas.offset().top}; 
+        if(scope.isRotate){
+          return {x: points.y, y: scope.part.height - points.x};
+          
+        }
+        return points;
+      };
+      
       el.onmousedown = function(e) {
         isDrawing = true;
-        lastPoint = { x: (e.offsetX != null) ? e.offsetX : e.originalEvent.layerX,
-                      y: (e.offsetY != null) ? e.offsetY : e.originalEvent.layerY};
+        lastPoint = { x: (e.offsetX != null) ? e.offsetX : e.layerX,
+                      y: (e.offsetY != null) ? e.offsetY : e.layerY};
       };
+      
+      el.addEventListener( 'touchstart', (e)=>{
+        console.log('start');
+        e.preventDefault();
+        isDrawing = true;
+        lastPoint = getPoint(e);
+      }, false );
+      
 
-      var self:Planetexture = this;
-      el.onmousemove = (e) => {
+      var draw = (currentPoint:any) =>{
         if (!isDrawing) return;
-        var currentPoint = { x: (e.offsetX != null) ? e.offsetX : e.originalEvent.layerX,
-                             y: (e.offsetY != null) ? e.offsetY : e.originalEvent.layerY};
+        console.log('draw', currentPoint)
         var dist = distanceBetween(lastPoint, currentPoint);
         var angle = angleBetween(lastPoint, currentPoint);
         for (var i = 0; i < dist; i+=5) {
@@ -86,16 +113,30 @@ module avionmakeApp {
         scope.part.texture.needsUpdate = true;
       };
       
-      /*
-      el.onmouseout = function(){
-        isDrawing = false;
-      }
-      */
+      el.onmousemove = (e) => {
+        console.log('mouse');
+        var currentPoint = { x: (e.offsetX != null) ? e.offsetX : e.layerX,
+                             y: (e.offsetY != null) ? e.offsetY : e.layerY};
+        draw(currentPoint);
+      };
       
+      el.addEventListener('touchmove', (e)=>{
+        console.log('move');
+        e.preventDefault();
+        draw(getPoint(e));
+      }, false);
+            
       el.onmouseup = function() {
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
       };
+      
+      el.ontouchend = function(){
+        isDrawing = false;
+        scope.part.textureBitmap = canvas.toDataURL();
+      };
+      
+      
       
       if(scope.part.decals){
         scope.part.decals.forEach((d:Decal) =>{
