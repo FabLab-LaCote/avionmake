@@ -43,7 +43,7 @@ module avionmakeApp {
     
     static plane1:Part[]= [
       {
-        name: 'fuselage',
+        name: 'fuselage',    
         path: 'M 36.163334,268.05405 C 66.863734,283.12005 96.096533,292.23085 128.32893,296.35125 227.56052,309.03685 308.34332,260.01885 428.73951,239.63145 518.73211,224.39245 569.65791,226.23405 569.65791,226.23405 L 1172.2356,226.23405 1214.0854,181.23895 1075.9722,186.12715 1076.0762,179.07545 1184.8716,174.58095 C 1184.8716,174.58095 1126.2232,0.78671926 1116.8226,0.38891926 1001.6776,-4.4842807 1042.305,86.144523 967.3809,129.11209 892.4567,172.07955 861.5963,176.24275 833.1677,176.18455 735.1503,175.98355 373.30532,174.69855 373.30532,174.69855 L 372.96232,182.51115 289.19532,183.63275 288.89132,174.97655 227.25732,173.41265 C 227.25732,173.41265 71.326934,197.70665 35.985934,205.83645 -5.4182561,215.36105 -17.716476,241.61345 36.163934,268.05425 Z',
         width: 1214,
         height: 298,
@@ -117,7 +117,7 @@ module avionmakeApp {
             size: 40
           }
         ]
-      },
+      }, 
       {
         name: 'aileron',
         path: 'M 15.688063,308.20569 C 15.688063,308.20569 0.23314336,313.38783 0.20104336,332.89695 -0.29499664,634.44763 176.2061,618.73523 176.2061,618.73523 L 178.71636,368.54755 151.10366,320.01617 151.07246,297.54839 178.71626,252.23957 182.9,0.37841151 C 182.9,0.37841151 -1.6456166,-16.488968 0.62650336,277.24601 0.83192336,303.80249 15.687963,308.20569 15.687963,308.20569 Z',
@@ -200,19 +200,16 @@ module avionmakeApp {
           canvas.width = part.width;
           canvas.height = part.height;          
           part.textureCanvas = canvas;
-          part.texture = new THREE.Texture(part.textureCanvas);
-          part.texture.minFilter = THREE.NearestFilter;
           
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = part.width;
           canvas.height = part.height;
           part.bumpTextureCanvas = canvas;
-          part.bumpTexture = new THREE.Texture(part.bumpTextureCanvas);
-          part.bumpTexture.minFilter = THREE.NearestFilter;
           //part.decals = [];  
         }
       });
+      this.createTextures();
       this.clearTextures();
       this.updateBumpTextures();
     }
@@ -231,24 +228,28 @@ module avionmakeApp {
       this.parts.forEach((part:Part)=>{
         if(part.textureTop || part.textureBottom){
            part.texture = new THREE.Texture(part.textureCanvas);
-           part.texture.minFilter = THREE.NearestFilter;
+           part.texture.minFilter = THREE.LinearFilter;
            part.texture.needsUpdate = true;
            part.bumpTexture = new THREE.Texture(part.bumpTextureCanvas);
-           part.bumpTexture.minFilter = THREE.NearestFilter;
+           part.bumpTexture.minFilter = THREE.LinearFilter;
            part.bumpTexture.needsUpdate = true;
         }
       });
     }
+    
+        
     clearTextures():void{
       this.parts.forEach((part:Part)=>{
         if(part.textureTop || part.textureBottom){
             var ctx = <CanvasRenderingContext2D>  part.textureCanvas.getContext('2d');
             ctx.lineWidth = 4;
+            
             ctx.stroke(new Path2D(part.path));
             ctx.clip(new Path2D(part.path), 'nonzero');
-            ctx.fillStyle = "#ffffff";
-            ctx.rect( 0, 0, part.width, part.height );
-            ctx.fill();
+            ctx.fillStyle = "#ffffff";            
+            ctx.fillRect(0,0,part.width,part.height);
+            
+            part.textureBitmap = part.textureCanvas.toDataURL();
             part.texture.needsUpdate = true;
         }
       });

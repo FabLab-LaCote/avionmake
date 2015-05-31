@@ -162,7 +162,7 @@ module avionmakeApp {
           part.bumpTexture.flipY = part.textureFlipY;
         }
         part.texture.needsUpdate = true;
-        
+        part.bumpTexture.needsUpdate = true;
         
         var materials = [
             new THREE.MeshPhongMaterial({
@@ -177,7 +177,6 @@ module avionmakeApp {
             }),
             this.colorMaterial
         ];
-
         
         //fix UV texture alignement
         for (var j = 0; j < len1; ++j) {

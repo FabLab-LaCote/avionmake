@@ -13,9 +13,7 @@ module avionmakeApp {
   export class PreviewCtrl {
 
     constructor (private $scope: IAboutScope, planes:Planes) {
-      planes.createPlane('plane1');
-      $scope.plane = planes.currentPlane;
-      setTimeout(()=>{
+      if(planes.currentPlane){
       var doc = new PDFDocument({size:'A4', layout:'landscape'});
       var stream = doc.pipe(blobStream());
       doc.info.title = 'demo';
@@ -127,10 +125,6 @@ module avionmakeApp {
          
       doc.image(avionmakeApp.fablab_logo,1650,0);
       
-
-      
-      
-
            
       planes.currentPlane.parts.forEach((part:Part) => {
         if(part.hasOwnProperty('position2D') && part.hasOwnProperty('textureBitmap')){
@@ -142,8 +136,12 @@ module avionmakeApp {
       doc.end();
       stream.on('finish', function() {
         (<HTMLIFrameElement>document.getElementById('pdf')).src = stream.toBlobURL('application/pdf');
+        if(window.navigator.msSaveOrOpenBlob){
+          window.navigator.msSaveOrOpenBlob(stream.toBlob(),'avion.pdf');
+        }
       });
-      }, 500);
+      
+      }
     }
   }
 }

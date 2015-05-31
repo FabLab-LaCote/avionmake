@@ -80,7 +80,6 @@ module avionmakeApp {
       };
       
       el.addEventListener( 'touchstart', (e)=>{
-        console.log('start');
         e.preventDefault();
         isDrawing = true;
         lastPoint = getPoint(e);
@@ -89,7 +88,6 @@ module avionmakeApp {
 
       var draw = (currentPoint:any) =>{
         if (!isDrawing) return;
-        console.log('draw', currentPoint)
         var dist = distanceBetween(lastPoint, currentPoint);
         var angle = angleBetween(lastPoint, currentPoint);
         for (var i = 0; i < dist; i+=5) {
@@ -114,14 +112,12 @@ module avionmakeApp {
       };
       
       el.onmousemove = (e) => {
-        console.log('mouse');
         var currentPoint = { x: (e.offsetX != null) ? e.offsetX : e.layerX,
                              y: (e.offsetY != null) ? e.offsetY : e.layerY};
         draw(currentPoint);
       };
       
       el.addEventListener('touchmove', (e)=>{
-        console.log('move');
         e.preventDefault();
         draw(getPoint(e));
       }, false);
@@ -136,7 +132,7 @@ module avionmakeApp {
         scope.part.textureBitmap = canvas.toDataURL();
       };
       
-      
+      //handle decals
       
       if(scope.part.decals){
         scope.part.decals.forEach((d:Decal) =>{

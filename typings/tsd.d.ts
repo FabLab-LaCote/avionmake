@@ -11,3 +11,4 @@
 /// <reference path="webaudioapi/waa.d.ts" />
 /// <reference path="webrtc/MediaStream.d.ts" />
 /// <reference path="dat-gui/dat-gui.d.ts" />
+/// <reference path="raphael/raphael.d.ts" />
