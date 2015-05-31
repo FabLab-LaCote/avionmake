@@ -125,11 +125,13 @@ module avionmakeApp {
       el.onmouseup = function() {
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
+        self.planes.saveLocal();
       };
       
       el.ontouchend = function(){
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
+        self.planes.saveLocal();
       };
       
       //handle decals

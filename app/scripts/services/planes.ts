@@ -14,6 +14,8 @@ module avionmakeApp {
       console.log($http);
       this.brushSize = 14
       this.brushColor = [0,0,0];
+      this.loadLocal();
+      
     }
         
     currentPlane:Plane;
@@ -22,6 +24,21 @@ module avionmakeApp {
         
     createPlane(type:string):Plane{
       return new Plane(type, this.templates[type]);
+    }
+    
+    saveLocal():void{
+      if(this.currentPlane){
+        localStorage.setItem('currentPlane', this.currentPlane.toJSON());
+      }
+    }
+    
+    loadLocal():void{
+      var planeJSON = localStorage.getItem('currentPlane')
+      if(planeJSON){
+        var planeData = JSON.parse(planeJSON);
+        this.currentPlane = this.createPlane(planeData.type)
+        this.currentPlane.fromJSON(planeData);
+      }
     }
     
     templates:PlaneTemplateMap={
@@ -206,7 +223,9 @@ module avionmakeApp {
           canvas.width = part.width;
           canvas.height = part.height;
           part.bumpTextureCanvas = canvas;
-          //part.decals = [];  
+          if(!part.decals){
+            part.decals = [];
+          }  
         }
       });
       this.createTextures();
@@ -280,6 +299,40 @@ module avionmakeApp {
         }
       });
     }
+    
+    toJSON():string{
+      var json = {
+        type: this.type,
+        parts:[]
+      };
+      //save parts with textures and decals
+      this.parts.forEach((part:Part)=>{
+        if(part.textureTop || part.textureBottom){
+          json.parts.push({
+            name: part.name,
+            textureBitmap: part.textureBitmap,
+            decals: angular.copy(part.decals)
+          });
+        }
+      });
+      return JSON.stringify(json); 
+    }
+    
+    fromJSON(obj):void{
+      obj.parts.forEach((part:Part)=>{
+          var localPart = this.getPart(part.name);
+          //update decals
+          localPart.decals = part.decals;
+          //write texture
+          var ctx = <CanvasRenderingContext2D>localPart.textureCanvas.getContext('2d');
+          var img = new Image();
+          img.src = part.textureBitmap; 
+          ctx.drawImage(img, 0, 0);
+          localPart.texture.needsUpdate = true;
+      });
+      this.updateBumpTextures();
+    }
+    
   };
   
   export interface PlaneTemplateMap{
