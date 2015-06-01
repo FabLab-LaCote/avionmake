@@ -128,13 +128,14 @@ module avionmakeApp {
             doc.translate(part.position2D.x, part.position2D.y);
             doc.path(part.path);
             doc.stroke();
-            //TODO
+
             //draw decals
             if(part.hasOwnProperty('decals')){
               part.decals.forEach((d:Decal)=>{              
                 // draw text
+                doc.rotate(d.angle,{origin:[d.x,d.y]});
                 if(d.text){
-                  doc.rotate(d.angle,{origin:[d.x,d.y]});
+                  
                   doc.font('Helvetica', d.size)
                      .stroke('red')
                      .lineWidth(1)
@@ -142,10 +143,19 @@ module avionmakeApp {
                        stroke: true,
                        fill: false,
                        lineBreak:false
-                     });   
-                 doc.rotate(-d.angle,{origin:[d.x,d.y]});
-                }   
+                     }); 
+                  
+                }
                 //draw symbols
+                if(d.paths){
+                  doc.translate(d.x, d.y);
+                  d.paths.forEach((path)=>{             
+                    doc.path(path);
+                    doc.stroke();
+                  });
+                  doc.translate(-d.x, -d.y);
+                }
+                doc.rotate(-d.angle,{origin:[d.x,d.y]});                          
               });
             }
             doc.translate(-part.position2D.x, -part.position2D.y);

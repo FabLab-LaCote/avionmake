@@ -45,7 +45,11 @@ module avionmakeApp {
       var canvas = scope.part.textureCanvas;
       var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');      
       var rotationContainer =  element.find('.rotationContainer');
-      rotationContainer.append(canvas); 
+      rotationContainer.append(canvas);
+      /*
+      //DEBUG
+      rotationContainer.append(scope.part.bumpTextureCanvas); 
+      */
       
       ctx.lineJoin = ctx.lineCap = 'round';
       
@@ -141,11 +145,24 @@ module avionmakeApp {
       
       if(scope.part.decals){
         scope.part.decals.forEach((d:Decal) =>{
-          var div = angular.element('<div class="decal"></div>');
-          rotationContainer.append(div);
-          div.text(d.text);
-          div.css({'transform': 'translate('+ d.x +'px,'+ d.y +'px) rotate('+ d.angle+ 'deg) ',
-          'font-size': d.size + 'px'});
+            var div = angular.element('<div class="decal"></div>');
+            rotationContainer.append(div);
+            div.css({'transform': 'translate('+ d.x +'px,'+ d.y +'px) rotate('+ d.angle+ 'deg) '});
+            if(d.text){
+              div.css({'font-size': d.size + 'px'});
+              div.text(d.text);
+            }
+            if(d.paths){
+              var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+              svg.setAttribute('style', 'fill: transparent;stroke: black;');
+              svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+              d.paths.forEach((path)=>{
+                var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                p.setAttribute('d', path)
+                svg.appendChild(p);
+              });
+              div.append(svg);
+            }
         });
       }
     }
