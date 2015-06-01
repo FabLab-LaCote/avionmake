@@ -26,7 +26,7 @@
       <md-toolbar>
         <h1 class="md-toolbar-tools">avion:make</h1>
       </md-toolbar>
-      <md-content layout-padding>
+      <md-content layout-padding md-scroll-y>
           <div class="menu-item" ng-class="{active:app.state=='/'}">
             <md-button href="#/" class="md-button" arial-label="step1">
               <div layout="row">
@@ -72,7 +72,7 @@
                 {{'MERGE_PDF'|translate}}
               </md-switch>
               <div layout="row" layout-align="center center">
-                <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
+                <md-button ng-click="app.confirmPrintPlanem($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
               </div>
             </div>
           </div>
