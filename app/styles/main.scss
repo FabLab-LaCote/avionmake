@@ -51,6 +51,10 @@
     margin:0;
   }
   
+  .rotationContainer{
+    transition: all 0.3s ease-in-out;
+  }
+  
   canvas{
     cursor: crosshair;
   }
