@@ -2,13 +2,6 @@
 
 'use strict';
 
-declare module angular.material {
-  interface MDConfirmDialog{
-     targetEvent:Function;
-     
-  }  
-}
-
 module avionmakeApp {
   export interface IChoiceScope extends ng.IScope {
     

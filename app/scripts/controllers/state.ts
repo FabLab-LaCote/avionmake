@@ -33,6 +33,10 @@ module avionmakeApp {
     changeLanguage(langKey:string){
       this.$translate.use(langKey);
     }
+    isLockedOpen():boolean{
+      return this.$mdSidenav('left').isLockedOpen();
+    }
+    
     confirmPrintPlane(evt){
       this.$translate(['CONFIRM_PRINT_TITLE','CONFIRM_PRINT_CONTENT','CONFIRM_PRINT_OK','CONFIRM_PRINT_CANCEL']).then((translations)=>{
           var confirm = this.$mdDialog.confirm()

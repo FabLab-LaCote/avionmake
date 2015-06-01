@@ -10,6 +10,14 @@
 
 'use strict';
 
+declare module angular.material {
+  interface MDConfirmDialog{
+     targetEvent:Function;
+     
+  }  
+}
+
+
 angular.module('avionmakeApp', [
     'ngAnimate',
     'ngCookies',
@@ -77,7 +85,7 @@ angular.module('avionmakeApp', [
          'MERGE_PDF':'Merge PDF to cut out by hand.',
          'CONFIRM_NEWPLANE_TITLE':'New plane?',
          'CONFIRM_NEWPLANE_CONTENT':'Replace the current plane with this new one? (Current plane will be lost)',
-         'CONFIRM_NEWPLANE_OK':'Yes, continue!',
+         'CONFIRM_NEWPLANE_OK':'Yes, overwrite!',
          'CONFIRM_NEWPLANE_CANCEL':'Cancel',
          'CONFIRM_PRINT_TITLE':'Ready to Print?',
          'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',

@@ -123,12 +123,12 @@
     </md-sidenav>
     <div layout="column" flex>
       <header>
-      	<md-toolbar class="md-whiteframe-z2" layout="row" ng-controller="ToolbarCtrl as ctrl">
+      	<md-toolbar class="md-whiteframe-z2" layout="row">
       	  <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" ng-hide="$mdMedia('gt-md') && app.state !='/v'" ng-click="app.openMenu();">
+            <md-button class="md-icon-button" ng-hide="app.isLockedOpen()" ng-click="app.openMenu();">
               <md-icon md-svg-src="images/icons/ic_menu_white_24px.svg"></md-icon>
             </md-button>
-            <h1 class="md-toolbar-tools"  ng-hide="$mdMedia('gt-md') && app.state !='/v'">avion:make</h1>
+            <h1 class="md-toolbar-tools"  ng-hide="app.isLockedOpen()">avion:make</h1>
         	  <span flex></span>
         	   <md-button href="#/preview" ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
              <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
@@ -182,7 +182,6 @@
     <script src="scripts/directives/plane3d.js"></script>
     <script src="scripts/directives/planetexture.js"></script>
     <script src="scripts/controllers/choice.js"></script>
-    <script src="scripts/controllers/toolbar.js"></script>
     <script src="scripts/controllers/state.js"></script>
     <script src="scripts/controllers/viewer.js"></script>
     <!-- endbuild -->

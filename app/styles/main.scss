@@ -40,9 +40,9 @@
   user-select: none;     
 }
 .texture {
-  transform-origin: center;
-  transition: all 0.3s ease-in-out;
   margin: 5px;
+  transition: all 0.3s ease-in-out;
+  transform-origin: top left;
   
   .md-button{
     position: absolute;

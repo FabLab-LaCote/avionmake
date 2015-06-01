@@ -23,7 +23,7 @@ module avionmakeApp {
   }
   
   export class Planetexture implements ng.IDirective {
-    template = '<div class="texture md-whiteframe-z2" layout-padding ng-style="getTransform()"><md-button class="md-icon-button" aria-label="rotate" ng-click="isRotate = !isRotate"><md-icon md-svg-src="images/icons/ic_rotate_90_degrees_ccw_black_48px.svg"></md-icon></md-button></div>';
+    template = '<div class="texture md-whiteframe-z2" layout-padding ng-style="{width:isRotate? part.height : part.width, height: isRotate? part.width : part.height}"><md-button class="md-icon-button" aria-label="rotate" ng-click="isRotate = !isRotate"><md-icon md-svg-src="images/icons/ic_rotate_90_degrees_ccw_black_48px.svg"></md-icon></md-button><div class="rotationContainer" ng-style="getTransform()"></div></div>';
     restrict = 'E';
     replace = true;
     scope = {
@@ -37,14 +37,16 @@ module avionmakeApp {
       scope.getTransform = () => {
         var styles = {};
         if(scope.isRotate){
-          styles['transform'] = 'rotate(90deg) translateY(' + (-element[0].clientHeight/2) +'px) translateX(' + (element[0].clientWidth/2) +'px)';
+          styles['transform'] = 'rotate(90deg)';
         }
         return styles;
       };
       
       var canvas = scope.part.textureCanvas;
-      var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');
-      element.append(canvas); 
+      var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');      
+      var rotationContainer =  element.find('.rotationContainer');
+      rotationContainer.append(canvas); 
+      
       ctx.lineJoin = ctx.lineCap = 'round';
       
       var isDrawing, lastPoint;
@@ -140,7 +142,7 @@ module avionmakeApp {
       if(scope.part.decals){
         scope.part.decals.forEach((d:Decal) =>{
           var div = angular.element('<div class="decal"></div>');
-          element.append(div);
+          rotationContainer.append(div);
           div.text(d.text);
           div.css({'transform': 'translate('+ d.x +'px,'+ d.y +'px) rotate('+ d.angle+ 'deg) ',
           'font-size': d.size + 'px'});
