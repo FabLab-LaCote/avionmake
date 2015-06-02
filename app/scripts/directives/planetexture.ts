@@ -6,6 +6,9 @@ interface MouseEvent {
   originalEvent:any;
 }
 
+interface RaphaelPaper{
+  freeTransform:any
+}
 module avionmakeApp {
 
   export interface ITextureScope extends ng.IScope {
@@ -46,10 +49,10 @@ module avionmakeApp {
       var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');      
       var rotationContainer =  element.find('.rotationContainer');
       rotationContainer.append(canvas);
-      /*
+      
       //DEBUG
-      rotationContainer.append(scope.part.bumpTextureCanvas); 
-      */
+      //rotationContainer.append(scope.part.bumpTextureCanvas); 
+
       
       ctx.lineJoin = ctx.lineCap = 'round';
       
@@ -143,28 +146,73 @@ module avionmakeApp {
       
       //handle decals
       
+      var paper =  Raphael(rotationContainer[0], scope.part.width, scope.part.height);
+      paper.canvas.style.position = 'absolute';
+      
+      var fts = [];
+      
       if(scope.part.decals){
         scope.part.decals.forEach((d:Decal) =>{
-            var div = angular.element('<div class="decal"></div>');
-            rotationContainer.append(div);
-            div.css({'transform': 'translate('+ d.x +'px,'+ d.y +'px) rotate('+ d.angle+ 'deg) '});
+            var pp;
             if(d.text){
-              div.css({'font-size': d.size + 'px'});
-              div.text(d.text);
+              pp = paper
+              .text(0,0,d.text)
+              .attr({ 'fill':'none',
+                      'stroke':'black',
+                      'text-anchor':'start',
+                      'stroke-width':1,
+                      'font-size': d.size,
+                      'font-family': 'Arial, Helvetica, sans-serif' });
+              
             }
-            if(d.paths){
-              var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-              svg.setAttribute('style', 'fill: transparent;stroke: black;');
-              svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
-              d.paths.forEach((path)=>{
-                var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                p.setAttribute('d', path)
-                svg.appendChild(p);
+            if(d.path){
+              pp = paper
+              .path(d.path);
+            }
+            var ft = paper.freeTransform(pp, { keepRatio: true, distance: 1.6, size: 10},
+               (ft, events) => {
+                  if(events.indexOf('scale end')>-1){
+                    d.size = ft.attrs.scale.x * d.size;
+                    if(d.text){
+                      ft.subject.attr({'font-size': d.size});
+                      ft.attrs.scale.x=1;
+                      ft.attrs.scale.y=1;
+                      ft.apply();
+                    }else{
+                      d.size = ft.attrs.scale.x;
+                    }
+                  }
+                  if(events.indexOf('drag end')>-1 || events.indexOf('rotate end')>-1){
+                    d.x = ft.attrs.translate.x - ft.offset.translate.x + ft.attrs.x;
+                    d.y = ft.attrs.translate.y - ft.offset.translate.y + ft.attrs.y;
+                    d.angle = ft.attrs.rotate;
+                  }
+                  if(events.indexOf('scale end')>-1 || events.indexOf('rotate end')>-1 || events.indexOf('drag end')>-1){
+                    this.planes.currentPlane.updateBumpTextures();
+                    ft.apply();
+                    this.planes.saveLocal();
+                  }
               });
-              div.append(svg);
-            }
+              if(d.path){
+                ft.attrs.scale.x = d.size;
+                ft.attrs.scale.y = d.size;
+              }
+              ft.attrs.rotate = d.angle;
+              ft.opts.rotated = false;
+              ft.offset.translate.x = -ft.attrs.size.x/2;
+              ft.offset.translate.y = -ft.attrs.size.y/2;
+              ft.attrs.translate.x = d.x + ft.offset.translate.x - ft.attrs.x;
+              ft.attrs.translate.y = d.y + ft.offset.translate.y - ft.attrs.y;             
+              ft.apply();
+              fts.push(ft);
         });
       }
+      
+      scope.$watch('isRotate',(value)=>{
+        fts.forEach((ft)=>{
+          ft.opts.rotated = value;
+        });
+      })
     }
   }
 

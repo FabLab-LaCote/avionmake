@@ -25,24 +25,18 @@
   position:relative;
 }
 
-.decal{
-  position:absolute;
-  top:0;
-  left:0;
-  transform-origin: top left;
-  white-space: nowrap;
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-
-  /* No support for these yet, use at own risk */
-  -o-user-select: none;
-  user-select: none;     
-}
 .texture {
   margin: 5px;
   transition: all 0.3s ease-in-out;
   transform-origin: top left;
+
+  svg{
+    pointer-events: none;
+  }
+  
+  svg circle{
+    pointer-events: all;
+  }
   
   .md-button{
     position: absolute;

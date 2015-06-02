@@ -147,12 +147,12 @@ module avionmakeApp {
                   
                 }
                 //draw symbols
-                if(d.paths){
+                if(d.path){
                   doc.translate(d.x, d.y);
-                  d.paths.forEach((path)=>{             
-                    doc.path(path);
-                    doc.stroke();
-                  });
+                  doc.scale(d.size);  
+                  doc.path(d.path);
+                  doc.stroke();
+                  doc.scale(1/d.size);
                   doc.translate(-d.x, -d.y);
                 }
                 doc.rotate(-d.angle,{origin:[d.x,d.y]});                          
