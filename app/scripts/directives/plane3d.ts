@@ -3,6 +3,11 @@
 
 declare module THREE {export var OrbitControls}
 declare var $d3g:any;
+declare module TWEEN{
+  export var Tween;
+  export var Easing;
+  export var update;
+}
 
 module avionmakeApp {
 
@@ -69,17 +74,16 @@ module avionmakeApp {
       */
         
 
-        
-        var scale:number = 0.75;
+       
         //add meshs
         this.plane.createTextures();
-        this.plane.parts.filter((part:Part)=>{
+        var plane = new THREE.Group();
+        
+        var parts = this.plane.parts.filter((part:Part)=>{
           return part.hasOwnProperty('position3D') && part.hasOwnProperty('rotation3D');
-        })
-        .forEach((part:Part)=>{
+        }).forEach((part:Part)=>{
           var mesh:THREE.Mesh = this.partToMesh(part);
-          mesh.scale.set(scale, scale, scale);
-          mesh.position.set(part.position3D.x*scale, part.position3D.y*scale, part.position3D.z*scale);
+          mesh.position.set(part.position3D.x, part.position3D.y, part.position3D.z);
           mesh.rotation.set(part.rotation3D.x, part.rotation3D.y, part.rotation3D.z);
           /*
           var f = gui.addFolder(part.name + ' position');
@@ -93,8 +97,27 @@ module avionmakeApp {
           f.add(mesh.rotation, 'z', -5, 5).onChange(this.render.bind(this));
           f.open();
           */
-          this.scene.add(mesh);
+          mesh.matrixAutoUpdate = false;
+					mesh.updateMatrix();
+          plane.add(mesh);
+          
         });
+        this.scene.add(plane);
+        //TODO fix camera and scale = 1
+        plane.scale.set(0.75, 0.75, 0.75);
+        /*
+        TODO: tweening for plane switcher
+        var s = {s:1};
+        var t = new TWEEN.Tween(s).to( {s:0}, 2000 )
+					.easing( TWEEN.Easing.Sinusoidal.InOut)
+          .repeat(Infinity)
+          .yoyo(true)
+          .onUpdate(()=>{
+            var value = s.s;
+            plane.scale.set(value, value, value)
+          }); 
+          t.start();
+        */
         
         this.renderer.domElement.setAttribute('flex','');
         element.appendChild(this.renderer.domElement);
@@ -144,6 +167,7 @@ module avionmakeApp {
 
       animate() {
         requestAnimationFrame(this.animate.bind(this));
+        TWEEN.update();
         this.controls.update();
       }
       
