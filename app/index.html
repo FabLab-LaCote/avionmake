@@ -14,6 +14,11 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+    <style type="text/css">
+[ng-cloak]{
+  display: none !important;
+}
+    </style>
   </head>
   <body ng-app="avionmakeApp"  layout="row"  layout-fill ng-cloak ng-controller="StateCtrl as app">
     <!--[if lte IE 8]>
@@ -22,7 +27,7 @@
 
     <!-- Add your site or application content here -->
      <md-sidenav class="menu md-sidenav-left md-whiteframe-z1" md-component-id="left"
-          md-is-locked-open="$mdMedia('gt-md') && app.state !='/v'">
+          md-is-locked-open="$mdMedia('gt-lg') && app.state !='/v'">
       <md-toolbar>
         <h1 class="md-toolbar-tools">avion:make</h1>
       </md-toolbar>
