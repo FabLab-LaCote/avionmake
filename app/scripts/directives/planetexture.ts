@@ -132,6 +132,11 @@ module avionmakeApp {
         draw(getPoint(e));
       }, false);
             
+      el.onmouseout = function() {
+        scope.part.textureBitmap = canvas.toDataURL();
+        self.planes.saveLocal();
+      };
+            
       el.onmouseup = function() {
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
