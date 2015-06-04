@@ -117,18 +117,17 @@ module avionmakeApp {
           doc.scale(scale);
         }
          
-         doc.lineWidth(1)
-         .stroke('red');
-        
+         doc.lineWidth(0.001)       
         
         //svg + decals
         
         plane.parts.forEach((part:Part) => {
           if(part.hasOwnProperty('position2D')){
             doc.translate(part.position2D.x, part.position2D.y);
+            doc.stroke('blue');
             doc.path(part.path);
             doc.stroke();
-
+            doc.stroke('red');
             //draw decals
             if(part.hasOwnProperty('decals')){
               part.decals.forEach((d:Decal)=>{              
@@ -137,8 +136,7 @@ module avionmakeApp {
                 if(d.text){
                   
                   doc.font('Helvetica', d.size)
-                     .stroke('red')
-                     .lineWidth(1)
+                     .lineWidth(0.001)
                      .text(d.text, d.x, d.y, {
                        stroke: true,
                        fill: false,
