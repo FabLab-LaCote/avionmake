@@ -4,17 +4,23 @@
 
 module avionmakeApp {
   export interface IViewerScope extends ng.IScope {
-    awesomeThings: any[];
+    plane:Plane
   }
 
   export class ViewerCtrl {
     /*@ngInject*/
-    constructor (private $scope: IViewerScope) {
-      $scope.awesomeThings = [
-        'HTML5 Boilerplate',
-        'AngularJS',
-        'Karma'
-      ];
+    constructor (private $scope: IViewerScope, private $routeParams:ng.route.IRouteParamsService, 
+      private $http:ng.IHttpService, private planes:Planes) {
+      if($routeParams['id']){
+        $http.get('/api/plane/' + $routeParams['id'])
+        .success((data:any)=>{
+          var p = planes.createPlane(data.type);
+          p.fromJSON(data);
+          $scope.plane = p;
+        });
+      }else{
+        $scope.plane = planes.currentPlane;
+      }
     }
   }
 }

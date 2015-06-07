@@ -52,8 +52,9 @@ angular.module('avionmakeApp', [
       .when('/fly', {
         templateUrl: 'views/fly.html'
       })
-      .when('/v', {
-        templateUrl: 'views/viewer.html'
+      .when('/v/:id?', {
+        templateUrl: 'views/viewer.html',
+        controller: 'ViewerCtrl'
       })
       .otherwise({
         redirectTo: '/'

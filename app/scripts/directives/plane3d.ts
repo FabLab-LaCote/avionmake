@@ -16,11 +16,10 @@ module avionmakeApp {
       camera:THREE.PerspectiveCamera;
       controls: any;
       renderer: THREE.WebGLRenderer;
-      plane:Plane;
+      planeGroup: THREE.Group;
       element:HTMLDivElement;
       
-      constructor(plane:Plane){
-        this.plane = plane;
+      constructor(){
       }
       
       init(element:HTMLDivElement){
@@ -76,35 +75,8 @@ module avionmakeApp {
 
        
         //add meshs
-        this.plane.createTextures();
-        var plane = new THREE.Group();
-        
-        var parts = this.plane.parts.filter((part:Part)=>{
-          return part.hasOwnProperty('position3D') && part.hasOwnProperty('rotation3D');
-        }).forEach((part:Part)=>{
-          var mesh:THREE.Mesh = this.partToMesh(part);
-          mesh.position.set(part.position3D.x, part.position3D.y, part.position3D.z);
-          mesh.rotation.set(part.rotation3D.x, part.rotation3D.y, part.rotation3D.z);
-          /*
-          var f = gui.addFolder(part.name + ' position');
-          f.add(mesh.position, 'x', -500, 500).onChange(this.render.bind(this));
-          f.add(mesh.position, 'y', -500, 500).onChange(this.render.bind(this));
-          f.add(mesh.position, 'z', -500, 500).onChange(this.render.bind(this));
-          f.open();
-          f = gui.addFolder(part.name + ' rotation');
-          f.add(mesh.rotation, 'x', -5, 5).onChange(this.render.bind(this));
-          f.add(mesh.rotation, 'y', -5, 5).onChange(this.render.bind(this));
-          f.add(mesh.rotation, 'z', -5, 5).onChange(this.render.bind(this));
-          f.open();
-          */
-          mesh.matrixAutoUpdate = false;
-					mesh.updateMatrix();
-          plane.add(mesh);
-          
-        });
-        this.scene.add(plane);
-        //TODO fix camera and scale = 1
-        plane.scale.set(0.75, 0.75, 0.75);
+
+
         /*
         TODO: tweening for plane switcher
         var s = {s:1};
@@ -150,6 +122,39 @@ module avionmakeApp {
 
         this.animate();
         this.onWindowResize();
+      }
+      
+      addPlane(plane:Plane){
+           if(this.planeGroup){
+              this.scene.remove(this.planeGroup);  
+           }
+           this.planeGroup = new THREE.Group();  
+           //TODO fix camera and scale = 1
+           this.planeGroup.scale.set(0.75, 0.75, 0.75);
+           plane.createTextures();        
+           plane.parts.filter((part:Part)=>{
+              return part.hasOwnProperty('position3D') && part.hasOwnProperty('rotation3D');
+            }).forEach((part:Part)=>{
+              var mesh:THREE.Mesh = this.partToMesh(part);
+              mesh.position.set(part.position3D.x, part.position3D.y, part.position3D.z);
+              mesh.rotation.set(part.rotation3D.x, part.rotation3D.y, part.rotation3D.z);
+            /*
+            var f = gui.addFolder(part.name + ' position');
+            f.add(mesh.position, 'x', -500, 500).onChange(this.render.bind(this));
+            f.add(mesh.position, 'y', -500, 500).onChange(this.render.bind(this));
+            f.add(mesh.position, 'z', -500, 500).onChange(this.render.bind(this));
+            f.open();
+            f = gui.addFolder(part.name + ' rotation');
+            f.add(mesh.rotation, 'x', -5, 5).onChange(this.render.bind(this));
+            f.add(mesh.rotation, 'y', -5, 5).onChange(this.render.bind(this));
+            f.add(mesh.rotation, 'z', -5, 5).onChange(this.render.bind(this));
+            f.open();
+            */
+            mesh.matrixAutoUpdate = false;
+  					mesh.updateMatrix();
+            this.planeGroup.add(mesh);
+          });
+          this.scene.add(this.planeGroup);
       }
       
       render(){
@@ -258,12 +263,16 @@ module avionmakeApp {
     constructor( private $window: ng.IWindowService, planes: avionmakeApp.Planes ){}
     
     link = (scope: IPlaneScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {
-      var plane =  new Plane3dScene(scope.plane);
-      plane.init(<HTMLDivElement>element[0]);
+      var planeScene =  new Plane3dScene();
+      planeScene.init(<HTMLDivElement>element[0]);
+      scope.$watch('plane', ()=>{
+        console.log('plane');
+        planeScene.addPlane(scope.plane);
+      });
       scope.$watch('refresh', ()=>{
         console.log('refresh');
         setTimeout(()=>{
-          plane.onWindowResize();
+          planeScene.onWindowResize();
         },501);
       });
     }
