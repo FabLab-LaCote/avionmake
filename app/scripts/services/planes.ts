@@ -14,7 +14,7 @@ module avionmakeApp {
   
   export class Planes {
     /*@ngInject*/
-    constructor(private $http:ng.IHttpBackendService){
+    constructor(private $http:ng.IHttpService, private $q:ng.IQService){
       console.log($http);
       this.brushSize = 14
       this.brushColor = [0,0,0];
@@ -45,6 +45,21 @@ module avionmakeApp {
         this.currentPlane = this.createPlane(planeData.type)
         this.currentPlane.fromJSON(planeData);
       }
+    }
+    
+    preview():ng.IPromise<string>{
+      var plane:Plane = this.currentPlane;
+      plane.printState = PrintState.NONE;
+      return new this.$q((resolve, reject)=>{
+        this.$http.post('/api/plane', plane.toJSON())
+        .then((resp)=>{
+          plane.printState = PrintState.PREVIEW;
+          resolve(resp.data);
+        },(resp)=>{
+          console.log(resp.data);
+          reject('error');
+        })
+      });
     }
     
     templates:PlaneTemplateMap={
