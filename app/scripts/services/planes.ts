@@ -233,6 +233,15 @@ module avionmakeApp {
     parts:Part[]=[];
     type:string;
     printState:PrintState;
+    _id:number;
+    name:string;
+    updated:Date;
+    info:{
+      email:string,
+      npa:string,
+      newsletter:boolean,
+      emailSent:Date
+    }
     
     constructor(type:string, parts:Part[]){
       this.parts = angular.copy(parts);
@@ -350,7 +359,11 @@ module avionmakeApp {
       var json = {
         type: this.type,
         printState: this.printState,
-        parts:[]
+        parts:[],
+        _id: this._id,
+        name: this.name,
+        updated: this.updated,
+        info: this.info
       };
       //save parts with textures and decals
       this.parts.forEach((part:Part)=>{
@@ -367,6 +380,10 @@ module avionmakeApp {
     
     fromJSON(obj):void{
       this.printState = obj.printState;
+      this._id = obj._id;
+      this.name = obj.name;
+      this.updated = obj.updated;
+      this.info = obj.info;
       obj.parts.forEach((part:Part)=>{
           var localPart = this.getPart(part.name);
           //update decals
