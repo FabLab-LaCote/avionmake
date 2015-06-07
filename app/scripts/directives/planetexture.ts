@@ -218,8 +218,8 @@ module avionmakeApp {
       var decal:Decal = {
           x: point.x,
           y: point.y,
-          angle: 0,
-          size: 20,
+          angle: this.scope.isRotate ? -90 : 0,
+          size: 30,
           text: ''
         };
       this.createDecalDialog(event, decal);
@@ -229,7 +229,7 @@ module avionmakeApp {
       var decal:Decal = {
           x: point.x,
           y: point.y,
-          angle: 0,
+          angle: this.scope.isRotate ? -90 : 0,
           size: 2,
           path: ''
         };
@@ -272,23 +272,22 @@ module avionmakeApp {
                     'text-anchor':'start',
                     'stroke-width':1,
                     'font-size': d.size,
-                    'font-family': 'Arial, Helvetica, sans-serif' })
-            .click((e)=>{
-              this.editDecal(e, decal, pp);
-            });
-            
+                    'font-family': 'Arial, Helvetica, sans-serif' });
           }
           if(d.path){
             pp = this.paper
-            .path(d.path)
-            .click((e)=>{
-              this.editDecal(e, decal, pp);
-            });
+            .path(d.path);
           }
           if(!d.path && !d.text){
             //For now only skip, maybe cleanup?
             return;
           }
+          pp.click((e)=>{
+              this.editDecal(e, decal, pp);
+            })
+            .touchstart((e)=>{
+              this.editDecal(e, decal, pp);
+            });
           var ft = this.paper.freeTransform(pp, { keepRatio: true, distance: 1.6, size: 12},
              (ft, events) => {
                 if(events.indexOf('scale end')>-1){
@@ -318,7 +317,7 @@ module avionmakeApp {
               ft.attrs.scale.y = d.size;
             }
             ft.attrs.rotate = d.angle;
-            ft.opts.rotated = false;
+            ft.opts.rotated = this.scope.isRotate;
             ft.offset.translate.x = -ft.attrs.size.x/2;
             ft.offset.translate.y = -ft.attrs.size.y/2;
             ft.attrs.translate.x = d.x + ft.offset.translate.x - ft.attrs.x;
