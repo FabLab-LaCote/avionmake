@@ -18,22 +18,24 @@ module avionmakeApp {
     constructor (private $scope: IAboutScope, planes:Planes) {
       $scope.planesService = planes;
       var createPDF = ()=>{
-        $scope.showPDF = false;
-        $scope.error = '';
-        var plane:Plane = planes.currentPlane;
-        if(plane.printState >= PrintState.PRINT){
-          $scope.showPDF = true;
-          return;
-        }
-        $scope.planesService.preview()
-        .then((src)=>{
-            $scope.pdfSrc = src; 
-            $scope.showPDF = true;
-        },(error)=>{
-            $scope.error = error;
-        }); 
+          $scope.showPDF = false;
+          $scope.error = '';
+          var plane:Plane = planes.currentPlane;
+          if(plane.printState >= PrintState.PRINT){
+              $scope.showPDF = true;
+              return;
+          }
+          $scope.planesService.preview()
+          .then((id)=>{
+              planes.currentPlane._id=Number(id);
+              $scope.pdfSrc = '/api/pdf/'+ id + (planes.mergePDF ? '?merge' : ''); 
+              $scope.showPDF = true;
+          },(error)=>{
+              $scope.error = error;
+          }); 
 
       }; //createPDF
+      
       $scope.$watch('planesService.mergePDF',()=>{
         createPDF();
       });

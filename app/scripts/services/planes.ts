@@ -50,6 +50,9 @@ module avionmakeApp {
     preview():ng.IPromise<string>{
       var plane:Plane = this.currentPlane;
       plane.printState = PrintState.NONE;
+      
+      fixPlane(plane);
+      
       return new this.$q((resolve, reject)=>{
         this.$http.post('/api/plane', plane.toJSON())
         .then((resp)=>{
@@ -228,6 +231,68 @@ module avionmakeApp {
         
   }
   
+  function fixPlane(plane:Plane){
+     if(plane.type === 'plane1'){
+          var p = plane.getPart('fuselage');
+          var c = plane.getPart('cockpit');
+          var l = plane.getPart('left_side');
+          var r = plane.getPart('right_side');
+          
+          //copy decals
+          var wy = 172;
+          var ww = 370;
+          l.decals = [];
+          r.decals = [];
+          c.decals = [];
+          p.decals.forEach((d:Decal) =>{
+            if(d.y > wy){
+              if(d.x < ww){
+                var c1 = angular.copy(d);
+                c1.y = c1.y-52;
+                c.decals.push(c1);
+              }
+              var dl = angular.copy(d);
+              dl.y = dl.y-60;
+              l.decals.push(dl);
+            }
+          });
+           
+          //copy textures
+          var canvas = document.createElement('canvas');
+          canvas.width = c.width;
+          canvas.height = c.height;
+          var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          var img = new Image();
+          img.src = p.textureBitmap;
+          ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, 120, ww, p.height-wy);
+          ctx.scale(1, -1);
+          ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, -0, ww, -(p.height-wy));
+          c.textureBitmap = canvas.toDataURL();
+              
+          //copy left
+          
+          canvas = document.createElement('canvas');
+          canvas.width = c.width;
+          canvas.height = c.height;
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = l.width;
+          canvas.height = l.height;
+          ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, p.width, p.height-wy);
+          
+          l.textureBitmap = canvas.toDataURL();
+          
+          //copy right
+          canvas = document.createElement('canvas');
+          canvas.width = c.width;
+          canvas.height = c.height;
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = r.width;
+          canvas.height = r.height;
+          ctx.scale(-1, 1);
+          ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, -p.width, p.height-wy);
+          r.textureBitmap = canvas.toDataURL();
+  	} //fix plane1
+  }
   
   export class Plane {
     parts:Part[]=[];
@@ -238,7 +303,7 @@ module avionmakeApp {
     updated:Date;
     info:{
       email:string,
-      npa:string,
+      pcode:string,
       newsletter:boolean,
       emailSent:Date
     }
@@ -367,7 +432,9 @@ module avionmakeApp {
       };
       //save parts with textures and decals
       this.parts.forEach((part:Part)=>{
-        if(part.textureTop || part.textureBottom){
+        //Send all textures for server canvas bug...
+        //if(part.textureTop || part.textureBottom){
+        if(part.textureBitmap){
           json.parts.push({
             name: part.name,
             textureBitmap: part.textureBitmap,
@@ -386,15 +453,17 @@ module avionmakeApp {
       this.info = obj.info;
       obj.parts.forEach((part:Part)=>{
           var localPart = this.getPart(part.name);
-          //update decals
-          localPart.decals = part.decals;
-          //write texture
-          var ctx = <CanvasRenderingContext2D>localPart.textureCanvas.getContext('2d');
-          var img = new Image();
-          img.src = part.textureBitmap; 
-          ctx.drawImage(img, 0, 0);
-          localPart.textureBitmap = part.textureBitmap;
-          localPart.texture.needsUpdate = true;
+          if(localPart.textureTop || localPart.textureBottom){
+            //update decals
+            localPart.decals = part.decals;
+            //write texture
+            var ctx = <CanvasRenderingContext2D>localPart.textureCanvas.getContext('2d');
+            var img = new Image();
+            img.src = part.textureBitmap; 
+            ctx.drawImage(img, 0, 0);
+            localPart.textureBitmap = part.textureBitmap;
+            localPart.texture.needsUpdate = true;
+          }
       });
       this.updateBumpTextures();
     }
