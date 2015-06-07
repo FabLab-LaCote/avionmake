@@ -7,7 +7,10 @@
 <div class="toolbar-paint">
   <div layout="row" class="md-whiteframe-z2"> 
     <div layout="row" layout-wrap>
-      <div class="color" ng-class="{active:app.planes.brushColor==p}" ng-style="{'background-color':'rgb(' + p.join() + ')'}"
+      <div class="color" ng-class="{active:app.planes.brushColor.join()=='255,255,255'}" ng-click="app.planes.brushColor=[255,255,255]">
+        <md-icon md-svg-icon="images/icons/noun_7232.svg"></md-icon>
+      </div>
+      <div class="color" ng-class="{active:app.planes.brushColor.join()==p.join()}" ng-style="{'background-color':'rgb(' + p.join() + ')'}"
             ng-repeat="p in app.planes.palettes[app.planes.selectedPalette]"
             ng-click="app.planes.brushColor=p"></div>
     </div>
@@ -16,8 +19,16 @@
     	 <md-slider  style="width:150px" md-discrete ng-model="app.planes.brushSize" step="2" min="6" max="40"></md-slider>
   	   <div class="large-size" ng-style="{'background-color': 'rgba(' + app.planes.brushColor.join() +',0.6)'}"></div>
     </div>
+    <div layout="row" layout-wrap>
+       <div class="color" ng-class="{active:app.planes.brushColor.join()=='text'}" ng-click="app.planes.brushColor=['text']">
+         <md-icon md-svg-icon="images/icons/noun_61463.svg"></md-icon>
+       </div>
+       <div class="color" ng-class="{active:app.planes.brushColor.join()=='decal'}" ng-click="app.planes.brushColor=['decal']">
+         <md-icon md-svg-icon="images/icons/noun_61563.svg"></md-icon>
+       </div>
+    </div>
   </div>
 </div>  
-<md-content flex>
+<md-content flex ng-class="{'decal': app.planes.brushColor.join() === 'decal',  text:app.planes.brushColor.join()=='text'}">
 	<plane-texture part="part" ng-repeat="part in plane.parts|filter:{drawTexture:true}"></plane-texture>
 </md-content>		

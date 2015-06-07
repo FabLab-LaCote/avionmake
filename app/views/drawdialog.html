@@ -1,0 +1,40 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form name="dialog">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{decal.hasOwnProperty('text') ? 'TEXT' : 'DECAL' | translate}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-src="images/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div ng-if="decal.hasOwnProperty('text')">
+      <md-input-container>
+        <label translate="TEXT"></label>
+        <input required name="text" ng-model="decal.text">
+        <div ng-messages="dialog.text.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
+      </md-input-container>
+    </div>
+    <div ng-if="decal.hasOwnProperty('path')" layout="row" layout-wrap  layout-align="space-around center">
+        <div ng-repeat="d in decals" class="decal-preview" 
+          ng-class="{'active': decal.path == d}"
+          ng-click="decal.path = d"
+          layout="row"  layout-align="center center">
+          <svg >
+            <path ng-attr-d="{{d}}"/>
+          </svg>
+        </div>
+    </div>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <md-button ng-click="delete()" class="md-warn" translate="DELETE" ng-hide="isNew"></md-button>
+    <span flex></span>
+    <md-button ng-click="cancel()" class="md-primary" translate="CANCEL"></md-button>
+    <md-button ng-click="save()" class="md-primary" translate="SAVE" ng-disabled="decal.hasOwnProperty('text') && !dialog.text.$valid"></md-button>
+  </div>
+  </form>
+</md-dialog>

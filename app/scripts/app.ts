@@ -24,6 +24,7 @@ angular.module('avionmakeApp', [
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'ngMessages',
     'ngMaterial',
     'pascalprecht.translate'
   ])
@@ -90,7 +91,13 @@ angular.module('avionmakeApp', [
          'CONFIRM_PRINT_TITLE':'Ready to Print?',
          'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
          'CONFIRM_PRINT_OK':'Print!',
-         'CONFIRM_PRINT_CANCEL':'Cancel'
+         'CONFIRM_PRINT_CANCEL':'Cancel',
+         'DELETE':'Delete',
+         'CANCEL':'Cancel',
+         'SAVE':'Save',
+         'DECAL': 'Decal',
+         'TEXT':'Text',
+         'FIELD_REQUIRED':'This is required'
       })
     .translations('fr', {
          'STEP1': '1. Choisir',
@@ -117,7 +124,13 @@ angular.module('avionmakeApp', [
          'CONFIRM_PRINT_TITLE':'Ready to Print?',
          'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
          'CONFIRM_PRINT_OK':'Print!',
-         'CONFIRM_PRINT_CANCEL':'Cancel'
+         'CONFIRM_PRINT_CANCEL':'Cancel',
+         'DELETE':'Supprimer',
+         'CANCEL':'Annuler',
+         'SAVE':'Enregistrer',
+         'DECAL': 'Decal',
+         'TEXT':'Texte',
+         'FIELD_REQUIRED':'Ce champ est requis'
       })
       .registerAvailableLanguageKeys(['en', 'de'], {
         'en_US': 'en',
