@@ -10,9 +10,9 @@ module avionmakeApp {
   export class ViewerCtrl {
     /*@ngInject*/
     constructor (private $scope: IViewerScope, private $routeParams:ng.route.IRouteParamsService, 
-      private $http:ng.IHttpService, private planes:Planes) {
+      private $http:ng.IHttpService, private planes:Planes, BASE_URL) {
       if($routeParams['id']){
-        $http.get('/api/plane/' + $routeParams['id'])
+        $http.get(BASE_URL + '/api/plane/' + $routeParams['id'])
         .success((data:any)=>{
           var p = planes.createPlane(data.type);
           p.fromJSON(data);

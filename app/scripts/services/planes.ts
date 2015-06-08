@@ -14,8 +14,7 @@ module avionmakeApp {
   
   export class Planes {
     /*@ngInject*/
-    constructor(private $http:ng.IHttpService, private $q:ng.IQService){
-      console.log($http);
+    constructor(private $http:ng.IHttpService, private $q:ng.IQService, private BASE_URL:string){
       this.brushSize = 24
       this.brushColor = [0,0,0];
       this.loadLocal();
@@ -54,7 +53,7 @@ module avionmakeApp {
       fixPlane(plane);
       
       return new this.$q((resolve, reject)=>{
-        this.$http.post('/api/plane', plane.toJSON())
+        this.$http.post(this.BASE_URL + '/api/plane', plane.toJSON())
         .then((resp)=>{
           plane.printState = PrintState.PREVIEW;
           resolve(resp.data);

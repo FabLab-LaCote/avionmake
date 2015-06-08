@@ -28,6 +28,7 @@ angular.module('avionmakeApp', [
     'ngMaterial',
     'pascalprecht.translate'
   ])
+  .constant('BASE_URL','http://j42.org:9001')
   .config(($routeProvider:ng.route.IRouteProvider) => {
     $routeProvider
       .when('/', {
@@ -144,4 +145,12 @@ angular.module('avionmakeApp', [
       .fallbackLanguage('en')
       //BROKEN for now .useCookieStorage()
       .determinePreferredLanguage();           
+  })
+  .config(($sceDelegateProvider, BASE_URL) => {
+        $sceDelegateProvider.resourceUrlWhitelist([
+        // Allow same origin resource loads.
+        'self',
+        // Allow loading from our assets domain.  Notice the difference between * and **.
+        BASE_URL + '**'
+      ]);
   });

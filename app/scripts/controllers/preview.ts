@@ -15,7 +15,7 @@ module avionmakeApp {
 
   export class PreviewCtrl {
     /*@ngInject*/
-    constructor (private $scope: IAboutScope, planes:Planes) {
+    constructor (private $scope: IAboutScope, planes:Planes, BASE_URL) {
       $scope.planesService = planes;
       var createPDF = ()=>{
           $scope.showPDF = false;
@@ -28,7 +28,7 @@ module avionmakeApp {
           $scope.planesService.preview()
           .then((id)=>{
               planes.currentPlane._id=Number(id);
-              $scope.pdfSrc = '/api/pdf/'+ id + (planes.mergePDF ? '?merge' : ''); 
+              $scope.pdfSrc = BASE_URL + '/api/pdf/'+ id + (planes.mergePDF ? '?merge' : ''); 
               $scope.showPDF = true;
           },(error)=>{
               $scope.error = error;
