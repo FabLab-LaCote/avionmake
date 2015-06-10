@@ -282,12 +282,14 @@ module avionmakeApp {
             //For now only skip, maybe cleanup?
             return;
           }
-          pp.click((e)=>{
-              this.editDecal(e, decal, pp);
-            })
-            .touchstart((e)=>{
-              this.editDecal(e, decal, pp);
-            });
+          if(!d.locked){
+            pp.click((e)=>{
+                this.editDecal(e, decal, pp);
+              })
+              .touchstart((e)=>{
+                this.editDecal(e, decal, pp);
+              });
+          }
           var ft = this.paper.freeTransform(pp, { keepRatio: true, distance: 1.6, size: 12},
              (ft, events) => {
                 if(events.indexOf('scale end')>-1){
@@ -324,6 +326,9 @@ module avionmakeApp {
             ft.attrs.translate.y = d.y + ft.offset.translate.y - ft.attrs.y;             
             ft.apply();
             this.fts.push(ft);
+            if(d.locked){
+              ft.hideHandles();
+            }
       }
   }
 

@@ -103,7 +103,10 @@ module avionmakeApp {
         },
         textureTop: true,
         textureBottom: true,
-        textureFlipY: false
+        textureFlipY: false,
+        decals:[
+          {x: 1075, y: 197, angle: 0, size: 30, text: "??-???", locked: 'tailnumber'}
+        ]
       },
       {
         name: 'aile',
@@ -258,7 +261,7 @@ module avionmakeApp {
     parts:Part[]=[];
     type:string;
     printState:PrintState;
-    _id:number;
+    _id:string;
     name:string;
     updated:Date;
     info:{
@@ -379,6 +382,28 @@ module avionmakeApp {
       });
     }
     
+    setId(id){
+      this._id = id;
+      var tailNumberDecal = this.getTailNumberDecal();
+      if(tailNumberDecal){
+        tailNumberDecal.text = id;
+      }
+    }
+    
+    getTailNumberDecal():Decal{
+      var p,d=0;
+      var decal:Decal;
+      for(p=0; p<this.parts.length;p++){
+        var decals = this.parts[p].decals;
+        if(decals){
+          for(d=0; d<decals.length; d++){
+            if(decals[d].locked === 'tailnumber'){
+              return decals[d]; 
+            }
+          }
+        }
+      }
+    }
     
     toJSON():string{
       var json = {
@@ -473,6 +498,7 @@ module avionmakeApp {
     text?:string;
     size?:number;
     path?:string;
+    locked?:string;
   }
 }
 

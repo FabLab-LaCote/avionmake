@@ -258,11 +258,9 @@ module avionmakeApp {
       var planeScene =  new Plane3dScene();
       planeScene.init(<HTMLDivElement>element[0]);
       scope.$watch('plane', ()=>{
-        console.log('plane');
         planeScene.addPlane(scope.plane);
       });
       scope.$watch('refresh', ()=>{
-        console.log('refresh');
         setTimeout(()=>{
           planeScene.onWindowResize();
         },501);

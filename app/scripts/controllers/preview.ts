@@ -27,7 +27,7 @@ module avionmakeApp {
           }
           $scope.planesService.preview()
           .then((id)=>{
-              planes.currentPlane._id=Number(id);
+              planes.currentPlane.setId(id);
               $scope.pdfSrc = BASE_URL + '/api/pdf/'+ id + (planes.mergePDF ? '?merge' : ''); 
               $scope.showPDF = true;
           },(error)=>{
