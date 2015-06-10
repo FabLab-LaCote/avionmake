@@ -103,37 +103,7 @@ module avionmakeApp {
         },
         textureTop: true,
         textureBottom: true,
-        textureFlipY: false,
-        decals:[
-          {
-            x:1050,
-            y:40,
-            angle: 0,
-            text: 'hello',
-            size: 30
-          },
-          {
-            x:80,
-            y:200,
-            angle: 180,
-            text: 'pilot',
-            size: 30
-          },
-          {
-            x:800,
-            y:200,
-            angle: 0,
-            text: 'test',
-            size: 30
-          },
-           {
-            x: 500,
-            y: 200,
-            angle:0,
-            size: 0.5,
-            path: 'M 26.53033,0.98188407 4.5303301,16.981884 0.53033009,44.981884 12.53033,56.981884 34.53033,58.981884 56.53033,38.981884 54.53033,18.981884 26.53033,32.981884 Z M 15.92947,17.256529 C 15.92947,17.256529 5.9294701,58.256529 38.92947,37.756529'
-          }
-        ]
+        textureFlipY: false
       },
       {
         name: 'aile',
@@ -154,16 +124,7 @@ module avionmakeApp {
           x: 200,
           y: 150
         },
-        textureTop:true,
-        decals:[
-          {
-            x: 50,
-            y: 800,
-            angle:-90,
-            text: 'HELLO WORLD!',
-            size: 40
-          }
-        ]
+        textureTop:true
       }, 
       {
         name: 'aileron',

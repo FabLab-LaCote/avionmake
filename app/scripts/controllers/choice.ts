@@ -14,7 +14,8 @@ module avionmakeApp {
     constructor (private $scope: IChoiceScope, private planes:Planes, private $location:ng.ILocationService,
                   private $mdDialog: angular.material.MDDialogService, private $translate:angular.translate.ITranslateService) {
       this.planesCatalog =  Object.keys(planes.templates).map((type)=>{
-        return planes.createPlane(type);
+        //TODO: change once planes are added
+        return planes.createPlane('plane1');
       });
     }
     selectPlane(evt, plane:Plane){
