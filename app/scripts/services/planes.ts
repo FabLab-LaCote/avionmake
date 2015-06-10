@@ -263,7 +263,7 @@ module avionmakeApp {
     printState:PrintState;
     _id:string;
     name:string;
-    updated:Date;
+    lastModified:Date;
     info:{
       email:string,
       pcode:string,
@@ -412,7 +412,7 @@ module avionmakeApp {
         parts:[],
         _id: this._id,
         name: this.name,
-        updated: this.updated,
+        lastModified: this.lastModified,
         info: this.info
       };
       //save parts with textures and decals
@@ -434,7 +434,7 @@ module avionmakeApp {
       this.printState = obj.printState;
       this._id = obj._id;
       this.name = obj.name;
-      this.updated = obj.updated;
+      this.lastModified = obj.lastModified;
       this.info = obj.info;
       obj.parts.forEach((part:Part)=>{
           var localPart = this.getPart(part.name);
