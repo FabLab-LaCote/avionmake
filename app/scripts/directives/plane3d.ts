@@ -27,7 +27,7 @@ module avionmakeApp {
         this.scene = new THREE.Scene();
         
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
-        this.camera.position.set(-419,-287,-862);
+        this.camera.position.set(-569,-391,-1173);
         this.camera.up = new THREE.Vector3( 0, -1, 0 );
         
         //debug
@@ -66,12 +66,6 @@ module avionmakeApp {
         light = new THREE.DirectionalLight(0xffffff, 0.8);
         light.position.set(0, 1, 0);
         this.scene.add(light);
-        /*
-                
-        var light2 = new THREE.AmbientLight(0xFFFFFFF);
-        this.scene.add(light2);
-      */
-        
 
        
         //add meshs
@@ -128,9 +122,8 @@ module avionmakeApp {
            if(this.planeGroup){
               this.scene.remove(this.planeGroup);  
            }
-           this.planeGroup = new THREE.Group();  
-           //TODO fix camera and scale = 1
-           this.planeGroup.scale.set(0.75, 0.75, 0.75);
+           this.planeGroup = new THREE.Group();
+           this.planeGroup.scale.set(1, 1, 1);
            plane.createTextures();        
            plane.parts.filter((part:Part)=>{
               return part.hasOwnProperty('position3D') && part.hasOwnProperty('rotation3D');
@@ -240,7 +233,6 @@ module avionmakeApp {
 
           }
           geometry.uvsNeedUpdate = true;
-          //return first...
           
           return new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
       }   
