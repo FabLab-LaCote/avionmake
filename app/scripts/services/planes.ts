@@ -64,6 +64,19 @@ module avionmakeApp {
       });
     }
     
+    print(info:any):ng.IPromise<any>{
+      return new this.$q((resolve, reject)=>{
+        this.$http.post(this.BASE_URL + '/api/print/' + this.currentPlane._id, info)
+        .then((resp)=>{
+          //this.currentPlane.printState = PrintState.PRINT;
+          resolve(resp.data);
+        },(resp)=>{
+          console.log(resp.data);
+          reject('error');
+        })
+      });        
+    }
+    
     templates:PlaneTemplateMap={
       plane1: Planes.plane1,
       

@@ -27,8 +27,8 @@ angular.module('avionmakeApp', [
     'ngMaterial',
     'pascalprecht.translate'
   ])
-  //.constant('BASE_URL','http://j42.org:9001')
-  .constant('BASE_URL','http://localhost:8080')
+  .constant('BASE_URL','http://j42.org:9001')
+  //.constant('BASE_URL','http://localhost:8080')
   .config(($routeProvider:ng.route.IRouteProvider) => {
     $routeProvider
       .when('/', {
@@ -91,6 +91,10 @@ angular.module('avionmakeApp', [
          'CONFIRM_NEWPLANE_OK':'Yes, overwrite!',
          'CONFIRM_NEWPLANE_CANCEL':'Cancel',
          'CONFIRM_PRINT_TITLE':'Ready to Print?',
+         'CONFIRM_PRINT_NAME':'Give a name to your plane',
+         'CONFIRM_PRINT_PCODE':'Where are you from? (PostalCode)',
+         'CONFIRM_PRINT_SEND_EMAIL':'Receive plans by e-mail',
+         'CONFIRM_PRINT_NEWSLETTER':'I want to be informed of other FabLab la Côte activities.',
          'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
          'CONFIRM_PRINT_OK':'Print!',
          'CONFIRM_PRINT_CANCEL':'Cancel',
@@ -129,11 +133,15 @@ angular.module('avionmakeApp', [
          'CONFIRM_NEWPLANE_TITLE':'New plane?',
          'CONFIRM_NEWPLANE_CONTENT':'Replace the current plane with this new one? (Current plane will be lost)',
          'CONFIRM_NEWPLANE_OK':'Yes, continue!',
-         'CONFIRM_NEWPLANE_CANCEL':'Cancel',
+         'CONFIRM_NEWPLANE_CANCEL':'Annuler',
          'CONFIRM_PRINT_TITLE':'Ready to Print?',
-         'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
-         'CONFIRM_PRINT_OK':'Print!',
-         'CONFIRM_PRINT_CANCEL':'Cancel',
+         'CONFIRM_PRINT_NAME':'Donnez un nom à votre avion',
+         'CONFIRM_PRINT_PCODE':"D'où êtes-vous? (Code postal)",
+         'CONFIRM_PRINT_SEND_EMAIL':'Recevour les plans par e-mail',
+         'CONFIRM_PRINT_NEWSLETTER':'Je veux être informé des autres activités du FabLab La Côte.',
+         'CONFIRM_PRINT_CONTENT':'Etes-vous sûr de vouloir imprimer? Vous ne pouvez plus changer votre avion après cette étape.',
+         'CONFIRM_PRINT_OK':'Imprimer!',
+         'CONFIRM_PRINT_CANCEL':'Annuler',
          'DELETE':'Supprimer',
          'CANCEL':'Annuler',
          'SAVE':'Enregistrer',
@@ -171,8 +179,12 @@ angular.module('avionmakeApp', [
          'CONFIRM_NEWPLANE_OK':'Yes, continue!',
          'CONFIRM_NEWPLANE_CANCEL':'Cancel',
          'CONFIRM_PRINT_TITLE':'Ready to Print?',
-         'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
-         'CONFIRM_PRINT_OK':'Print!',
+         'CONFIRM_PRINT_NAME':'Geben Sie IhremFlugzeug einen Namen',
+         'CONFIRM_PRINT_PCODE':'Woher kommen Sie? (Postleitzahl)',
+         'CONFIRM_PRINT_SEND_EMAIL':'Pläne per E-Mail erhalten',
+         'CONFIRM_PRINT_NEWSLETTER':'Ich möchte über andere FabLab la Côte Aktivitäten informiert werden.',
+         'CONFIRM_PRINT_CONTENT':'Sind Sie sicher, dass Sie drucken wollen? Ihr Flugzeug kann nach diesem Schritt nicht mehr geändert werden.',
+         'CONFIRM_PRINT_OK':'Drucken!',
          'CONFIRM_PRINT_CANCEL':'Cancel',
          'DELETE':'Löschen',
          'CANCEL':'Abbrechen',

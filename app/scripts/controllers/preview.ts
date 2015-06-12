@@ -22,6 +22,7 @@ module avionmakeApp {
           $scope.error = '';
           var plane:Plane = planes.currentPlane;
           if(plane.printState >= PrintState.PRINT){
+              $scope.pdfSrc = BASE_URL + '/api/pdf/'+ plane._id + (planes.mergePDF ? '?merge' : '');
               $scope.showPDF = true;
               return;
           }

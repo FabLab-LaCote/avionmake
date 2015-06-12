@@ -16,7 +16,8 @@ module avionmakeApp {
       private planes:Planes,
       private $mdSidenav:angular.material.MDSidenavService,
       private $translate:angular.translate.ITranslateService,
-      private $mdDialog: angular.material.MDDialogService) {
+      private $mdDialog: angular.material.MDDialogService,
+      private BASE_URL) {
       $scope.planesService = planes;
       $scope.$on('$routeChangeSuccess',()=>{
         this.state = $location.path();
@@ -37,19 +38,23 @@ module avionmakeApp {
       return this.$mdSidenav('left').isLockedOpen();
     }
     
-    confirmPrintPlane(evt){
-      this.$translate(['CONFIRM_PRINT_TITLE','CONFIRM_PRINT_CONTENT','CONFIRM_PRINT_OK','CONFIRM_PRINT_CANCEL']).then((translations)=>{
-          var confirm = this.$mdDialog.confirm()
-          .title(translations['CONFIRM_PRINT_TITLE'])
-          .content(translations['CONFIRM_PRINT_CONTENT'])
-          .ok(translations['CONFIRM_PRINT_OK'])
-          .cancel(translations['CONFIRM_PRINT_CANCEL'])
-          .targetEvent(evt);
-          this.$mdDialog.show(confirm).then(()=> {
-            this.planes.currentPlane.printState = PrintState.PRINT;
-            this.$location.path('cut');
-          });
-        })
+    confirmPrintPlane(event){
+      this.$mdDialog.show({
+        templateUrl: 'views/printdialog.html',
+        controller: 'PrintDialogCtrl',
+        controllerAs: 'ctrl',
+        targetEvent: event,
+      }).then((info)=>{
+        //send print+info to server
+        info.lang = this.$translate.use();
+        this.planes.print(info).then(()=>{
+          this.$location.path('cut');  
+        });
+      });
+    }
+    
+    getPDF(type){
+      return this.BASE_URL + '/api/finalpdf/'+ this.planes.currentPlane._id + '?type=' + type;
     }
   }
 }

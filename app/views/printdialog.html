@@ -1,0 +1,52 @@
+<md-dialog aria-label="Print Dialog">
+  <form name="dialog">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 translate="CONFIRM_PRINT_TITLE"></h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="ctrl.cancel()">
+        <md-icon md-svg-src="images/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+      <md-input-container>
+        <md-icon md-svg-src="images/icons/ic_mode_edit_black_24px.svg"></md-icon>
+        <input name="name" ng-model="ctrl.info.name" placeholder="{{'CONFIRM_PRINT_NAME'|translate}}" ng-required="true">
+        <div ng-messages="dialog.name.$error">
+          <div ng-message="required">{{'FIELD_REQUIRED'|translate}}</div>
+        </div>
+      </md-input-container>
+      <md-input-container>
+          <md-icon md-svg-src="images/icons/ic_place_24px.svg"></md-icon>
+          <input name="pcode" ng-model="ctrl.info.pcode" type="text" placeholder="{{'CONFIRM_PRINT_PCODE'|translate}}" ng-required="true">
+          <div ng-messages="dialog.pcode.$error">
+            <div ng-message="required">{{'FIELD_REQUIRED'|translate}}</div>
+          </div>
+      </md-input-container>      
+
+      <fieldset>
+        <legend>
+          <md-switch ng-model="ctrl.sendEmail" aria-label="send email">
+            {{'CONFIRM_PRINT_SEND_EMAIL'|translate}}
+          </md-switch>
+        </legend>
+        <div ng-show="ctrl.sendEmail">
+          <md-input-container>
+            <md-icon md-svg-src="images/icons/ic_email_24px.svg"></md-icon>
+            <input ng-model="ctrl.info.email" type="email" placeholder="E-mail" ng-required="ctrl.sendEmail"/>
+          </md-input-container>
+          <md-checkbox  ng-model="ctrl.info.newsletter" aria-label="recevie newsletter">
+            {{'CONFIRM_PRINT_NEWSLETTER'|translate}}
+          </md-checkbox>
+        </div>
+      </fieldset>
+      <p translate="CONFIRM_PRINT_CONTENT"></p>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="ctrl.cancel()" class="md-primary" translate="CONFIRM_PRINT_CANCEL"></md-button>
+    <md-button ng-click="ctrl.print()" class="md-warn" translate="CONFIRM_PRINT_OK" ng-disabled="dialog.$invalid"></md-button>
+  </div>
+  </form>
+</md-dialog>

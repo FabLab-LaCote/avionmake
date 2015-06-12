@@ -77,7 +77,7 @@
                 {{'MERGE_PDF'|translate}}
               </md-switch>
               <div layout="row" layout-align="center center">
-                <md-button ng-click="app.confirmPrintPlanem($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
+                <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
               </div>
             </div>
           </div>
@@ -192,6 +192,7 @@
     <script src="scripts/controllers/choice.js"></script>
     <script src="scripts/controllers/state.js"></script>
     <script src="scripts/controllers/viewer.js"></script>
+    <script src="scripts/controllers/printdialog.js"></script>
     <!-- endbuild -->
 </body>
 </html>
