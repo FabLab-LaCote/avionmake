@@ -1,1 +1,7 @@
-<p>This is the assemble view.</p>
+<md-content layout="row" layout-align="left start">
+	<md-card ng-repeat="type in ['plane1', 'biplane1','fighter1','birdplane1','seaplane1']">
+		<md-card-content>
+	        <img ng-src="images/guide/{{type}}.png" style="width:400px"/>
+		</md-card-content>	
+	</md-card>
+</md-content>

@@ -17,7 +17,6 @@ declare module angular.material {
   }  
 }
 
-
 angular.module('avionmakeApp', [
     'ngAnimate',
     'ngCookies',
@@ -28,7 +27,8 @@ angular.module('avionmakeApp', [
     'ngMaterial',
     'pascalprecht.translate'
   ])
-  .constant('BASE_URL','http://j42.org:9001')
+  //.constant('BASE_URL','http://j42.org:9001')
+  .constant('BASE_URL','http://localhost:8080')
   .config(($routeProvider:ng.route.IRouteProvider) => {
     $routeProvider
       .when('/', {
@@ -99,7 +99,14 @@ angular.module('avionmakeApp', [
          'SAVE':'Save',
          'DECAL': 'Decal',
          'TEXT':'Text',
-         'FIELD_REQUIRED':'This is required'
+         'FIELD_REQUIRED':'This is required',
+         'DIFFICULTY':'Difficulty',
+         'TIME':'Time',
+         'plane1':'Glider',
+         'biplane1':'Biplane',
+         'fighter1':'Fighter',
+         'birdplane1':'Birdplane',
+         'seaplane1':'Seaplane'
       })
     .translations('fr', {
          'STEP1': '1. Choisir',
@@ -132,8 +139,55 @@ angular.module('avionmakeApp', [
          'SAVE':'Enregistrer',
          'DECAL': 'Decal',
          'TEXT':'Texte',
-         'FIELD_REQUIRED':'Ce champ est requis'
+         'FIELD_REQUIRED':'Ce champ est requis',
+         'DIFFICULTY':'Difficulté',
+         'TIME':'Temps',
+         'plane1':'Planeur',
+         'biplane1':'Biplan',
+         'fighter1':'Chasseur',
+         'birdplane1':'Oiseau',
+         'seaplane1':'Hydravion'
       })
+      .translations('de', {
+         'STEP1': '1. Auswählen',
+         'STEP1_TEXT': 'Which model do you want?',
+         'STEP2': '2. Zeichnen',
+         'STEP2_TEXT': 'Customize your plane.',
+         'STEP3': '3. Drucken',
+         'STEP3_TEXT': 'Confirm preview?',
+         'STEP4': '4. Ausschneiden',
+         'STEP4_TEXT': 'Observe the laser cutting',
+         'STEP5': '5. Zusammenbauen',
+         'STEP5_TEXT': 'Glue and fold together your plane.',
+         'STEP6': '6. Gliegen',
+         'STEP6_TEXT': 'Test the result! How far does it fly?',
+         'CHOOSE': 'Auswählen',
+         'PREVIEW': 'Vorschau',
+         'PRINT': 'Drucken',
+         'MERGE_PDF':'Merge PDF to cut out by hand.',
+         'GENERATING_PDF':'PDF-Erstellung',
+         'CONFIRM_NEWPLANE_TITLE':'New plane?',
+         'CONFIRM_NEWPLANE_CONTENT':'Replace the current plane with this new one? (Current plane will be lost)',
+         'CONFIRM_NEWPLANE_OK':'Yes, continue!',
+         'CONFIRM_NEWPLANE_CANCEL':'Cancel',
+         'CONFIRM_PRINT_TITLE':'Ready to Print?',
+         'CONFIRM_PRINT_CONTENT':'Are you sure you want to print? You cannot change your plane after this step.',
+         'CONFIRM_PRINT_OK':'Print!',
+         'CONFIRM_PRINT_CANCEL':'Cancel',
+         'DELETE':'Löschen',
+         'CANCEL':'Abbrechen',
+         'SAVE':'Speichern',
+         'DECAL': 'Decal',
+         'TEXT':'Text',
+         'FIELD_REQUIRED':'Dieses Feld wird benötigt',
+         'DIFFICULTY':'Schwierigkeit',
+         'TIME':'Zeit',
+         'plane1':'Segelflugzeug',
+         'biplane1':'Doppeldecker',
+         'fighter1':'Jagdflugzeug',
+         'birdplane1':'Vogelflugzeug',
+         'seaplane1':'Wasserflugzeug'
+      }) 
       .registerAvailableLanguageKeys(['en', 'de'], {
         'en_US': 'en',
         'en_UK': 'en',

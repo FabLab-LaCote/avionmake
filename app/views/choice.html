@@ -1,12 +1,14 @@
 <md-content layout="row" layout-align="center start" layout-wrap>
 	<md-card ng-repeat="plane in ctrl.planesCatalog" class="plane-card">
-		<plane3d plane="plane"  class="md-card-image" ></plane3d>
+		<plane3d plane="plane.plane"  class="md-card-image" ></plane3d>
 		<md-card-content>
-			 <h2 class="md-title">{{plane.type}}</h2>
+			 <h2 class="md-title">{{plane.type | translate}}</h2>
 	        <p>Lorem ipsum</p>
+			<p><span translate="DIFFICULTY"></span><md-progress-linear md-mode="determinate" value="{{plane.difficulty/4*100}}"></md-progress-linear></p>
+			<p><span translate="TIME"></span><md-progress-linear md-mode="determinate" value="{{plane.time/4*100}}"></md-progress-linear></p>
 		</md-card-content>
 		<div class="md-actions" layout="row" layout-align="end center">
-	        <md-button class="md-primary" ng-click="ctrl.selectPlane($event, plane)" translate="CHOOSE"></md-button>
+	        <md-button class="md-primary" ng-click="ctrl.selectPlane($event, plane.plane)" translate="CHOOSE"></md-button>
 	      </div>	
 	</md-card>
 </md-content>

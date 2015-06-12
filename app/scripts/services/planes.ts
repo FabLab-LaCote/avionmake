@@ -66,9 +66,7 @@ module avionmakeApp {
     
     templates:PlaneTemplateMap={
       plane1: Planes.plane1,
-      plane2: Planes.plane1,
-      plane3: Planes.plane1,
-      plane4: Planes.plane1
+      
     }
     
     palettes:any = {

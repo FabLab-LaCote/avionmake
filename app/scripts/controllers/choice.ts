@@ -9,14 +9,43 @@ module avionmakeApp {
 
   export class ChoiceCtrl {
     
-    planesCatalog:Plane[];
+    planesCatalog:any[];
     /*@ngInject*/
     constructor (private $scope: IChoiceScope, private planes:Planes, private $location:ng.ILocationService,
                   private $mdDialog: angular.material.MDDialogService, private $translate:angular.translate.ITranslateService) {
-      this.planesCatalog =  Object.keys(planes.templates).map((type)=>{
-        //TODO: change once planes are added
-        return planes.createPlane('plane1');
-      });
+      
+      this.planesCatalog =  [
+        {
+          plane: planes.createPlane('plane1'),
+          type: 'plane1',
+          difficulty: 1,
+          time: 1
+        },
+        {
+          plane: planes.createPlane('plane1'),
+          type: 'biplane1',
+          difficulty: 4,
+          time: 4
+        },
+        {
+          plane: planes.createPlane('plane1'),
+          type: 'fighter1',
+          difficulty: 4,
+          time: 3
+        },
+        {
+          plane: planes.createPlane('plane1'),
+          type: 'birdplane1',
+          difficulty: 1,
+          time: 1
+        },
+        {
+          plane: planes.createPlane('plane1'),
+          type: 'seaplane1',
+          difficulty: 1,
+          time: 2
+        }
+      ]
     }
     selectPlane(evt, plane:Plane){
       if(this.planes.currentPlane){
@@ -28,11 +57,14 @@ module avionmakeApp {
           .cancel(translations['CONFIRM_NEWPLANE_CANCEL'])
           .targetEvent(evt);
           this.$mdDialog.show(confirm).then(()=> {
+            //TODO: change once planes are added
+            plane.type = 'plane1';
             this.planes.currentPlane = plane;
             this.$location.path('draw');
           });
         })
       }else{
+        //TODO: change once planes are added
         this.planes.currentPlane = plane;
         this.$location.path('draw');
       }
