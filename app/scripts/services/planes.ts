@@ -20,7 +20,8 @@ module avionmakeApp {
       this.loadLocal();
       this.selectedPalette = 'clrs.cc';
     }
-        
+    
+    currentGalleryId:string;
     currentPlane:Plane;
     brushSize:number;
     brushColor:number[];
@@ -56,10 +57,15 @@ module avionmakeApp {
         this.$http.post(this.BASE_URL + '/api/plane', plane.toJSON())
         .then((resp)=>{
           plane.printState = PrintState.PREVIEW;
-          resolve(resp.data);
+          plane.setId(String(resp.data));
+          resolve(plane._id);
         },(resp)=>{
           console.log(resp.data);
-          reject('error');
+          if(resp.status === 0){
+            reject('server not found');
+          }else{
+            reject('error on the server');  
+          }
         })
       });
     }

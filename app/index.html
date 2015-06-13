@@ -119,6 +119,15 @@
             </div>
           </div>
           <md-divider></md-divider>
+          <div class="menu-item" ng-class="{active:app.state.indexOf('/v') == 0}">
+            <md-button href="#/v" arial-label="gallery">
+              <div layout="row">
+                <span translate="GALLERY"></span>
+                <span flex></span>
+                <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+              </div>
+            </md-button>
+          </div>
           <p layout="row" class="languages" layout-align="space-around start">
             <md-button ng-class="{active:app.$translate.use()=='fr'}" ng-click="app.changeLanguage('fr')">Français</md-button>
             <md-button ng-class="{active:app.$translate.use()=='de'}" ng-click="app.changeLanguage('de')">Deutsch</md-button>
@@ -137,6 +146,7 @@
         	  <span flex></span>
         	   <md-button href="#/preview" ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
              <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
+             <md-button href="#/" ng-show="app.state.indexOf('/v') == 0" class="md-raised md-primary" translate="CREATE"></md-button>
       	   </div>
         </md-toolbar>
       </header>

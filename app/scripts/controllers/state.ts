@@ -47,7 +47,9 @@ module avionmakeApp {
       }).then((info)=>{
         //send print+info to server
         info.lang = this.$translate.use();
-        this.planes.print(info).then(()=>{
+        this.planes.print(info).then((mode)=>{
+          //TODO redirect depending on mode
+          
           this.$location.path('cut');  
         });
       });

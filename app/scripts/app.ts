@@ -27,8 +27,8 @@ angular.module('avionmakeApp', [
     'ngMaterial',
     'pascalprecht.translate'
   ])
-  .constant('BASE_URL','http://j42.org:9001')
-  //.constant('BASE_URL','http://localhost:8080')
+  //.constant('BASE_URL','http://j42.org:9001')
+  .constant('BASE_URL','http://localhost:9001')
   .config(($routeProvider:ng.route.IRouteProvider) => {
     $routeProvider
       .when('/', {
@@ -81,9 +81,11 @@ angular.module('avionmakeApp', [
          'STEP5_TEXT': 'Glue and fold together your plane.',
          'STEP6': '6. Fly',
          'STEP6_TEXT': 'Test the result! How far does it fly?',
+         'GALLERY': 'Gallery',
          'CHOOSE': 'Choose',
          'PREVIEW': 'Preview',
          'PRINT': 'Print',
+         'CREATE': 'Create',
          'GENERATING_PDF':'Generating PDF',
          'MERGE_PDF':'Merge PDF to cut out by hand.',
          'CONFIRM_NEWPLANE_TITLE':'New plane?',
@@ -125,9 +127,11 @@ angular.module('avionmakeApp', [
          'STEP5_TEXT': 'Glue and fold together your plane.',
          'STEP6': '6. Voler',
          'STEP6_TEXT': 'Test the result! How far does it fly?',
+         'GALLERY': 'Galerie',
          'CHOOSE': 'Choisir',
          'PREVIEW': 'Aperçu',
          'PRINT': 'Imprimer',
+         'CREATE': 'Créer',
          'MERGE_PDF':'Merge PDF to cut out by hand.',
          'GENERATING_PDF':'Création du PDF',
          'CONFIRM_NEWPLANE_TITLE':'New plane?',
@@ -167,11 +171,13 @@ angular.module('avionmakeApp', [
          'STEP4_TEXT': 'Observe the laser cutting',
          'STEP5': '5. Zusammenbauen',
          'STEP5_TEXT': 'Glue and fold together your plane.',
-         'STEP6': '6. Gliegen',
+         'STEP6': '6. Fliegen',
          'STEP6_TEXT': 'Test the result! How far does it fly?',
+         'GALLERY': 'Galerie',
          'CHOOSE': 'Auswählen',
          'PREVIEW': 'Vorschau',
          'PRINT': 'Drucken',
+         'CREATE': 'Neu',
          'MERGE_PDF':'Merge PDF to cut out by hand.',
          'GENERATING_PDF':'PDF-Erstellung',
          'CONFIRM_NEWPLANE_TITLE':'New plane?',

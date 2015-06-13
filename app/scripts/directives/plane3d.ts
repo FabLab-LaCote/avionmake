@@ -70,21 +70,6 @@ module avionmakeApp {
        
         //add meshs
 
-
-        /*
-        TODO: tweening for plane switcher
-        var s = {s:1};
-        var t = new TWEEN.Tween(s).to( {s:0}, 2000 )
-					.easing( TWEEN.Easing.Sinusoidal.InOut)
-          .repeat(Infinity)
-          .yoyo(true)
-          .onUpdate(()=>{
-            var value = s.s;
-            plane.scale.set(value, value, value)
-          }); 
-          t.start();
-        */
-        
         this.renderer.domElement.setAttribute('flex','');
         element.appendChild(this.renderer.domElement);
         window.addEventListener( 'resize', this.onWindowResize.bind(this), false );
@@ -118,12 +103,9 @@ module avionmakeApp {
         this.onWindowResize();
       }
       
-      addPlane(plane:Plane){
-           if(this.planeGroup){
-              this.scene.remove(this.planeGroup);  
-           }
+      addPlaneToGroup(plane:Plane, scale:number, done:()=>void){
            this.planeGroup = new THREE.Group();
-           this.planeGroup.scale.set(1, 1, 1);
+           this.planeGroup.scale.set(scale, scale, scale);
            plane.createTextures();        
            plane.parts.filter((part:Part)=>{
               return part.hasOwnProperty('position3D') && part.hasOwnProperty('rotation3D');
@@ -143,11 +125,62 @@ module avionmakeApp {
             f.add(mesh.rotation, 'z', -5, 5).onChange(this.render.bind(this));
             f.open();
             */
+            
             mesh.matrixAutoUpdate = false;
   					mesh.updateMatrix();
             this.planeGroup.add(mesh);
+            done();
           });
-          this.scene.add(this.planeGroup);
+          
+      }
+      
+      addPlane(plane:Plane, tween:boolean){
+         var addAnimatedNewPlane = ()=> {
+            this.addPlaneToGroup(plane, 0.01, ()=>{
+              this.scene.add(this.planeGroup);
+              var s2 = {s:0.01};
+              var t2 = new TWEEN.Tween(s2).to( {s:1}, 2000 )
+  				    .easing( TWEEN.Easing.Sinusoidal.InOut)
+              .onUpdate(()=>{
+                  var value = s2.s;
+                  this.planeGroup.scale.set(value, value, value)
+              })
+              .onComplete(()=>{
+                this.planeGroup.scale.set(1,1,1);
+                this.onWindowResize();
+              });  
+              t2.start();
+            });
+         }
+         
+         if(tween){
+              //remove plane
+              if(this.planeGroup){
+                var s = {s:1};
+                var t = new TWEEN.Tween(s).to( {s:0.01}, 2000 )
+  					    .easing( TWEEN.Easing.Sinusoidal.InOut)
+                .onUpdate(()=>{
+                    var value = s.s;
+                    this.planeGroup.scale.set(value, value, value)
+                })
+                .onComplete(()=>{
+                    this.scene.remove(this.planeGroup);
+                    addAnimatedNewPlane();
+                  });  
+                t.start(); 
+              }else{
+                addAnimatedNewPlane();
+              }
+         }else{
+             //no animation
+             if(this.planeGroup){
+                this.scene.remove(this.planeGroup);
+             }
+             this.addPlaneToGroup(plane, 1,()=>{
+                this.scene.add(this.planeGroup);
+                this.onWindowResize();
+             });
+         }
       }
       
       render(){
@@ -241,6 +274,8 @@ module avionmakeApp {
 
   export interface IPlaneScope extends ng.IScope {
     plane: Plane;
+    refresh:any;
+    tween:boolean;
   }
 
   export class Plane3d implements ng.IDirective {
@@ -249,7 +284,8 @@ module avionmakeApp {
     replace = true;
     scope = {
       'plane': '=',
-      'refresh':'='
+      'refresh':'=',
+      'tween':'='
     }
 
     constructor( private $window: ng.IWindowService, planes: avionmakeApp.Planes ){}
@@ -258,7 +294,9 @@ module avionmakeApp {
       var planeScene =  new Plane3dScene();
       planeScene.init(<HTMLDivElement>element[0]);
       scope.$watch('plane', ()=>{
-        planeScene.addPlane(scope.plane);
+        if(scope.plane){
+          planeScene.addPlane(scope.plane, scope.tween);
+        }
       });
       scope.$watch('refresh', ()=>{
         setTimeout(()=>{
