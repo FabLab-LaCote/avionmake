@@ -1,1 +1,32 @@
-<p>This is the fly view.</p>
+<div>
+	<md-tabs>
+		<md-tab label="ALL" md-on-select="filter=''"></md-tab>
+		<md-tab label="{{'plane1' | translate}}" md-on-select="filter='plane1'"></md-tab>
+		<md-tab label="{{'biplane1' | translate}}" md-on-select="filter='biplane1'"></md-tab>
+		<md-tab label="{{'fighter1' | translate}}" md-on-select="filter='fighter1'"></md-tab>
+		<md-tab label="{{'birdplane1' | translate}}" md-on-select="filter='birdplane1'"></md-tab>
+		<md-tab label="{{'seaplane1' | translate}}" md-on-select="filter='seaplane1'"></md-tab>
+	</md-tabs>
+</div>
+<md-content id="scoreboard" style="background-color:black" flex>
+	<table>
+		<thead>
+			<tr>
+				<th translate="RANK"></th>
+				<th translate="DISTANCE"></th>
+				<th translate="PLANE"></th>
+				<th translate="TYPE"></th>
+				<th translate="NAME"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="p in scores | filter:{type:filter} track by p._id">
+				<td class="right">{{$index+1}}.</td>
+				<td class="right score">{{p.score}}</td>
+				<td>{{p._id}}</td>
+				<td translate="plane1"></td>
+				<td>{{p.name}}</td>
+			</tr>
+		</tbody>
+	</table>	
+</md-content>

@@ -51,11 +51,16 @@ angular.module('avionmakeApp', [
         templateUrl: 'views/assemble.html'
       })
       .when('/fly', {
-        templateUrl: 'views/fly.html'
+        templateUrl: 'views/fly.html',
+        controller: 'FlyCtrl'
       })
       .when('/v/:id?', {
         templateUrl: 'views/viewer.html',
         controller: 'ViewerCtrl'
+      })
+      .when('/admin',{
+        templateUrl: 'views/admin.html',
+        controller: 'AdminCtrl'
       })
       .otherwise({
         redirectTo: '/'
@@ -64,7 +69,9 @@ angular.module('avionmakeApp', [
   .config(function($mdThemingProvider:angular.material.MDThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
-      .accentPalette('light-green');
+      .accentPalette('light-green', {
+        'default': '500'
+      });
   })
   .config(($translateProvider:angular.translate.ITranslateProvider) =>{
     $translateProvider.useSanitizeValueStrategy('escaped');
@@ -113,6 +120,12 @@ angular.module('avionmakeApp', [
          'FIELD_REQUIRED':'This is required',
          'DIFFICULTY':'Difficulty',
          'TIME':'Time',
+         'RANK':'Rank',
+         'DISTANCE':'Distance',
+         'PLANE':'Flight',
+         'TYPE':'Type',
+         'NAME':'Name',
+         'ALL':'All',
          'plane1':'Glider',
          'biplane1':'Biplane',
          'fighter1':'Fighter',
@@ -164,6 +177,12 @@ angular.module('avionmakeApp', [
          'FIELD_REQUIRED':'Ce champ est requis',
          'DIFFICULTY':'Difficulté',
          'TIME':'Temps',
+         'RANK':'Rang',
+         'DISTANCE':'Distance',
+         'PLANE':'Vol',
+         'TYPE':'Type',
+         'NAME':'Nom', 
+         'ALL':'Tout',        
          'plane1':'Planeur',
          'biplane1':'Biplan',
          'fighter1':'Chasseur',
@@ -215,6 +234,12 @@ angular.module('avionmakeApp', [
          'FIELD_REQUIRED':'Dieses Feld wird benötigt',
          'DIFFICULTY':'Schwierigkeit',
          'TIME':'Zeit',
+         'RANK':'Rang',
+         'DISTANCE':'Distanz',
+         'PLANE':'Flug',
+         'TYPE':'Typ',
+         'NAME':'Name',
+         'ALL':'Alle',  
          'plane1':'Segelflugzeug',
          'biplane1':'Doppeldecker',
          'fighter1':'Jagdflugzeug',

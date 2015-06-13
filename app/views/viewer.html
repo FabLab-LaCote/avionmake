@@ -1,5 +1,6 @@
 <h1 class="planename">{{plane._id}} : {{plane.name}}</h1>
 <md-button ng-click="getNextPlane(true)"
 	class="planenext md-raised" translate="NEXT"
-	 ng-show="app.state == '/v'"></md-button>
+	aria-label="next"
+	ng-show="app.state == '/v'"></md-button>
 <plane3d plane="plane" tween="tween" flex></plane3d>

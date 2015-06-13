@@ -242,6 +242,50 @@ h1.planename{
   right: 20px;
 }
 
+#scoreboard{
+  
+  .right{
+   text-align: right;
+   color: white;
+  }
+  
+  
+  table{
+    border-collapse: collapse;
+    font-size: 1.4em;
+    width: 100%;
+  }
+  
+  
+  td,th{
+    padding: 5px 10px;
+  }
+  
+  thead tr th {
+    color: white;
+    text-align: left;
+    background-color: grey;
+  }
+  
+  
+  tbody tr td{
+    margin: 0;
+    color:#D9C450;
+    border-bottom: 2px solid white;
+  }
+  
+  .score{
+      color: #C24646;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: black;
+  }
+  
+  tbody tr:nth-child(odd) {
+    background-color: black;
+  }
+}
 .at-view-emerge.ng-enter {
     -webkit-transition-property: opacity, -webkit-transform;
     -moz-transition-property: opacity, -moz-transform;

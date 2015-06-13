@@ -42,7 +42,7 @@
       </md-toolbar>
       <md-content layout-padding md-scroll-y>
           <div class="menu-item" ng-class="{active:app.state=='/'}">
-            <md-button href="#/" class="md-button" arial-label="step1">
+            <md-button href="#/" class="md-button" aria-label="step1">
               <div layout="row">
                 <span translate="STEP1"></span>
                 <span flex></span>
@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="menu-item" ng-class="{active:app.state=='/draw'}">
-            <md-button href="#/draw" ng-disabled="!app.planes.currentPlane" class="md-button" arial-label="step2">
+            <md-button href="#/draw" ng-disabled="!app.planes.currentPlane" class="md-button" aria-label="step2">
               <div layout="row">
                 <span translate="STEP2"></span>
                 <span flex></span>
@@ -73,7 +73,7 @@
             </div>
           </div>
           <div class="menu-item" ng-class="{active:app.state=='/preview'}">
-            <md-button href="#/preview" ng-disabled="!app.planes.currentPlane" arial-label="step3">
+            <md-button href="#/preview" ng-disabled="!app.planes.currentPlane" aria-label="step3">
               <div layout="row">
                 <span translate="STEP3"></span>
                 <span flex></span>
@@ -86,13 +86,13 @@
                 {{'MERGE_PDF'|translate}}
               </md-switch>
               <div layout="row" layout-align="center center">
-                <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
+                <md-button aria-label="print" ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
               </div>
             </div>
           </div>
           <md-divider></md-divider>
           <div class="menu-item" ng-class="{active:app.state=='/cut'}">
-            <md-button href="#/cut" arial-label="step4">
+            <md-button href="#/cut" aria-label="step4">
               <div layout="row">
                 <span translate="STEP4"></span>
                 <span flex></span>
@@ -104,7 +104,7 @@
             </div>
           </div>
           <div class="menu-item" ng-class="{active:app.state=='/assemble'}">
-            <md-button href="#/assemble" arial-label="step5">
+            <md-button href="#/assemble" aria-label="step5">
               <div layout="row">
                 <span translate="STEP5"></span>
                 <span flex></span>
@@ -116,7 +116,7 @@
             </div>
           </div>
           <div class="menu-item" ng-class="{active:app.state=='/fly'}">
-            <md-button href="#/fly" arial-label="step6">
+            <md-button href="#/fly" aria-label="step6">
               <div layout="row">
                 <span translate="STEP6"></span>
                 <span flex></span>
@@ -129,7 +129,7 @@
           </div>
           <md-divider></md-divider>
           <div class="menu-item" ng-class="{active:app.state.indexOf('/v') == 0}">
-            <md-button href="#/v" arial-label="gallery">
+            <md-button href="#/v" aria-label="gallery">
               <div layout="row">
                 <span translate="GALLERY"></span>
                 <span flex></span>
@@ -138,9 +138,9 @@
             </md-button>
           </div>
           <p layout="row" class="languages" layout-align="space-around start">
-            <md-button ng-class="{active:app.$translate.use()=='fr'}" ng-click="app.changeLanguage('fr')">Français</md-button>
-            <md-button ng-class="{active:app.$translate.use()=='de'}" ng-click="app.changeLanguage('de')">Deutsch</md-button>
-            <md-button ng-class="{active:app.$translate.use()=='en'}" ng-click="app.changeLanguage('en')">English</md-button>
+            <md-button aria-label="Français" ng-class="{active:app.$translate.use()=='fr'}" ng-click="app.changeLanguage('fr')">Français</md-button>
+            <md-button aria-label="Deutsch" ng-class="{active:app.$translate.use()=='de'}" ng-click="app.changeLanguage('de')">Deutsch</md-button>
+            <md-button aria-label="English" ng-class="{active:app.$translate.use()=='en'}" ng-click="app.changeLanguage('en')">English</md-button>
           </p>                    
       </md-content>
     </md-sidenav>
@@ -148,14 +148,14 @@
       <header>
       	<md-toolbar class="md-whiteframe-z2" layout="row">
       	  <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" ng-hide="app.isLockedOpen()" ng-click="app.openMenu();">
+            <md-button aria-label="toggle menu" class="md-icon-button" ng-hide="app.isLockedOpen()" ng-click="app.openMenu();">
               <md-icon md-svg-src="images/icons/ic_menu_white_24px.svg"></md-icon>
             </md-button>
             <h1 class="md-toolbar-tools"  ng-hide="app.isLockedOpen()">avion:make</h1>
         	  <span flex></span>
-        	   <md-button href="#/preview" ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
-             <md-button ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
-             <md-button href="#/" ng-show="app.state.indexOf('/v') == 0" class="md-raised md-primary" translate="CREATE"></md-button>
+        	   <md-button aria-label="preview" href="#/preview" ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
+             <md-button aria-label="print" ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
+             <md-button aria-label="create" href="#/" ng-show="app.state.indexOf('/v') == 0" class="md-raised md-primary" translate="CREATE"></md-button>
       	   </div>
         </md-toolbar>
       </header>
@@ -212,6 +212,8 @@
     <script src="scripts/controllers/state.js"></script>
     <script src="scripts/controllers/viewer.js"></script>
     <script src="scripts/controllers/printdialog.js"></script>
+    <script src="scripts/controllers/admin.js"></script>
+    <script src="scripts/controllers/fly.js"></script>
     <!-- endbuild -->
 </body>
 </html>
