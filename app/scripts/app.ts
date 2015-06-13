@@ -36,7 +36,7 @@ angular.module('avionmakeApp', [
         controller: 'ChoiceCtrl',
         controllerAs: 'ctrl'
       })
-      .when('/draw', {
+      .when('/draw/:id?', {
         templateUrl: 'views/draw.html',
         controller: 'DrawCtrl'
       })
