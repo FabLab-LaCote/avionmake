@@ -51,10 +51,8 @@ module avionmakeApp {
       var plane:Plane = this.currentPlane;
       plane.printState = PrintState.NONE;
       
-      fixPlane(plane);
-      
       return new this.$q((resolve, reject)=>{
-        this.$http.post(this.BASE_URL + '/api/plane', plane.toJSON())
+        this.$http.post(this.BASE_URL + '/api/plane', this.fixPlane(plane))
         .then((resp)=>{
           plane.printState = PrintState.PREVIEW;
           plane.setId(String(resp.data));
@@ -97,6 +95,80 @@ module avionmakeApp {
       'eurocopter':[[101,74,47],[41,43,42],[138,165,122],[163,121,83],[28,28,28],[131,156,117]],
       'sky':[[133,163,174],[28,41,83],[84,94,119],[90,106,131],[5,27,66],[120,173,239]]
     };
+    
+    fixPlane(planeToFix:Plane):any{
+      var plane = this.createPlane(planeToFix.type);
+      plane.fromJSON(planeToFix.toJSON());
+      if(plane.type === 'plane1'){
+          var p = plane.getPart('fuselage');
+          var c = plane.getPart('cockpit');
+          var l = plane.getPart('left_side');
+          var r = plane.getPart('right_side');
+          
+          //copy decals
+          var wy = 172;
+          var ww = 370;
+          l.decals = [];
+          r.decals = [];
+          c.decals = [];
+          p.decals.forEach((d:Decal) =>{
+            if(d.y > wy){
+              if(d.x < ww){
+                var c1 = angular.copy(d);
+                c1.y = c1.y-52;
+                c.decals.push(c1);
+              }
+              var dl = angular.copy(d);
+              dl.y = dl.y-60;
+              l.decals.push(dl);
+            }
+          });
+           
+          //copy textures
+          var canvas = document.createElement('canvas');
+          canvas.width = c.width;
+          canvas.height = c.height;
+          var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          var img = new Image();
+          img.src = p.textureBitmap;
+          ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, 120, ww, p.height-wy);
+          ctx.scale(1, -1);
+          ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, -0, ww, -(p.height-wy));
+          c.textureBitmap = canvas.toDataURL();
+              
+          //copy left
+          var wd = 360;
+          var hd = 0; 
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = l.width;
+          canvas.height = l.height;
+          ctx.drawImage(img, wd, wy, p.width-wd, p.height-wy, wd, 110, p.width-wd, p.height-wy);
+          
+          l.textureBitmap = canvas.toDataURL();
+          
+          //copy right
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = r.width;
+          canvas.height = r.height;
+          ctx.scale(-1, 1);
+          ctx.drawImage(img, wd, wy, p.width-wd, p.height-wy, wd, 110, -p.width + wd, p.height-wy);
+          r.textureBitmap = canvas.toDataURL();
+          
+          //tuncate fueslage
+          wd = 800;
+          hd = 190;
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = p.width;
+          canvas.height = p.height;
+          ctx.drawImage(img, wd, 0, p.width-wd, hd, wd, 0, p.width-wd, hd);
+          p.textureBitmap = canvas.toDataURL();
+          
+          return plane.toJSON();
+  	   } //fix plane1
+    }
     
     static plane1:Part[]= [
       {
@@ -209,69 +281,6 @@ module avionmakeApp {
       }  
     ];
         
-  }
-  
-  function fixPlane(plane:Plane){
-     if(plane.type === 'plane1'){
-          var p = plane.getPart('fuselage');
-          var c = plane.getPart('cockpit');
-          var l = plane.getPart('left_side');
-          var r = plane.getPart('right_side');
-          
-          //copy decals
-          var wy = 172;
-          var ww = 370;
-          l.decals = [];
-          r.decals = [];
-          c.decals = [];
-          p.decals.forEach((d:Decal) =>{
-            if(d.y > wy){
-              if(d.x < ww){
-                var c1 = angular.copy(d);
-                c1.y = c1.y-52;
-                c.decals.push(c1);
-              }
-              var dl = angular.copy(d);
-              dl.y = dl.y-60;
-              l.decals.push(dl);
-            }
-          });
-           
-          //copy textures
-          var canvas = document.createElement('canvas');
-          canvas.width = c.width;
-          canvas.height = c.height;
-          var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-          var img = new Image();
-          img.src = p.textureBitmap;
-          ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, 120, ww, p.height-wy);
-          ctx.scale(1, -1);
-          ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, -0, ww, -(p.height-wy));
-          c.textureBitmap = canvas.toDataURL();
-              
-          //copy left
-          
-          canvas = document.createElement('canvas');
-          canvas.width = c.width;
-          canvas.height = c.height;
-          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-          canvas.width = l.width;
-          canvas.height = l.height;
-          ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, p.width, p.height-wy);
-          
-          l.textureBitmap = canvas.toDataURL();
-          
-          //copy right
-          canvas = document.createElement('canvas');
-          canvas.width = c.width;
-          canvas.height = c.height;
-          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
-          canvas.width = r.width;
-          canvas.height = r.height;
-          ctx.scale(-1, 1);
-          ctx.drawImage(img, 0, wy, p.width, p.height-wy, 0, 110, -p.width, p.height-wy);
-          r.textureBitmap = canvas.toDataURL();
-  	} //fix plane1
   }
   
   export class Plane {
@@ -448,6 +457,9 @@ module avionmakeApp {
     }
     
     fromJSON(obj):void{
+      if(typeof obj === 'string'){
+        obj = JSON.parse(obj);
+      }
       this.printState = obj.printState;
       this._id = obj._id;
       this.name = obj.name;
