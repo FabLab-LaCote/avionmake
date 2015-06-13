@@ -10,6 +10,8 @@ module avionmakeApp {
   
     state:string;
     brushSize:number;
+    isLoading:boolean=false;
+    
     /*@ngInject*/
     constructor (private $scope: IStateScope, 
       private $location:ng.ILocationService,
@@ -46,10 +48,11 @@ module avionmakeApp {
         targetEvent: event,
       }).then((info)=>{
         //send print+info to server
+        this.isLoading = true;
         info.lang = this.$translate.use();
         this.planes.print(info).then((mode)=>{
           //TODO redirect depending on mode
-          
+          this.isLoading = false;
           this.$location.path('cut');  
         });
       });
