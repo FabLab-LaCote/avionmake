@@ -10,7 +10,7 @@ interface CanvasRenderingContext2D{
 
 module avionmakeApp {
   
-  export enum PrintState{NONE,PREVIEW,PRINT,CUT};
+  export enum PrintState{NONE,PREVIEW,PRINT,CUT,ASSEMBLE,FLY};
   
   export class Planes {
     /*@ngInject*/
@@ -36,6 +36,10 @@ module avionmakeApp {
       if(this.currentPlane){
         localStorage.setItem('currentPlane', this.currentPlane.toJSON());
       }
+    }
+    
+    deleteLocal():void{
+      localStorage.removeItem('currentPlane');
     }
     
     loadLocal():void{
@@ -72,7 +76,7 @@ module avionmakeApp {
       return new this.$q((resolve, reject)=>{
         this.$http.post(this.BASE_URL + '/api/print/' + this.currentPlane._id, info)
         .then((resp)=>{
-          //this.currentPlane.printState = PrintState.PRINT;
+          this.currentPlane.printState = PrintState.PRINT;
           resolve(resp.data);
         },(resp)=>{
           console.log(resp.data);
@@ -144,7 +148,6 @@ module avionmakeApp {
           canvas.width = l.width;
           canvas.height = l.height;
           ctx.drawImage(img, wd, wy, p.width-wd, p.height-wy, wd, 110, p.width-wd, p.height-wy);
-          
           l.textureBitmap = canvas.toDataURL();
           
           //copy right

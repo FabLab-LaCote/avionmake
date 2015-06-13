@@ -30,6 +30,7 @@ module avionmakeApp {
         }
       });
     }
+    
     openMenu(){
       this.$mdSidenav('left').toggle();
     }
@@ -51,9 +52,28 @@ module avionmakeApp {
         this.isLoading = true;
         info.lang = this.$translate.use();
         this.planes.print(info).then((mode)=>{
-          //TODO redirect depending on mode
           this.isLoading = false;
-          this.$location.path('cut');  
+          if(mode === 'print@home'){
+            this.$location.path('cut');  
+          }else{
+            this.$location.path('v/' + this.planes.currentPlane._id);
+            this.$translate(['ALERT_PRINTOK_TITLE','ALERT_PRINTOK_CONTENT','ALERT_PRINTOK_OK'],{
+              name: info.name,
+              id: this.planes.currentPlane._id
+            }).then((translations)=>{
+              var alert = this.$mdDialog.alert()
+              .title(translations['ALERT_PRINTOK_TITLE'])
+              .content(translations['ALERT_PRINTOK_CONTENT'])
+              .ok(translations['ALERT_PRINTOK_OK']);
+              this.$mdDialog.show(alert)
+              .finally(()=>{
+                this.planes.currentPlane = null;
+                this.planes.deleteLocal();
+              });
+            });
+          }
+          
+            
         });
       });
     }
