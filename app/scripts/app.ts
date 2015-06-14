@@ -25,10 +25,12 @@ angular.module('avionmakeApp', [
     'ngTouch',
     'ngMessages',
     'ngMaterial',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'angulartics',
+    'angulartics.google.analytics'
   ])
-  //.constant('BASE_URL','http://j42.org:9001')
-  .constant('BASE_URL','http://localhost:9001')
+  .constant('BASE_URL','https://j42.org/avionmake')
+  //.constant('BASE_URL','http://localhost:9001')
   .config(($httpProvider:ng.IHttpProvider)=>{
      $httpProvider.defaults.withCredentials = true;
   })
