@@ -1,16 +1,16 @@
 <div id="design-plane-preview" ng-class="{'fullscreen': isPreviewFullscreen}" layout="column" class="md-whiteframe-z2">
 	<plane3d plane="plane" refresh="isPreviewFullscreen" flex></plane3d>
-	<md-button class="md-icon-button" aria-label="fullscreen" ng-click="isPreviewFullscreen = !isPreviewFullscreen">
+	<md-button analytics-on class="md-icon-button" aria-label="fullscreen" ng-click="isPreviewFullscreen = !isPreviewFullscreen">
 		<md-icon md-svg-icon="images/icons/{{isPreviewFullscreen ? 'ic_fullscreen_exit_black_48px.svg' : 'ic_fullscreen_black_48px.svg'}}"></md-icon>
     </md-button>
 </div>
 <div class="toolbar-paint">
   <div layout="row" class="md-whiteframe-z2"> 
     <div layout="row" layout-wrap>
-      <div class="color" ng-class="{active:app.planes.brushColor.join()=='255,255,255'}" ng-click="app.planes.brushColor=[255,255,255]">
+      <div analytics-on class="color" ng-class="{active:app.planes.brushColor.join()=='255,255,255'}" ng-click="app.planes.brushColor=[255,255,255]">
         <md-icon md-svg-icon="images/icons/noun_7232.svg"></md-icon>
       </div>
-      <div class="color" ng-class="{active:app.planes.brushColor.join()==p.join()}" ng-style="{'background-color':'rgb(' + p.join() + ')'}"
+      <div  analytics-on class="color" ng-class="{active:app.planes.brushColor.join()==p.join()}" ng-style="{'background-color':'rgb(' + p.join() + ')'}"
             ng-repeat="p in app.planes.palettes[app.planes.selectedPalette]"
             ng-click="app.planes.brushColor=p"></div>
     </div>
@@ -20,10 +20,10 @@
   	   <div class="large-size" ng-style="{'background-color': 'rgba(' + app.planes.brushColor.join() +',0.6)'}"></div>
     </div>
     <div layout="row" layout-wrap>
-       <div class="color" ng-class="{active:app.planes.brushColor.join()=='text'}" ng-click="app.planes.brushColor=['text']">
+       <div analytics-on class="color" ng-class="{active:app.planes.brushColor.join()=='text'}" ng-click="app.planes.brushColor=['text']">
          <md-icon md-svg-icon="images/icons/noun_61463.svg"></md-icon>
        </div>
-       <div class="color" ng-class="{active:app.planes.brushColor.join()=='decal'}" ng-click="app.planes.brushColor=['decal']">
+       <div analytics-on class="color" ng-class="{active:app.planes.brushColor.join()=='decal'}" ng-click="app.planes.brushColor=['decal']">
          <md-icon md-svg-icon="images/icons/noun_61563.svg"></md-icon>
        </div>
     </div>

@@ -8,7 +8,7 @@
 			<p><span translate="TIME"></span><md-progress-linear md-mode="determinate" value="{{plane.time/4*100}}"></md-progress-linear></p>
 		</md-card-content>
 		<div class="md-actions" layout="row" layout-align="end center">
-	        <md-button class="md-primary" ng-click="ctrl.selectPlane($event, plane.plane)" translate="CHOOSE"></md-button>
+	        <md-button aria-label="choose" class="md-primary" ng-click="ctrl.selectPlane($event, plane.plane)" translate="CHOOSE"></md-button>
 	      </div>	
 	</md-card>
 </md-content>
