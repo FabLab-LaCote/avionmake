@@ -28,7 +28,7 @@ module avionmakeApp {
           time: 4
         },
         {
-          plane: planes.createPlane('plane1'),
+          plane: planes.createPlane('fighter1'),
           type: 'fighter1',
           difficulty: 4,
           time: 3

@@ -87,7 +87,7 @@ module avionmakeApp {
     
     templates:PlaneTemplateMap={
       plane1: Planes.plane1,
-      
+      fighter1: Planes.fighter1
     }
     
     palettes:any = {
@@ -173,9 +173,125 @@ module avionmakeApp {
           canvas.height = pp.height;
           ctx.drawImage(img, wd, 0, p.width-wd, hd, wd, 0, p.width-wd, hd);
           pp.textureBitmap = canvas.toDataURL();
-          
-          return plane.toJSON();
   	   } //fix plane1
+       if(plane.type === 'fighter1'){
+          //copy wings
+          var wr = plane.getPart('wingright');
+          var wrp = plane.getPart('wingrightprint');
+          var canvas = document.createElement('canvas');
+          var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = wrp.width;
+          canvas.height = wrp.height;
+          wrp.decals = [];
+          wr.decals.forEach((d:Decal)=>{
+            wrp.decals.push(angular.copy(d));
+          });
+          ctx.drawImage(wr.textureCanvas, 0, 0);
+          wrp.textureBitmap = canvas.toDataURL();
+          
+          var wl = plane.getPart('wingleft');
+          var wlp = plane.getPart('wingleftprint');
+          var canvas = document.createElement('canvas');
+          var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = wlp.width;
+          canvas.height = wlp.height;
+          wlp.decals = [];
+          var dy = 91;
+          wl.decals.forEach((d:Decal)=>{
+            var copy = angular.copy(d);
+            copy.y += dy;
+            wlp.decals.push(copy);
+          });
+          ctx.drawImage(wl.textureCanvas, 0, dy)          
+          wlp.textureBitmap = canvas.toDataURL();
+
+          //copy tails onto print
+          var tp = plane.getPart('tailprint');
+          tp.decals = [];
+          var tl = plane.getPart('tailleft');
+          var canvas = document.createElement('canvas');
+          var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = tp.width;
+          canvas.height = tp.height;
+          ctx.drawImage(tl.textureCanvas, 0, 0);
+          
+          tl.decals.forEach((d:Decal)=>{
+            tp.decals.push(angular.copy(d));
+          });
+          var tr = plane.getPart('tailright');
+          var dy = 303
+          ctx.drawImage(tr.textureCanvas, 0, 303);          
+          
+          tr.decals.forEach((d:Decal)=>{
+            var copy = angular.copy(d);
+            copy.y += dy;
+            tp.decals.push(copy);
+          });
+          tp.textureBitmap = canvas.toDataURL();
+          
+          
+          var f = plane.getPart('fuselage');
+          var f2l = plane.getPart('f2leftprint');
+          f2l.decals=[];
+          var f3l = plane.getPart('f3leftprint');
+          f3l.decals=[];
+          
+          var f2r = plane.getPart('f2rightprint');
+          f2r.decals=[];
+          var f3r = plane.getPart('f3rightprint');
+          f3r.decals=[];
+
+          var copy;
+           f.decals.forEach((d:Decal)=>{
+             if(d.x < f2l.width-10 && d.x > 400){
+                copy = angular.copy(d);
+                copy.y -=6;
+                f2l.decals.push(copy);
+             }
+             if(d.x < f3l.width-10 && d.y > 62){
+                  copy = angular.copy(d);
+                  copy.y -=62;
+                  f3l.decals.push(copy);
+              }
+           });        
+           
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = f2l.width;
+          canvas.height = f2l.height;
+          ctx.clip(new Path2D(f2l.path), 'nonzero');
+          ctx.drawImage(f.textureCanvas, 0, -6);
+          f2l.textureBitmap = canvas.toDataURL();
+          
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = f3l.width;
+          canvas.height = f3l.height;
+          ctx.clip(new Path2D(f3l.path), 'nonzero');
+          ctx.drawImage(f.textureCanvas, 0, -62);
+          f3l.textureBitmap = canvas.toDataURL();
+          
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = f2r.width;
+          canvas.height = f2r.height;
+          ctx.clip(new Path2D(f2r.path), 'nonzero');
+          ctx.scale(1, -1);
+          ctx.drawImage(f.textureCanvas, 0, 6, f2r.width, f2r.height, 0, 0, f2r.width, -f2r.height);
+          f2r.textureBitmap = canvas.toDataURL();
+          
+          canvas = document.createElement('canvas');
+          ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
+          canvas.width = f3r.width;
+          canvas.height = f3r.height;
+          ctx.clip(new Path2D(f3r.path), 'nonzero');
+          ctx.scale(1, -1);
+          ctx.drawImage(f.textureCanvas, 0, 62, f3r.width, f3r.height, 0, 0, f3r.width, -f3r.height);
+          f3r.textureBitmap = canvas.toDataURL();
+          
+       }//fix fighter1
+       
+       return plane.toJSON();
     }
     
     static plane1:Part[]= [
@@ -320,8 +436,182 @@ module avionmakeApp {
         }
       }  
     ];
+   
+   static fighter1:Part[] = [{
+      name: 'fuselage',
+      path: 'M 2.6468171,118.48114 C 12.884717,103.16874 158.97412,68.233736 158.97412,68.233736 258.6931,24.640576 319.66074,-14.222064 446.65206,5.445636 L 782.09137,55.956736 864.49946,101.06474 C 864.49946,101.06474 1219.4809,95.858336 1222.7033,97.329536 1225.9257,98.800736 1225.0669,128.24354 1225.0669,128.24354 L 1168.6035,155.13954 1103.5512,159.61634 925.65362,211.74834 897.01128,189.70214 561.61106,190.11214 504.81738,151.07354 246.72716,160.53094 C 246.72716,160.53094 133.75748,162.97714 79.460557,153.06734 51.339177,147.93454 -13.113783,142.05314 2.6467171,118.48114 Z',
+      width: 1225,
+      height: 212,
+      position3D:{
+        x:-1225/2,
+        y:-298,
+        z:0
+      },
+      rotation3D:{
+        x: 0,
+        y: 0,
+        z: 0
+      },
+      position2D:{
+          x: 30,
+          y: 376
+      },
+      textureTop: true,
+      textureBottom: true,
+      textureFlipY: false
+    },
+    {
+        name: 'wingright',
+        path: 'M 0.18806195,448.93717 C -1.817538,443.45433 31.598362,389.35773 31.598362,389.35773 L 265.78706,269.26695 C 265.78706,269.26695 448.64064,111.39666 559.6459,16.461897 575.51244,2.8923975 599.31932,1.7116575 620.14628,0.25643747 640.77708,-1.1850825 681.72688,7.8189975 681.72688,7.8189975 L 554.57172,306.71305 582.33354,307.07967 741.14688,182.83787 C 741.14688,182.83787 772.68328,150.06231 807.04936,156.90915 821.11456,159.71143 844.86196,177.43605 844.86196,177.43605 844.86196,177.43605 822.20856,306.36915 819.99416,310.28177 817.70556,314.32563 775.67968,334.80249 775.67968,334.80249 775.67968,334.80249 804.60296,344.69635 806.18016,346.62627 807.75716,348.55619 808.54296,394.36521 806.43016,396.40045 804.31756,398.43569 789.39676,398.09759 789.39676,398.09759 L 807.04936,415.11601 807.04936,449.10982 Z',
+        width: 845,
+        height: 449,
+        position3D:{
+          x:-196,
+          y:-200,
+          z:451
+        },
+        rotation3D:{
+          x: -90 * Math.PI/180,
+          y: 0,
+          z: 0
+        },
+        textureBottom: true,
+        textureFlipY: false,
+      },
+      {
+        name: 'wingleft',
+        path: 'M 0.18806195,0.2726589 C -1.817538,5.7554989 31.598362,59.852099 31.598362,59.852099 L 265.78706,179.94288 C 265.78706,179.94288 448.64064,337.81317 559.6459,432.74793 575.51244,446.31743 599.31932,447.49817 620.14628,448.95339 640.77708,450.39491 681.72688,441.39083 681.72688,441.39083 L 554.57172,142.49678 582.33354,142.13016 741.14688,266.37196 C 741.14688,266.37196 772.68328,299.14752 807.04936,292.30068 821.11456,289.4984 844.86196,271.77378 844.86196,271.77378 844.86196,271.77378 822.20856,142.84068 819.99416,138.92806 817.70556,134.8842 775.67968,114.40734 775.67968,114.40734 775.67968,114.40734 804.60296,104.51348 806.18016,102.58356 807.75716,100.65364 808.54296,54.844619 806.43016,52.809379 804.31756,50.774139 789.39676,51.112239 789.39676,51.112239 L 807.04936,34.093819 807.04936,0.1000089 Z',
+        width: 845,
+        height: 449,
+        position3D:{
+          x:-196,
+          y:-200,
+          z:2
+        },
+        rotation3D:{
+          x: -90 * Math.PI/180,
+          y: 0,
+          z: 0
+        },
+        textureBottom: true,
+        textureFlipY: false,
+      },
+      {
+        name: 'tailleft',
+        path: 'M 293.65805,0.13971626 230.72813,175.88682 212.75777,175.98724 122.09822,176.08708 31.438665,176.18694 C 27.823525,175.84074 0.26934458,175.93034 0.26934458,175.93034 L 203.41035,0.10001626 Z',
+        width: 294,
+        height: 176,
+        position3D:{
+          x:360,
+          y:-364,
+          z:-114
+        },
+        rotation3D:{
+          x: 20 * Math.PI/180,
+          y: 0,
+          z: 0
+        },
+        textureBottom: true,
+        textureFlipY: false,
+        decals:[
+            {x: 127, y: 79, angle: 0, size: 30, text: "??-???", locked: 'tailnumber'}
+        ]
+      },
+      {
+        name: 'tailright',
+        path: 'M 293.65805,176.14723 230.72813,0.40012513 212.75777,0.29970513 122.09822,0.19986513 31.438665,0.10000513 C 27.823525,0.44620513 0.26934458,0.35660513 0.26934458,0.35660513 L 203.41035,176.18693 Z',
+        width: 294,
+        height: 176,
+        position3D:{
+          x:360,
+          y:-198,
+          z:58
+        },
+        rotation3D:{
+          x: -200 * Math.PI/180,
+          y: 0,
+          z: 0
+        },
+        textureBottom: true,
+        textureFlipY: false,
+        decals:[
+            {x: 229, y: 102, angle: 180, size: 30, text: "??-???", locked: 'tailnumber'}
+        ]
+      },
+      {
+        name: 'wingrightprint',
+        path: 'M 0.18806195,448.93721 C -1.817538,443.45437 31.598362,389.35777 31.598362,389.35777 L 265.78706,269.26699 C 265.78706,269.26699 448.64064,111.3967 559.6459,16.461936 575.51244,2.8924363 599.31932,1.7116963 620.14628,0.2564763 640.77708,-1.1850437 681.72688,7.8190363 681.72688,7.8190363 L 554.57172,306.71309 582.33354,307.07971 741.14688,182.83791 C 741.14688,182.83791 772.68328,150.06235 807.04936,156.90919 821.11456,159.71147 844.86196,177.43609 844.86196,177.43609 844.86196,177.43609 822.20856,306.36919 819.99416,310.28181 817.70556,314.32567 775.67968,334.80253 775.67968,334.80253 775.67968,334.80253 804.60296,344.69639 806.18016,346.62631 807.75716,348.55623 808.54296,394.36525 806.43016,396.40049 804.31756,398.43573 789.39676,398.09763 789.39676,398.09763 L 807.04936,415.11605 807.04936,488.00073 437.30366,496.14331 291.71576,539.35785 C 291.71576,539.35785 141.97436,538.32277 139.05466,536.94697 135.85816,535.44069 112.94926,513.62133 112.94926,513.62133 112.94926,513.62133 2.003062,453.89871 0.18806195,448.93721 Z',
+        width: 845,
+        height: 540,
+        position2D:{
+          x:590,
+          y:300
+        }
+      },
+      {
+        name: 'wingleftprint',
+        path: 'M 0.18806195,90.520767 C -1.817538,96.003607 31.598362,150.10021 31.598362,150.10021 L 265.78706,270.19099 C 265.78706,270.19099 448.64064,428.06128 559.6459,522.99604 575.51244,536.56554 599.31932,537.74628 620.14628,539.2015 640.77708,540.64302 681.72688,531.63894 681.72688,531.63894 L 554.57172,232.74489 582.33354,232.37827 741.14688,356.62007 C 741.14688,356.62007 772.68328,389.39563 807.04936,382.54879 821.11456,379.74651 844.86196,362.02189 844.86196,362.02189 844.86196,362.02189 822.20856,233.08879 819.99416,229.17617 817.70556,225.13231 775.67968,204.65545 775.67968,204.65545 775.67968,204.65545 804.60296,194.76159 806.18016,192.83167 807.75716,190.90175 808.54296,145.09273 806.43016,143.05749 804.31756,141.02225 789.39676,141.36035 789.39676,141.36035 L 807.04936,124.34193 807.04936,51.457247 437.30366,43.314667 291.71576,0.10012679 C 291.71576,0.10012679 141.97436,1.1352068 139.05466,2.5110068 135.85816,4.0172868 112.94926,25.836647 112.94926,25.836647 112.94926,25.836647 2.003062,85.559267 0.18806195,90.520767 Z',
+        width: 845,
+        height: 540,
+        position2D:{
+          x:456,
+          y:30
+        }
+      },
+      {
+        name: 'f2leftprint',
+        path: 'M 2.5462462,113.18015 C 12.782986,97.867313 158.86973,62.920773 158.86973,62.920773 L 320.7112,56.796653 434.7891,27.983253 446.5427,0.11045313 781.986,50.595093 863.7364,95.765913 417.5337,98.488053 504.7194,145.73405 246.63,155.21095 C 246.63,155.21095 133.66049,157.66581 79.362826,147.76043 51.240946,142.63021 -13.212414,136.75305 2.5462462,113.18015 Z',
+        width: 864,
+        height: 156,
+        position2D:{
+          x: 30,
+          y: 264
+        }
+      },
+      {
+        name: 'f2rightprint',
+        path: 'M 2.5462462,42.401057 C 12.782986,57.713894 158.86973,92.660434 158.86973,92.660434 L 320.7112,98.784554 434.7891,127.59795 446.5427,155.47075 781.986,104.98611 863.7364,59.815294 417.5337,57.093154 504.7194,9.8471572 246.63,0.37025722 C 246.63,0.37025722 133.66049,-2.0846028 79.362826,7.8207772 51.240946,12.950997 -13.212414,18.828157 2.5462462,42.401057 Z',
+        width: 864,
+        height: 156,
+        position2D:{
+          x: 30,
+          y: 512
+        }
+      },
+      {
+        name: 'f3leftprint',
+        path: 'M 2.5462462,56.484146 C 12.782986,41.171306 158.86973,6.2247663 158.86973,6.2247663 L 320.71122,0.10064635 373.90282,18.646226 417.53372,41.792046 504.71942,89.038046 246.63001,98.514946 C 246.63001,98.514946 133.66049,100.96981 79.362826,91.064426 51.240946,85.934206 -13.212414,80.057046 2.5462462,56.484146 Z',
+        width: 505,
+        height: 99,
+        position2D:{
+          x: 30,
+          y: 174
+        }
+      },
+      {
+        name: 'f3rightprint',
+        path: 'M 2.5462462,42.401058 C 12.782986,57.713898 158.86973,92.660438 158.86973,92.660438 L 320.71122,98.784558 373.90282,80.238978 417.53372,57.093158 504.71942,9.8471579 246.63001,0.37025792 C 246.63001,0.37025792 133.66049,-2.0846021 79.362826,7.8207779 51.240946,12.950998 -13.212414,18.828158 2.5462462,42.401058 Z',
+        width: 505,
+        height: 99,
+        position2D:{
+          x: 30,
+          y: 604
+        }
+      },
+      {
+        name: 'tailprint',
+        path: 'M 203.41007,0.10001784 0.26937296,175.93206 C 0.26937296,175.93206 27.822273,175.83976 31.437373,176.18596 35.052573,176.53236 37.657373,176.21688 37.160073,185.38128 L 37.160073,293.7133 C 37.657373,302.8777 35.052573,302.56222 31.437373,302.90862 27.822273,303.25482 0.26937296,303.16642 0.26937296,303.16642 L 203.41007,478.99456 293.65617,478.9555 230.72647,303.2094 212.75767,303.10784 230.92567,284.143 230.92567,194.9555 212.75767,175.98674 230.72647,175.88908 293.65617,0.13907784 Z',
+        width: 294,
+        height: 479,
+        position2D:{
+          x: 530,
+          y: 463
+        }
+      }
+  ];
         
   }
+
   
   export class Plane {
     parts:Part[]=[];
@@ -345,7 +635,7 @@ module avionmakeApp {
       this.printState = PrintState.NONE;
       //augment template with missing objects
       this.parts.forEach((part:Part)=>{
-        if(part.textureTop || part.textureBottom){
+        if(part && (part.textureTop || part.textureBottom)){
           if(!part.hasOwnProperty('drawTexture')){
             part.drawTexture = true;  
           }
@@ -383,7 +673,7 @@ module avionmakeApp {
     //TODO create part class?
     createTextures():void{
       this.parts.forEach((part:Part)=>{
-        if(part.textureTop || part.textureBottom){
+        if(part && (part.textureTop || part.textureBottom)){
            part.texture = new THREE.Texture(part.textureCanvas);
            part.texture.minFilter = THREE.LinearFilter;
            part.texture.needsUpdate = true;
@@ -396,7 +686,7 @@ module avionmakeApp {
             
     clearTextures():void{
       this.parts.forEach((part:Part)=>{
-        if(part.drawTexture && (part.textureTop || part.textureBottom)){
+        if(part && part.drawTexture && (part.textureTop || part.textureBottom)){
             var ctx = <CanvasRenderingContext2D>  part.textureCanvas.getContext('2d');
             ctx.lineWidth = 4;
             ctx.stroke(new Path2D(part.path));
@@ -411,7 +701,7 @@ module avionmakeApp {
     
     updateBumpTextures():void{
       this.parts.forEach((part:Part)=>{
-        if(part.textureTop || part.textureBottom){
+        if(part && (part.textureTop || part.textureBottom)){
              var ctx = <CanvasRenderingContext2D>  part.bumpTextureCanvas.getContext('2d');
              ctx.fillStyle = "#ffffff";
              ctx.rect( 0, 0, part.width, part.height );
@@ -452,13 +742,10 @@ module avionmakeApp {
     
     setId(id){
       this._id = id;
-      var tailNumberDecal = this.getTailNumberDecal();
-      if(tailNumberDecal){
-        tailNumberDecal.text = id;
-      }
+      this.setTailNumberDecal(id);
     }
     
-    getTailNumberDecal():Decal{
+    setTailNumberDecal(id:string):void{
       var p,d=0;
       var decal:Decal;
       for(p=0; p<this.parts.length;p++){
@@ -466,7 +753,7 @@ module avionmakeApp {
         if(decals){
           for(d=0; d<decals.length; d++){
             if(decals[d].locked === 'tailnumber'){
-              return decals[d]; 
+              decals[d].text = id; 
             }
           }
         }
@@ -501,31 +788,36 @@ module avionmakeApp {
     }
     
     fromJSON(obj):void{
-      if(typeof obj === 'string'){
-        obj = JSON.parse(obj);
+      try{
+        if(typeof obj === 'string'){
+          obj = JSON.parse(obj);
+        }
+        this.printState = obj.printState;
+        this._id = obj._id;
+        this.name = obj.name;
+        this.lastModified = obj.lastModified;
+        this.created = obj.created;
+        this.info = obj.info;
+        this.disabled = obj.disabled;
+        obj.parts.forEach((part:Part)=>{
+            var localPart = this.getPart(part.name);
+            if(localPart.textureTop || localPart.textureBottom){
+              //update decals
+              localPart.decals = part.decals;
+              //write texture
+              var ctx = <CanvasRenderingContext2D>localPart.textureCanvas.getContext('2d');
+              var img = new Image();
+              img.src = part.textureBitmap; 
+              ctx.drawImage(img, 0, 0);
+              localPart.textureBitmap = part.textureBitmap;
+              localPart.texture.needsUpdate = true;
+            }
+        });
+        this.updateBumpTextures();
+      }catch(e){
+        
+        console.log(e);
       }
-      this.printState = obj.printState;
-      this._id = obj._id;
-      this.name = obj.name;
-      this.lastModified = obj.lastModified;
-      this.created = obj.created;
-      this.info = obj.info;
-      this.disabled = obj.disabled;
-      obj.parts.forEach((part:Part)=>{
-          var localPart = this.getPart(part.name);
-          if(localPart.textureTop || localPart.textureBottom){
-            //update decals
-            localPart.decals = part.decals;
-            //write texture
-            var ctx = <CanvasRenderingContext2D>localPart.textureCanvas.getContext('2d');
-            var img = new Image();
-            img.src = part.textureBitmap; 
-            ctx.drawImage(img, 0, 0);
-            localPart.textureBitmap = part.textureBitmap;
-            localPart.texture.needsUpdate = true;
-          }
-      });
-      this.updateBumpTextures();
     }
     
     fix3D():any{
