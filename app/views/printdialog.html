@@ -34,7 +34,7 @@
         <div ng-show="ctrl.sendEmail">
           <md-input-container>
             <md-icon md-svg-src="images/icons/ic_email_24px.svg"></md-icon>
-            <input ng-model="ctrl.info.email" type="email" placeholder="E-mail" ng-required="ctrl.sendEmail"/>
+            <input name="email" ng-model="ctrl.info.email" type="email" placeholder="E-mail" ng-required="ctrl.sendEmail"/>
           </md-input-container>
           <md-checkbox  ng-model="ctrl.info.newsletter" aria-label="recevie newsletter">
             {{'CONFIRM_PRINT_NEWSLETTER'|translate}}
