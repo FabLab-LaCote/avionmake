@@ -29,12 +29,17 @@ module avionmakeApp {
           planes.saveLocal();
         }
       });
+      var lang = localStorage.getItem('lang');
+      if(lang){
+        this.changeLanguage(lang);
+      }
     }
     
     openMenu(){
       this.$mdSidenav('left').toggle();
     }
     changeLanguage(langKey:string){
+      localStorage.setItem('lang', langKey);
       this.$translate.use(langKey);
     }
     isLockedOpen():boolean{
