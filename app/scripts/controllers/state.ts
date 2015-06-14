@@ -19,6 +19,7 @@ module avionmakeApp {
       private $mdSidenav:angular.material.MDSidenavService,
       private $translate:angular.translate.ITranslateService,
       private $mdDialog: angular.material.MDDialogService,
+      private $http: angular.IHttpService,
       private BASE_URL) {
       $scope.planesService = planes;
       $scope.$on('$routeChangeSuccess',()=>{
@@ -44,6 +45,13 @@ module avionmakeApp {
     }
     isLockedOpen():boolean{
       return this.$mdSidenav('left').isLockedOpen();
+    }
+    
+    logout(){
+      this.$http.get(this.BASE_URL + '/api/logout')
+      .success(()=>{
+        this.$location.path('/');
+      });
     }
     
     confirmPrintPlane(event){

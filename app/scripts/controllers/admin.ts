@@ -19,6 +19,7 @@ module avionmakeApp {
     constructor (private $scope: IAdminScope,
         private $mdDialog:ng.material.MDDialogService,
         private $http:ng.IHttpService, BASE_URL) {
+          
         $scope.selectedIndex = Number(localStorage.getItem('adminTab') || 1);
         $scope.filter = Number(localStorage.getItem('adminFilter')) || 2;
         $scope.$watch('selectedIndex', function(current, old){
@@ -56,7 +57,17 @@ module avionmakeApp {
         
         $scope.getData = function(){
           $http.get(BASE_URL + '/api/stats')
-          .success(updateStats);
+          .success(updateStats)
+          .error(()=>{
+            $http.post(BASE_URL + '/api/login', {username:'admin', password:prompt('password')})
+            .success(()=>{
+              $scope.getData();
+            })
+            .error((e)=>{
+              alert('wrong');
+              console.log(e);
+            });
+          });
         };
         
         $scope.cut = function(id) {

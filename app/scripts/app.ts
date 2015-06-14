@@ -29,6 +29,9 @@ angular.module('avionmakeApp', [
   ])
   //.constant('BASE_URL','http://j42.org:9001')
   .constant('BASE_URL','http://localhost:9001')
+  .config(($httpProvider:ng.IHttpProvider)=>{
+     $httpProvider.defaults.withCredentials = true;
+  })
   .config(($routeProvider:ng.route.IRouteProvider) => {
     $routeProvider
       .when('/', {
