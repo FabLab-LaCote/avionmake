@@ -62,7 +62,7 @@ module avionmakeApp {
         this.planes.print(info).then((mode)=>{
           this.isLoading = false;
           if(mode === 'print@home'){
-            this.$location.path('cut');  
+            this.$location.path('cut');
           }else{
             this.$location.path('v/' + this.planes.currentPlane._id);
             this.$translate(['ALERT_PRINTOK_TITLE','ALERT_PRINTOK_CONTENT','ALERT_PRINTOK_OK'],{

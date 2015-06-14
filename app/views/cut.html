@@ -1,4 +1,24 @@
-<p>This is the cut view.</p>
-
-<a ng-href="{{app.getPDF('cut')}}" >CUT</a>
-<a ng-href="{{app.getPDF('print')}}" >PRINT</a>
+<md-card ng-show="app.planes.currentPlane.printState == 2">
+	<md-card-content>
+		<h1><span translate="CUT"></span> {{app.planes.currentPlane._id}} {{app.planes.currentPlane.name}}</h1>
+	<div>
+		<md-button class="md-fab md-warn" target="_blank" aria-label="merged pdf" ng-href="{{app.getPDF(app.planes.currentPlane, 'merged')}}">						
+			<md-icon md-svg-src="images/icons/ic_insert_drive_file_white_24px.svg"></md-icon>
+		</md-button>
+		<span translate="FILEINFO_MERGED"></span>
+	</div>		
+	<div>
+		<md-button class="md-fab" target="_blank" aria-label="print pdf" ng-href="{{app.getPDF(app.planes.currentPlane, 'print')}}">						
+			<md-icon md-svg-src="images/icons/ic_insert_drive_file_white_24px.svg"></md-icon>
+		</md-button>
+		<span translate="FILEINFO_PRINT"></span>
+	</div>	
+	<div>
+		<md-button class="md-fab md-primary" target="_blank" aria-label="cut pdf" ng-href="{{app.getPDF(app.planes.currentPlane, 'cut')}}">						
+			<md-icon md-svg-src="images/icons/ic_insert_drive_file_white_24px.svg"></md-icon>
+		</md-button>	
+		<span translate="FILEINFO_PRINT"></span>
+		
+	</div>		
+	</md-card-content>
+</md-card>

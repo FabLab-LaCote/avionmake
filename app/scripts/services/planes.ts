@@ -77,6 +77,8 @@ module avionmakeApp {
         this.$http.post(this.BASE_URL + '/api/print/' + this.currentPlane._id, info)
         .then((resp)=>{
           this.currentPlane.printState = PrintState.PRINT;
+          this.currentPlane.name = info.name;
+          this.saveLocal();
           resolve(resp.data);
         },(resp)=>{
           console.log(resp.data);
