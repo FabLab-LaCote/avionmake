@@ -137,6 +137,7 @@ module avionmakeApp {
         
         lastPoint = currentPoint;
         scope.part.texture.needsUpdate = true;
+        this.planes.currentPlane.updateBumpTextures();
       };
       
       el.onmousemove = (e) => {

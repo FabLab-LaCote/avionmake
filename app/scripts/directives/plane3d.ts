@@ -18,6 +18,8 @@ module avionmakeApp {
       renderer: THREE.WebGLRenderer;
       planeGroup: THREE.Group;
       element:HTMLDivElement;
+      gui:dat.GUI;
+      debug:boolean 
       
       constructor(){
       }
@@ -31,18 +33,19 @@ module avionmakeApp {
         this.camera.up = new THREE.Vector3( 0, -1, 0 );
         
         //debug
-        /*
-        var gui:dat.GUI = new dat.GUI();
+        this.debug = false;
         
-        var c = gui.addFolder('camera');
-        c.add(this.camera.position, 'x').listen();
-        c.add(this.camera.position, 'y').listen();
-        c.add(this.camera.position, 'z').listen();
-        */
+        if(this.debug){
+          this.gui = new dat.GUI(); 
+          var c = this.gui.addFolder('camera');
+          c.add(this.camera.position, 'x').listen();
+          c.add(this.camera.position, 'y').listen();
+          c.add(this.camera.position, 'z').listen();
+        }
         
         this.controls = new THREE.OrbitControls( this.camera, element );
         this.controls.noPan = true;
-        this.controls.autoRotate = true;
+        this.controls.autoRotate = !this.debug;
         this.controls.damping = 0.2;
         this.controls.addEventListener( 'change', this.render.bind(this) );
         
@@ -113,20 +116,19 @@ module avionmakeApp {
               var mesh:THREE.Mesh = this.partToMesh(part);
               mesh.position.set(part.position3D.x, part.position3D.y, part.position3D.z);
               mesh.rotation.set(part.rotation3D.x, part.rotation3D.y, part.rotation3D.z);
-            /*
-            var f = gui.addFolder(part.name + ' position');
-            f.add(mesh.position, 'x', -500, 500).onChange(this.render.bind(this));
-            f.add(mesh.position, 'y', -500, 500).onChange(this.render.bind(this));
-            f.add(mesh.position, 'z', -500, 500).onChange(this.render.bind(this));
-            f.open();
-            f = gui.addFolder(part.name + ' rotation');
-            f.add(mesh.rotation, 'x', -5, 5).onChange(this.render.bind(this));
-            f.add(mesh.rotation, 'y', -5, 5).onChange(this.render.bind(this));
-            f.add(mesh.rotation, 'z', -5, 5).onChange(this.render.bind(this));
-            f.open();
-            */
-            
-            mesh.matrixAutoUpdate = false;
+            if(this.debug){
+              var f = this.gui.addFolder(part.name + ' position');
+              f.add(mesh.position, 'x', -500, 500).onChange(this.render.bind(this));
+              f.add(mesh.position, 'y', -500, 500).onChange(this.render.bind(this));
+              f.add(mesh.position, 'z', -1000, 1000).onChange(this.render.bind(this));
+              f.open();
+              f = this.gui.addFolder(part.name + ' rotation');
+              f.add(mesh.rotation, 'x', -5, 5).onChange(this.render.bind(this));
+              f.add(mesh.rotation, 'y', -5, 5).onChange(this.render.bind(this));
+              f.add(mesh.rotation, 'z', -5, 5).onChange(this.render.bind(this));
+              f.open();
+            } 
+            mesh.matrixAutoUpdate = this.debug;
   					mesh.updateMatrix();
             this.planeGroup.add(mesh);
             done();
