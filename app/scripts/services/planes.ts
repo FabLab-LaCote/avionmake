@@ -444,7 +444,7 @@ module avionmakeApp {
       height: 212,
       position3D:{
         x:-1225/2,
-        y:-298,
+        y:-198,
         z:0
       },
       rotation3D:{
@@ -453,8 +453,8 @@ module avionmakeApp {
         z: 0
       },
       position2D:{
-          x: 30,
-          y: 376
+          x: 50,
+          y: 600
       },
       textureTop: true,
       textureBottom: true,
@@ -467,7 +467,7 @@ module avionmakeApp {
         height: 449,
         position3D:{
           x:-196,
-          y:-200,
+          y:-100,
           z:451
         },
         rotation3D:{
@@ -476,7 +476,7 @@ module avionmakeApp {
           z: 0
         },
         textureBottom: true,
-        textureFlipY: false,
+        textureFlipY: false
       },
       {
         name: 'wingleft',
@@ -485,7 +485,7 @@ module avionmakeApp {
         height: 449,
         position3D:{
           x:-196,
-          y:-200,
+          y:-100,
           z:2
         },
         rotation3D:{
@@ -494,7 +494,7 @@ module avionmakeApp {
           z: 0
         },
         textureBottom: true,
-        textureFlipY: false,
+        textureFlipY: false
       },
       {
         name: 'tailleft',
@@ -503,7 +503,7 @@ module avionmakeApp {
         height: 176,
         position3D:{
           x:360,
-          y:-364,
+          y:-264,
           z:-114
         },
         rotation3D:{
@@ -514,7 +514,7 @@ module avionmakeApp {
         textureBottom: true,
         textureFlipY: false,
         decals:[
-            {x: 127, y: 79, angle: 0, size: 30, text: "??-???", locked: 'tailnumber'}
+            {x: 127, y: 79, angle: 0, size: 30, text: '??-???', locked: 'tailnumber'}
         ]
       },
       {
@@ -524,7 +524,7 @@ module avionmakeApp {
         height: 176,
         position3D:{
           x:360,
-          y:-198,
+          y:-98,
           z:58
         },
         rotation3D:{
@@ -535,7 +535,7 @@ module avionmakeApp {
         textureBottom: true,
         textureFlipY: false,
         decals:[
-            {x: 229, y: 102, angle: 180, size: 30, text: "??-???", locked: 'tailnumber'}
+            {x: 229, y: 102, angle: 180, size: 30, text: '??-???', locked: 'tailnumber'}
         ]
       },
       {
@@ -544,8 +544,8 @@ module avionmakeApp {
         width: 845,
         height: 540,
         position2D:{
-          x:590,
-          y:300
+          x: 900,
+          y: 80
         }
       },
       {
@@ -554,8 +554,8 @@ module avionmakeApp {
         width: 845,
         height: 540,
         position2D:{
-          x:456,
-          y:30
+          x: 960,
+          y: 840
         }
       },
       {
@@ -564,8 +564,8 @@ module avionmakeApp {
         width: 864,
         height: 156,
         position2D:{
-          x: 30,
-          y: 264
+          x: 50,
+          y: 900
         }
       },
       {
@@ -574,8 +574,8 @@ module avionmakeApp {
         width: 864,
         height: 156,
         position2D:{
-          x: 30,
-          y: 512
+          x: 50,
+          y: 360
         }
       },
       {
@@ -584,8 +584,8 @@ module avionmakeApp {
         width: 505,
         height: 99,
         position2D:{
-          x: 30,
-          y: 174
+          x: 50,
+          y: 1200
         }
       },
       {
@@ -594,8 +594,8 @@ module avionmakeApp {
         width: 505,
         height: 99,
         position2D:{
-          x: 30,
-          y: 604
+          x: 50,
+          y: 200
         }
       },
       {
@@ -604,8 +604,8 @@ module avionmakeApp {
         width: 294,
         height: 479,
         position2D:{
-          x: 530,
-          y: 463
+          x: 1680,
+          y: 460
         }
       }
   ];
