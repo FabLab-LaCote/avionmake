@@ -45,8 +45,8 @@
   </md-dialog-content>
   <div class="md-actions" layout="row">
     <span flex></span>
-    <md-button ng-click="ctrl.cancel()" class="md-primary" translate="CONFIRM_PRINT_CANCEL"></md-button>
-    <md-button ng-click="ctrl.print()" class="md-warn" translate="CONFIRM_PRINT_OK" ng-disabled="dialog.$invalid"></md-button>
+    <md-button aria-label="cancel" ng-click="ctrl.cancel()" class="md-primary" translate="CONFIRM_PRINT_CANCEL"></md-button>
+    <md-button aria-label="print" ng-click="ctrl.print()" class="md-warn" translate="CONFIRM_PRINT_OK" ng-disabled="dialog.$invalid"></md-button>
   </div>
   </form>
 </md-dialog>

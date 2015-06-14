@@ -4,7 +4,7 @@
     <div class="md-toolbar-tools">
       <h2>{{decal.hasOwnProperty('text') ? 'TEXT' : 'DECAL' | translate}}</h2>
       <span flex></span>
-      <md-button class="md-icon-button" ng-click="cancel()">
+      <md-button aria-label="cancel" class="md-icon-button" ng-click="cancel()">
         <md-icon md-svg-src="images/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
       </md-button>
     </div>
@@ -31,10 +31,10 @@
     </div>
   </md-dialog-content>
   <div class="md-actions" layout="row">
-    <md-button ng-click="delete()" class="md-warn" translate="DELETE" ng-hide="isNew"></md-button>
+    <md-button aria-label="delete" ng-click="delete()" class="md-warn" translate="DELETE" ng-hide="isNew"></md-button>
     <span flex></span>
-    <md-button ng-click="cancel()" class="md-primary" translate="CANCEL"></md-button>
-    <md-button ng-click="save()" class="md-primary" translate="SAVE" ng-disabled="decal.hasOwnProperty('text') && !dialog.text.$valid"></md-button>
+    <md-button aria-label="cancel" ng-click="cancel()" class="md-primary" translate="CANCEL"></md-button>
+    <md-button aria-label="save" ng-click="save()" class="md-primary" translate="SAVE" ng-disabled="decal.hasOwnProperty('text') && !dialog.text.$valid"></md-button>
   </div>
   </form>
 </md-dialog>
