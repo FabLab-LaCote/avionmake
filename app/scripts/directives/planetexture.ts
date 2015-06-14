@@ -201,6 +201,12 @@ module avionmakeApp {
         targetEvent: event,
         locals:{
           decal:decal
+        },
+        onComplete: (scope, element)=>{
+            var e = element[0].querySelector('[name=text]');
+            if(e){
+              e.focus();
+            } 
         }
       })
     }

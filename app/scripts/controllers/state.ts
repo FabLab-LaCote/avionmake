@@ -52,6 +52,9 @@ module avionmakeApp {
         controller: 'PrintDialogCtrl',
         controllerAs: 'ctrl',
         targetEvent: event,
+        onComplete: (scope, element)=>{
++              element[0].querySelector('[name=name]').focus();
+        }
       }).then((info)=>{
         //send print+info to server
         this.isLoading = true;
@@ -83,8 +86,8 @@ module avionmakeApp {
       });
     }
     
-    getPDF(type){
-      return this.BASE_URL + '/api/finalpdf/'+ this.planes.currentPlane._id + '?type=' + type;
+    getPDF(plane, type){
+      return this.BASE_URL + '/api/finalpdf/'+ plane._id + '?type=' + type;
     }
   }
 }

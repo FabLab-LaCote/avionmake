@@ -330,6 +330,8 @@ module avionmakeApp {
     _id:string;
     name:string;
     lastModified:Date;
+    created:Date;
+    disabled:boolean;
     info:{
       email:string,
       pcode:string,
@@ -479,6 +481,7 @@ module avionmakeApp {
         _id: this._id,
         name: this.name,
         lastModified: this.lastModified,
+        created: this.created,
         info: this.info
       };
       //save parts with textures and decals
@@ -505,7 +508,9 @@ module avionmakeApp {
       this._id = obj._id;
       this.name = obj.name;
       this.lastModified = obj.lastModified;
+      this.created = obj.created;
       this.info = obj.info;
+      this.disabled = obj.disabled;
       obj.parts.forEach((part:Part)=>{
           var localPart = this.getPart(part.name);
           if(localPart.textureTop || localPart.textureBottom){

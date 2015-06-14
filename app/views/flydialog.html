@@ -1,0 +1,27 @@
+<md-dialog aria-label="Flay Dialog">
+  <form name="dialog">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{'FLY'|translate}}</h2>
+      <span flex></span>
+      <md-button type="button" aria-label="cancel" class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-src="images/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+      <md-input-container>
+        <label translate="DISTANCE"></label>
+        <input required name="distance" type="number" ng-model="distance">
+        <div ng-messages="dialog.text.$error">
+          <div ng-message="required">{{'FIELD_REQUIRED'|translate}}</div>
+        </div>
+      </md-input-container>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button type="button" aria-label="cancel" ng-click="cancel()" class="md-primary" translate="CANCEL"></md-button>
+    <md-button type="submit" aria-label="save" ng-click="save()" class="md-primary" translate="SAVE" ng-disabled="!dialog.distance.$valid"></md-button>
+  </div>
+  </form>
+</md-dialog>

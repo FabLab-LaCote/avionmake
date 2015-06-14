@@ -4,7 +4,7 @@
     <div class="md-toolbar-tools">
       <h2 translate="CONFIRM_PRINT_TITLE"></h2>
       <span flex></span>
-      <md-button class="md-icon-button" ng-click="ctrl.cancel()">
+      <md-button type="button" class="md-icon-button" ng-click="ctrl.cancel()">
         <md-icon md-svg-src="images/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
       </md-button>
     </div>
@@ -45,8 +45,8 @@
   </md-dialog-content>
   <div class="md-actions" layout="row">
     <span flex></span>
-    <md-button aria-label="cancel" ng-click="ctrl.cancel()" class="md-primary" translate="CONFIRM_PRINT_CANCEL"></md-button>
-    <md-button aria-label="print" ng-click="ctrl.print()" class="md-warn" translate="CONFIRM_PRINT_OK" ng-disabled="dialog.$invalid"></md-button>
+    <md-button type="button" aria-label="cancel" ng-click="ctrl.cancel()" class="md-primary" translate="CONFIRM_PRINT_CANCEL"></md-button>
+    <md-button type="submit" aria-label="print" ng-click="ctrl.print()" class="md-warn" translate="CONFIRM_PRINT_OK" ng-disabled="dialog.$invalid"></md-button>
   </div>
   </form>
 </md-dialog>

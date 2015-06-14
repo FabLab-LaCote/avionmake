@@ -57,14 +57,13 @@ module avionmakeApp {
           .cancel(translations['CONFIRM_NEWPLANE_CANCEL'])
           .targetEvent(evt);
           this.$mdDialog.show(confirm).then(()=> {
-            //TODO: change once planes are added
-            plane.type = 'plane1';
+            plane.created = new Date();
             this.planes.currentPlane = plane;
             this.$location.path('draw');
           });
         })
       }else{
-        //TODO: change once planes are added
+        plane.created = new Date();
         this.planes.currentPlane = plane;
         this.$location.path('draw');
       }

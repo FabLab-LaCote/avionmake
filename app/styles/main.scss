@@ -294,14 +294,16 @@ h1.planename{
 #admin{
   table{
     border-collapse: collapse;
-    font-size: 1.4em;
+    font-size: 1.2em;
     width: 100%;
   }
   .right{
     text-align: right;
   }
-  thead tr th {
+  
+  tr th {
     text-align: left;
+    background-color: white;
   }
   
   tbody tr:nth-child(even) {
@@ -331,7 +333,8 @@ h1.planename{
   }
   .stats div:nth-child(5){
     background-color: rgb(240, 18, 190);
-  }        
+  }
+  
 }
 
 .at-view-emerge.ng-enter {

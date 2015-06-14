@@ -1,10 +1,10 @@
 <div>
 	<md-tabs md-selected="selectedIndex">
-		<md-tab label="{{'PREVIEW' | translate}}" md-on-select="filter=1;tabChanged()"></md-tab>
-		<md-tab label="{{'CUT' | translate}}" md-on-select="filter=2"></md-tab>
-		<md-tab label="{{'FLY' | translate}}" md-on-select="filter=3"></md-tab>
-		<md-tab label="{{'SCORE' | translate}}" md-on-select="filter=5"></md-tab>
-		<md-tab label="{{'STATS' | translate}}" md-on-select="filter=-1"></md-tab>
+		<md-tab label="{{'PREVIEW' | translate}}" md-on-select="filter=1;getData();"></md-tab>
+		<md-tab label="{{'CUT' | translate}}" md-on-select="filter=2;getData();"></md-tab>
+		<md-tab label="{{'FLY' | translate}}" md-on-select="filter=3;getData();"></md-tab>
+		<md-tab label="{{'SCORE' | translate}}" md-on-select="filter=5;getData();"></md-tab>
+		<md-tab label="{{'STATS' | translate}}" md-on-select="filter=-1;getData();"></md-tab>
 	</md-tabs>
 </div>
 <md-content class="md-padding" id="admin">
@@ -15,22 +15,43 @@
 				<th translate="PLANE"></th>
 				<th translate="TYPE"></th>
 				<th translate="NAME"></th>
-				<th translate="ACTION"></th>
+				<th class="right" translate="ACTION"></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="p in data | filter:{printState:filter} track by p._id">
+			<tr ng-repeat="p in data | filter:{printState:filter, disabled:'!true'} track by p._id">
 				<td>{{p.lastModified | date: 'dd-MM HH:mm'}}</td>
 				<td>{{p._id}}</td>
-				<td translate="plane1"></td>
+				<td translate="{{p.type}}"></td>
 				<td>{{p.name}}</td>
 				<td class="right">
-					<md-button class="md-raised md-primary" ng-click="p._id" ng-show="p.printState==2">{{'CUT'|translate}}</md-button>
-					<md-button class="md-raised md-primary" ng-click="p._id" ng-show="p.printState==3">{{'FLY'|translate}}</md-button>
-					<md-button class="md-raised md-warn" ng-click="p._id">{{'DISABLE'|translate}}</md-button>
+					<md-button class="md-fab" target="_blank" aria-label="cut pdf" ng-href="{{app.getPDF(p, 'cut')}}" ng-show="p.printState==2">						
+						<md-icon md-svg-src="images/icons/ic_insert_drive_file_white_24px.svg"></md-icon>
+					</md-button>
+					<md-button class="md-raised md-primary" ng-click="cut(p._id)" ng-show="p.printState==2">{{'CUT'|translate}}</md-button>
+					<md-button class="md-raised md-primary" ng-click="fly(p, event);" ng-show="p.printState==3">{{'FLY'|translate}}</md-button>
+					<md-button class="md-raised md-warn" ng-click="setData(p._id, {disabled: true});">{{'DISABLE'|translate}}</md-button>
 				</td>
 			</tr>
-//display disabled?		
+			<tr>
+				<th colspan="5"><h3 translate="DISABLED"></h3></th>
+			</tr>
+			<tr>
+				<th translate="TIME"></th>
+				<th translate="PLANE"></th>
+				<th translate="TYPE"></th>
+				<th translate="NAME"></th>
+				<th class="right" translate="ACTION"></th>
+			</tr>			
+			<tr ng-repeat="p in data | filter:{printState:filter, disabled:'true'} track by p._id">
+				<td>{{p.lastModified | date: 'dd-MM HH:mm'}}</td>
+				<td>{{p._id}}</td>
+				<td translate="{{p.type}}"></td>
+				<td>{{p.name}}</td>
+				<td class="right">
+					<md-button class="md-raised" ng-click="setData(p._id, {disabled: false});">{{'ENABLE'|translate}}</md-button>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<div ng-show="filter==-1">
@@ -46,6 +67,7 @@
 				 title="{{key|translate}}"
 				 ng-style="{width: val/stats.total*100 + '%'}">{{key|translate}}<br />({{val}})</div>
 		</div>
-		<p>Total: {{stats.total}}</p>
+		<p>Total: {{stats.total}}</br>
+		   <span translate="DISABLED"></span>: {{stats.disabled}}</p>
 	</div>	
 </md-content>
