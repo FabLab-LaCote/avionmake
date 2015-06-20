@@ -1,4 +1,14 @@
 <md-content layout="row" layout-align="center start" layout-wrap>
+	<md-card class="plane-card active" ng-show="ctrl.planes.currentPlane">
+		<plane3d plane="ctrl.planes.currentPlane"  class="md-card-image" ng-click="ctrl.showCurrentPlane()"></plane3d>
+		<md-card-content>
+			 <h2 class="md-title">{{ctrl.planes.currentPlane.type | translate}}</h2>
+	        <p></p>
+		</md-card-content>
+		<div class="md-actions" layout="row" layout-align="end center">
+	        <md-button aria-label="choose" class="md-primary" ng-click="ctrl.showCurrentPlane()" translate="CONTINUE"></md-button>
+	      </div>	
+	</md-card>	
 	<md-card ng-repeat="plane in ctrl.planesCatalog" class="plane-card">
 		<plane3d plane="plane.plane"  class="md-card-image" ng-click="ctrl.selectPlane($event, plane.plane)"></plane3d>
 		<md-card-content>

@@ -68,6 +68,9 @@ module avionmakeApp {
         this.$location.path('draw');
       }
     }
+    showCurrentPlane(){
+      this.$location.path('draw');
+    }
   }
 }
 
