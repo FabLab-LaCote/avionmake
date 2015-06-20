@@ -22,7 +22,7 @@ module avionmakeApp {
           time: 1
         },
         {
-          plane: planes.createPlane('plane1'),
+          plane: planes.createPlane('biplane1'),
           type: 'biplane1',
           difficulty: 4,
           time: 4

@@ -760,6 +760,8 @@ module avionmakeApp {
           }
         }
       }
+      this.updateBumpTextures();
+      
     }
     
     toJSON():string{
@@ -795,7 +797,6 @@ module avionmakeApp {
           obj = JSON.parse(obj);
         }
         this.printState = obj.printState;
-        this._id = obj._id;
         this.name = obj.name;
         this.lastModified = obj.lastModified;
         this.created = obj.created;
@@ -815,6 +816,7 @@ module avionmakeApp {
               localPart.texture.needsUpdate = true;
             }
         });
+        this.setId(obj._id);
         this.updateBumpTextures();
       }catch(e){
         
