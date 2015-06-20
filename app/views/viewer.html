@@ -3,4 +3,5 @@
 	class="planenext md-raised" translate="NEXT"
 	aria-label="next"
 	ng-show="app.state == '/v'"></md-button>
+<md-progress-linear ng-show="mode == 'indeterminate' || value > 0" class="gallery-progress"  ng-value="value" md-mode="{{mode}}"></md-progress-linear>	
 <plane3d plane="plane" tween="tween" flex></plane3d>

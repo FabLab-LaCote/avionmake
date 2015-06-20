@@ -7,6 +7,8 @@ module avionmakeApp {
     plane:Plane;
     tween:boolean;
     getNextPlane(manual:boolean):void;
+    mode:string;
+    value:number;
   }
 
   export class ViewerCtrl {
@@ -14,11 +16,14 @@ module avionmakeApp {
     constructor (private $scope: IViewerScope, private $routeParams:ng.route.IRouteParamsService, 
       private $http:ng.IHttpService, private planes:Planes, BASE_URL, $timeout:ng.ITimeoutService) {
       if($routeParams['id']){
+        $scope.mode = 'indeterminate';
         $http.get(BASE_URL + '/api/plane/' + $routeParams['id'])
         .success((data:any)=>{
           var p = planes.createPlane(data.type);
           p.fromJSON(data);
           $scope.plane = p;
+          $scope.mode = 'determinate';
+          $scope.value = 0;          
         });
       }else{
         $scope.tween = true;
@@ -26,6 +31,7 @@ module avionmakeApp {
         $scope.getNextPlane = function getNextPlane(manual){
           $scope.tween = !manual;
           var id = planes.currentGalleryId || 'FL-1';
+          $scope.mode = 'indeterminate';
           $http.get(BASE_URL + '/api/nextplanes/' + id + '/1')
           .success((data:any)=>{
             var p = planes.createPlane(data[0].type);
@@ -35,6 +41,8 @@ module avionmakeApp {
             if (timer) {
                 $timeout.cancel(timer);
             }
+            $scope.mode = 'determinate';
+            $scope.value = 0;
             timer = $timeout($scope.getNextPlane, 20000); 
           });
         };

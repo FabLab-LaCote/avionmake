@@ -140,10 +140,16 @@ md-switch{
      height: 250px;
    } 
 }
+
 .plane-card.active{
   background-color: rgba(139,195,74,0.5);
 }
 
+.gallery-progress{
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+}
 
 .menu{
     background-image: url(../images/fablab_la_cote.png);
@@ -239,7 +245,7 @@ md-switch{
 h1.planename{
   position: absolute;
   color: white;
-  top: 20;
+  top: 0;
   left: 20px;
 }
 
