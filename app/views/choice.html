@@ -13,7 +13,6 @@
 		<plane3d plane="plane.plane"  class="md-card-image" ng-click="ctrl.selectPlane($event, plane.plane)"></plane3d>
 		<md-card-content>
 			 <h2 class="md-title">{{plane.type | translate}}</h2>
-	        <!-- <p>Lorem ipsum</p> -->
 			<p><span translate="DIFFICULTY"></span><md-progress-linear md-mode="determinate" value="{{plane.difficulty/4*100}}"></md-progress-linear></p>
 			<p><span translate="TIME"></span><md-progress-linear md-mode="determinate" value="{{plane.time/4*100}}"></md-progress-linear></p>
 		</md-card-content>

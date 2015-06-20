@@ -32,7 +32,9 @@ module avionmakeApp {
           type: 'fighter1',
           difficulty: 4,
           time: 3
-        },
+        }
+        /*
+        ,
         {
           plane: planes.createPlane('plane1'),
           type: 'birdplane1',
@@ -45,6 +47,7 @@ module avionmakeApp {
           difficulty: 1,
           time: 2
         }
+        */
       ]
     }
     selectPlane(evt, plane:Plane){
