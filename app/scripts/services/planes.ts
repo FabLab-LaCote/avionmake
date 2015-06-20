@@ -89,7 +89,8 @@ module avionmakeApp {
     
     templates:PlaneTemplateMap={
       plane1: Planes.plane1,
-      fighter1: Planes.fighter1
+      fighter1: Planes.fighter1,
+      biplane1: Planes.biplane1
     }
     
     palettes:any = {
@@ -611,6 +612,30 @@ module avionmakeApp {
         }
       }
   ];
+  
+  static biplane1:Part[] = [{
+      name: 'fuselage',
+      path: '',
+      width: 1225,
+      height: 212,
+      position3D:{
+        x:-1225/2,
+        y:-198,
+        z:0
+      },
+      rotation3D:{
+        x: 0,
+        y: 0,
+        z: 0
+      },
+      position2D:{
+          x: 50,
+          y: 600
+      },
+      textureTop: true,
+      textureBottom: true,
+      textureFlipY: false
+    }];
         
   }
 
