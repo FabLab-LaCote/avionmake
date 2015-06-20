@@ -137,7 +137,6 @@ module avionmakeApp {
         
         lastPoint = currentPoint;
         scope.part.texture.needsUpdate = true;
-        this.planes.currentPlane.updateBumpTextures();
       };
       
       el.onmousemove = (e) => {
@@ -154,18 +153,21 @@ module avionmakeApp {
       el.onmouseout = function() {
         scope.part.textureBitmap = canvas.toDataURL();
         self.planes.saveLocal();
+        this.planes.currentPlane.updateBumpTextures();
       };
             
       el.onmouseup = function() {
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
         self.planes.saveLocal();
+        this.planes.currentPlane.updateBumpTextures();
       };
       
       el.ontouchend = function(){
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
         self.planes.saveLocal();
+        this.planes.currentPlane.updateBumpTextures();
       };
       
       //handle decals
