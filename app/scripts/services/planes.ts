@@ -371,7 +371,7 @@ module avionmakeApp {
           
           //copy wings onto wing
           //declas
-          function copyWingsToWing(l, r, p){
+          var copyWingsToWing = function(l, r, p){
             var canvas = document.createElement('canvas');
             var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
             canvas.width = p.width;

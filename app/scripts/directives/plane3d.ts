@@ -319,7 +319,9 @@ module avionmakeApp {
       });
       scope.$watch('refresh', ()=>{
         setTimeout(()=>{
-          planeScene.onWindowResize();
+          if(planeScene.onWindowResize){
+            planeScene.onWindowResize();
+          }
         },501);
       });
       scope.$on('$destroy',function(){
