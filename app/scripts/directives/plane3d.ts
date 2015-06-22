@@ -19,7 +19,9 @@ module avionmakeApp {
       planeGroup: THREE.Group;
       element:HTMLDivElement;
       gui:dat.GUI;
-      debug:boolean 
+      debug:boolean;
+      resizeListener:EventListener;
+      requestAnimation:number;
       
       constructor(){
       }
@@ -42,13 +44,12 @@ module avionmakeApp {
           c.add(this.camera.position, 'y').listen();
           c.add(this.camera.position, 'z').listen();
         }
-        
         this.controls = new THREE.OrbitControls( this.camera, element );
         this.controls.noPan = true;
         this.controls.autoRotate = !this.debug;
         this.controls.damping = 0.2;
         this.controls.addEventListener( 'change', this.render.bind(this) );
-        
+
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setClearColor(new THREE.Color(0x000000));
         this.renderer.setPixelRatio( window.devicePixelRatio );
@@ -75,7 +76,8 @@ module avionmakeApp {
 
         this.renderer.domElement.setAttribute('flex','');
         element.appendChild(this.renderer.domElement);
-        window.addEventListener( 'resize', this.onWindowResize.bind(this), false );
+        this.resizeListener = this.onWindowResize.bind(this);
+        window.addEventListener( 'resize', this.resizeListener, false );
         
         //HELPERS
         /*
@@ -185,6 +187,21 @@ module avionmakeApp {
          }
       }
       
+      destroy(){
+        window.removeEventListener('resize', this.resizeListener);
+        cancelAnimationFrame(this.requestAnimation);
+        this.scene.children.forEach((o:THREE.Object3D)=>{
+          this.scene.remove(o);
+        });
+        this.controls.destroy();
+        delete this.renderer;
+        delete this.scene;
+        delete this.planeGroup;
+        delete this.camera;
+        delete this.controls;
+        
+      }
+      
       render(){
         this.renderer.render( this.scene, this.camera );
       }
@@ -199,7 +216,7 @@ module avionmakeApp {
       }
 
       animate() {
-        requestAnimationFrame(this.animate.bind(this));
+        this.requestAnimation = requestAnimationFrame(this.animate.bind(this));
         TWEEN.update();
         this.controls.update();
       }
@@ -304,6 +321,10 @@ module avionmakeApp {
         setTimeout(()=>{
           planeScene.onWindowResize();
         },501);
+      });
+      scope.$on('$destroy',function(){
+        planeScene.destroy();
+        planeScene = null;
       });
     }
 
