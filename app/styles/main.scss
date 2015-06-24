@@ -1,6 +1,23 @@
 // bower:scss
 // endbower
 
+//fix placeholder bug
+:-webkit-input-placeholder {
+  opacity:0;
+}
+::-webkit-input-placeholder {
+  opacity:0;
+}
+:-moz-placeholder {
+  opacity:0;
+}
+::-moz-placeholder {
+  opacity:0;
+}
+:-ms-input-placeholder {
+  opacity:0;
+}
+
 md-switch{
       white-space: normal;
 }

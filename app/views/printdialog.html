@@ -12,7 +12,7 @@
   <md-dialog-content>
       <md-input-container>
         <md-icon md-svg-src="images/icons/ic_mode_edit_black_24px.svg"></md-icon>
-        <input name="name" ng-model="ctrl.info.name" placeholder="{{'CONFIRM_PRINT_NAME'|translate}}" ng-required="true">
+        <input name="name" ng-model="ctrl.info.name" type="text" placeholder="{{'CONFIRM_PRINT_NAME'|translate}}" ng-required="true">
         <div ng-messages="dialog.name.$error">
           <div ng-message="required">{{'FIELD_REQUIRED'|translate}}</div>
         </div>

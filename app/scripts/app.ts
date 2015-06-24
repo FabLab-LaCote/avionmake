@@ -284,7 +284,7 @@ angular.module('avionmakeApp', [
          'birdplane1':'Vogelflugzeug',
          'seaplane1':'Wasserflugzeug'
       }) 
-      .registerAvailableLanguageKeys(['en', 'de'], {
+      .registerAvailableLanguageKeys(['en', 'de', 'fr'], {
         'en_US': 'en',
         'en_UK': 'en',
         'de_DE': 'de',
@@ -292,7 +292,7 @@ angular.module('avionmakeApp', [
         'fr_FR': 'fr',
         'fr_CH': 'fr',
       })
-      .fallbackLanguage('en')
+      .fallbackLanguage('fr')
       //BROKEN for now .useCookieStorage()
       .determinePreferredLanguage();           
   })
