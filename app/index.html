@@ -159,7 +159,6 @@
       </md-content>
     </md-sidenav>
     <div layout="column" flex>
-      <header>
       	<md-toolbar class="md-whiteframe-z2" layout="row">
       	  <div class="md-toolbar-tools">
             <md-button aria-label="toggle menu" class="md-icon-button" ng-hide="app.isLockedOpen()" ng-click="app.openMenu();">
@@ -173,7 +172,6 @@
              <md-button analytics-on aria-label="create" href="#/" ng-show="app.state.indexOf('/v') == 0" class="md-raised md-primary" translate="CREATE"></md-button>
       	   </div>
         </md-toolbar>
-      </header>
        <md-content class="at-view-emerge at-view-scale-out" ng-view="" md-scroll-xy flex role="main" layout="column"></md-content>
     </div>
 
