@@ -170,7 +170,7 @@
         	   <md-button analytics-on aria-label="logout" ng-click="app.logout()" ng-show="app.state == '/admin'" class="md-raised md-primary" translate="LOGOUT"></md-button>
              <md-button analytics-on aria-label="preview" href="#/preview" ng-show="app.state == '/draw'" class="md-raised md-primary" translate="PREVIEW"></md-button>
              <md-button analytics-on aria-label="print" ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" ng-show="app.state == '/preview'" class="md-raised md-warn" translate="PRINT"></md-button>
-             <md-button analytics-on aria-label="create" href="/" ng-show="app.state.indexOf('/v') == 0" class="md-raised md-primary" translate="CREATE"></md-button>
+             <md-button analytics-on aria-label="create" href="#/" ng-show="app.state.indexOf('/v') == 0" class="md-raised md-primary" translate="CREATE"></md-button>
       	   </div>
         </md-toolbar>
        <md-content class="at-view-emerge at-view-scale-out" ng-view="" md-scroll-xy flex role="main" layout="column"></md-content>

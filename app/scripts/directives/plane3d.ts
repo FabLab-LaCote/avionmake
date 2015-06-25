@@ -7,6 +7,7 @@ declare module TWEEN{
   export var Tween;
   export var Easing;
   export var update;
+  export function removeAll();
 }
 
 module avionmakeApp {
@@ -189,6 +190,7 @@ module avionmakeApp {
       
       destroy(){
         window.removeEventListener('resize', this.resizeListener);
+        TWEEN.removeAll();
         cancelAnimationFrame(this.requestAnimation);
         this.scene.children.forEach((o:THREE.Object3D)=>{
           this.scene.remove(o);

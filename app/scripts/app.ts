@@ -199,7 +199,7 @@ angular.module('avionmakeApp', [
          'PLANE':'Vol',
          'TYPE':'Type',
          'NAME':'Nom', 
-         'ALL':'Tout',
+         'ALL':'Tous',
          'ENABLE': 'Activer',
          'DISABLED': 'Desactivé',
          'DISABLE': 'Desactiver',
