@@ -1,7 +1,21 @@
-<md-content layout="row" layout-align="left start">
-	<md-card ng-repeat="type in ['plane1', 'biplane1','fighter1','birdplane1','seaplane1']">
-		<md-card-content>
-	        <img ng-src="images/guide/{{type}}.png" style="width:400px"/>
-		</md-card-content>	
-	</md-card>
-</md-content>
+<div>
+	<md-tabs>
+		<md-tab label="{{'plane1' | translate}}">
+			<md-content md-scroll-xy class="text-center">
+				<img ng-src="images/guide/plane1.png"/>
+			</md-content>	
+		</md-tab>
+		<md-tab label="{{'biplane1' | translate}}">
+			<md-content md-scroll-xy class="text-center">
+				<img ng-src="images/guide/biplane1.png"/>
+			</md-content>	
+		</md-tab>
+		<md-tab label="{{'fighter1' | translate}}">
+			<md-content md-scroll-xy class="text-center">
+				<img ng-src="images/guide/fighter1.png"/>
+			</md-content>	
+		</md-tab>
+		<!--<md-tab label="{{'birdplane1' | translate}}" md-on-select="filter='birdplane1'"></md-tab>
+		<md-tab label="{{'seaplane1' | translate}}" md-on-select="filter='seaplane1'"></md-tab>-->
+	</md-tabs>
+</div>
