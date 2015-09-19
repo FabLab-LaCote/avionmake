@@ -1,3 +1,24 @@
+/*
+
+This file is part of avionmake.
+
+Copyright (C) 2015  Boris Fritscher
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see http://www.gnu.org/licenses/.
+
+*/
+
 /// <reference path="../app.ts" />
 
 'use strict';
@@ -13,7 +34,7 @@ module avionmakeApp {
 
   export class ViewerCtrl {
     /*@ngInject*/
-    constructor (private $scope: IViewerScope, private $routeParams:ng.route.IRouteParamsService, 
+    constructor (private $scope: IViewerScope, private $routeParams:ng.route.IRouteParamsService,
       private $http:ng.IHttpService, private planes:Planes, BASE_URL, $timeout:ng.ITimeoutService) {
       if($routeParams['id']){
         $scope.mode = 'indeterminate';
@@ -23,7 +44,7 @@ module avionmakeApp {
           p.fromJSON(data);
           $scope.plane = p;
           $scope.mode = 'determinate';
-          $scope.value = 0;          
+          $scope.value = 0;
         });
       }else{
         $scope.tween = true;
@@ -43,12 +64,12 @@ module avionmakeApp {
             }
             $scope.mode = 'determinate';
             $scope.value = 0;
-            timer = $timeout($scope.getNextPlane, 20000); 
+            timer = $timeout($scope.getNextPlane, 20000);
           });
         };
         $scope.getNextPlane(false);
-        
-        
+
+
         $scope.$on("$destroy", function() {
             if (timer) {
                 $timeout.cancel(timer);

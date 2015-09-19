@@ -1,3 +1,24 @@
+/*
+
+This file is part of avionmake.
+
+Copyright (C) 2015  Boris Fritscher
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see http://www.gnu.org/licenses/.
+
+*/
+
 /// <reference path="../app.ts" />
 
 'use strict';
@@ -9,9 +30,9 @@ interface CanvasRenderingContext2D{
 }
 
 module avionmakeApp {
-  
+
   export enum PrintState{NONE,PREVIEW,PRINT,CUT,ASSEMBLE,FLY};
-  
+
   export class Planes {
     /*@ngInject*/
     constructor(private $http:ng.IHttpService, private $q:ng.IQService, private BASE_URL:string){
@@ -20,28 +41,28 @@ module avionmakeApp {
       this.loadLocal();
       this.selectedPalette = 'clrs.cc';
     }
-    
+
     currentGalleryId:string;
     currentPlane:Plane;
     brushSize:number;
     brushColor:number[];
     selectedPalette:string;
     mergePDF:boolean;
-        
+
     createPlane(type:string):Plane{
       return new Plane(type, this.templates[type]);
     }
-    
+
     saveLocal():void{
       if(this.currentPlane){
         localStorage.setItem('currentPlane', this.currentPlane.toJSON());
       }
     }
-    
+
     deleteLocal():void{
       localStorage.removeItem('currentPlane');
     }
-    
+
     loadLocal():void{
       var planeJSON = localStorage.getItem('currentPlane')
       if(planeJSON){
@@ -50,11 +71,11 @@ module avionmakeApp {
         this.currentPlane.fromJSON(planeData);
       }
     }
-    
+
     preview():ng.IPromise<string>{
       var plane:Plane = this.currentPlane;
       plane.printState = PrintState.NONE;
-      
+
       return new this.$q((resolve, reject)=>{
         this.$http.post(this.BASE_URL + '/api/plane', this.fixPlane(plane))
         .then((resp)=>{
@@ -66,12 +87,12 @@ module avionmakeApp {
           if(resp.status === 0){
             reject('server not found');
           }else{
-            reject('error on the server');  
+            reject('error on the server');
           }
         })
       });
     }
-    
+
     print(info:any):ng.IPromise<any>{
       return new this.$q((resolve, reject)=>{
         this.$http.post(this.BASE_URL + '/api/print/' + this.currentPlane._id, info)
@@ -84,15 +105,15 @@ module avionmakeApp {
           console.log(resp.data);
           reject('error');
         })
-      });        
+      });
     }
-    
+
     templates:PlaneTemplateMap={
       plane1: Planes.plane1,
       fighter1: Planes.fighter1,
       biplane1: Planes.biplane1
     }
-    
+
     palettes:any = {
       'clrs.cc':[[0, 31, 63],[0, 116, 217],[127, 219, 255],[57, 204, 204],[61, 153, 112],[46, 204, 64],[1, 255, 112],[255, 220, 0],
       [255, 133, 27],[255, 65, 54],[174,105,0],[133, 20, 75],[240, 18, 190],[177, 13, 201],[17, 17, 17],[170, 170, 170],[221, 221, 221]],
@@ -101,7 +122,7 @@ module avionmakeApp {
       'eurocopter':[[101,74,47],[41,43,42],[138,165,122],[163,121,83],[28,28,28],[131,156,117]],
       'sky':[[133,163,174],[28,41,83],[84,94,119],[90,106,131],[5,27,66],[120,173,239]]
     };
-    
+
     fixPlane(plane:Plane):any{
       if(plane.type === 'plane1'){
           var p = plane.getPart('fuselage');
@@ -109,7 +130,7 @@ module avionmakeApp {
           var c = plane.getPart('cockpit');
           var l = plane.getPart('left_side');
           var r = plane.getPart('right_side');
-          
+
           //copy decals
           var wy = 172;
           var ww = 370;
@@ -128,13 +149,13 @@ module avionmakeApp {
               }else{
                 var dl = angular.copy(d);
                 dl.y = dl.y-60;
-                l.decals.push(dl);  
+                l.decals.push(dl);
               }
             }else{
-              pp.decals.push(angular.copy(d));  
+              pp.decals.push(angular.copy(d));
             }
           });
-           
+
           //copy textures
           var canvas = document.createElement('canvas');
           canvas.width = c.width;
@@ -146,17 +167,17 @@ module avionmakeApp {
           ctx.scale(1, -1);
           ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, -0, ww, -(p.height-wy));
           c.textureBitmap = canvas.toDataURL();
-              
+
           //copy left
           var wd = 360;
-          var hd = 0; 
+          var hd = 0;
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = l.width;
           canvas.height = l.height;
           ctx.drawImage(img, wd, wy, p.width-wd, p.height-wy, wd, 110, p.width-wd, p.height-wy);
           l.textureBitmap = canvas.toDataURL();
-          
+
           //copy right
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
@@ -165,7 +186,7 @@ module avionmakeApp {
           ctx.scale(-1, 1);
           ctx.drawImage(img, wd, wy, p.width-wd, p.height-wy, 0, 110, -p.width + wd, p.height-wy);
           r.textureBitmap = canvas.toDataURL();
-          
+
           //tuncate fueslage
           wd = 800;
           hd = 190;
@@ -190,7 +211,7 @@ module avionmakeApp {
           });
           ctx.drawImage(wr.textureCanvas, 0, 0);
           wrp.textureBitmap = canvas.toDataURL();
-          
+
           var wl = plane.getPart('wingleft');
           var wlp = plane.getPart('wingleftprint');
           var canvas = document.createElement('canvas');
@@ -204,7 +225,7 @@ module avionmakeApp {
             copy.y += dy;
             wlp.decals.push(copy);
           });
-          ctx.drawImage(wl.textureCanvas, 0, dy)          
+          ctx.drawImage(wl.textureCanvas, 0, dy)
           wlp.textureBitmap = canvas.toDataURL();
 
           //copy tails onto print
@@ -216,28 +237,28 @@ module avionmakeApp {
           canvas.width = tp.width;
           canvas.height = tp.height;
           ctx.drawImage(tl.textureCanvas, 0, 0);
-          
+
           tl.decals.forEach((d:Decal)=>{
             tp.decals.push(angular.copy(d));
           });
           var tr = plane.getPart('tailright');
           var dy = 303
-          ctx.drawImage(tr.textureCanvas, 0, 303);          
-          
+          ctx.drawImage(tr.textureCanvas, 0, 303);
+
           tr.decals.forEach((d:Decal)=>{
             var copy = angular.copy(d);
             copy.y += dy;
             tp.decals.push(copy);
           });
           tp.textureBitmap = canvas.toDataURL();
-          
-          
+
+
           var f = plane.getPart('fuselage');
           var f2l = plane.getPart('f2leftprint');
           f2l.decals=[];
           var f3l = plane.getPart('f3leftprint');
           f3l.decals=[];
-          
+
           var f2r = plane.getPart('f2rightprint');
           f2r.decals=[];
           var f3r = plane.getPart('f3rightprint');
@@ -255,8 +276,8 @@ module avionmakeApp {
                   copy.y -=62;
                   f3l.decals.push(copy);
               }
-           });        
-           
+           });
+
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = f2l.width;
@@ -264,7 +285,7 @@ module avionmakeApp {
           ctx.clip(new Path2D(f2l.path), 'nonzero');
           ctx.drawImage(f.textureCanvas, 0, -6);
           f2l.textureBitmap = canvas.toDataURL();
-          
+
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = f3l.width;
@@ -272,7 +293,7 @@ module avionmakeApp {
           ctx.clip(new Path2D(f3l.path), 'nonzero');
           ctx.drawImage(f.textureCanvas, 0, -62);
           f3l.textureBitmap = canvas.toDataURL();
-          
+
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = f2r.width;
@@ -281,7 +302,7 @@ module avionmakeApp {
           ctx.scale(1, -1);
           ctx.drawImage(f.textureCanvas, 0, 6, f2r.width, f2r.height, 0, 0, f2r.width, -f2r.height);
           f2r.textureBitmap = canvas.toDataURL();
-          
+
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = f3r.width;
@@ -290,7 +311,7 @@ module avionmakeApp {
           ctx.scale(1, -1);
           ctx.drawImage(f.textureCanvas, 0, 62, f3r.width, f3r.height, 0, 0, f3r.width, -f3r.height);
           f3r.textureBitmap = canvas.toDataURL();
-          
+
        }//fix fighter1
        if(plane.type === 'biplane1'){
          //srcs
@@ -299,7 +320,7 @@ module avionmakeApp {
          var wbr = plane.getPart('wingbottomright');
          var wtl = plane.getPart('wingtopleft');
          var wbl = plane.getPart('wingbottomleft');
-         
+
          //targets
          var f2l = plane.getPart('f2l');
          f2l.decals = [];
@@ -313,8 +334,8 @@ module avionmakeApp {
          wt.decals = [];
          var wb = plane.getPart('wingbottom');
          wb.decals = [];
-         
-         
+
+
          var dx = 220; //split cockpit/f2
          //declas copy
           var copy;
@@ -332,7 +353,7 @@ module avionmakeApp {
                 }
             }
            });
-          
+
           //texture to f2
           var canvas = document.createElement('canvas');
           var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
@@ -341,7 +362,7 @@ module avionmakeApp {
           ctx.clip(new Path2D(f2l.path), 'nonzero');
           ctx.drawImage(f.textureCanvas, dx, 200, f2l.width-dx, f2l.height, dx, 93, f2l.width-dx, f2l.height);
           f2l.textureBitmap = canvas.toDataURL();
-          
+
           var canvas = document.createElement('canvas');
           var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = f2r.width;
@@ -350,7 +371,7 @@ module avionmakeApp {
           ctx.scale(1, -1);
           ctx.drawImage(f.textureCanvas, dx, 200, f2l.width-dx, f2l.height, dx, 93, f2l.width-dx, -f2l.height);
           f2r.textureBitmap = canvas.toDataURL();
-          
+
           //textures to cockpit
           var canvas = document.createElement('canvas');
           var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
@@ -359,7 +380,7 @@ module avionmakeApp {
           ctx.clip(new Path2D(cl.path), 'nonzero');
           ctx.drawImage(f.textureCanvas, 0, 200, cl.width, cl.height, 0, 0, cl.width, cl.height);
           cl.textureBitmap = canvas.toDataURL();
-          
+
           var canvas = document.createElement('canvas');
           var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = cr.width;
@@ -368,7 +389,7 @@ module avionmakeApp {
           ctx.scale(1, -1);
           ctx.drawImage(f.textureCanvas, 0, 200, cr.width, cr.height, 0, 0, cr.width, -cr.height);
           cr.textureBitmap = canvas.toDataURL();
-          
+
           //copy wings onto wing
           //declas
           var copyWingsToWing = function(l, r, p){
@@ -390,15 +411,15 @@ module avionmakeApp {
           }
           copyWingsToWing(wtl, wtr, wt);
           copyWingsToWing(wbl, wbr, wb);
-         
+
        }//fix biplane1
-       
+
        return plane.toJSON();
     }
-    
+
     static plane1:Part[]= [
       {
-        name: 'fuselage',    
+        name: 'fuselage',
         path: 'M 36.163334,268.05405 C 66.863734,283.12005 96.096533,292.23085 128.32893,296.35125 227.56052,309.03685 308.34332,260.01885 428.73951,239.63145 518.73211,224.39245 569.65791,226.23405 569.65791,226.23405 L 1172.2356,226.23405 1214.0854,181.23895 1075.9722,186.12715 1076.0762,179.07545 1184.8716,174.58095 C 1184.8716,174.58095 1126.2232,0.78671926 1116.8226,0.38891926 1001.6776,-4.4842807 1042.305,86.144523 967.3809,129.11209 892.4567,172.07955 861.5963,176.24275 833.1677,176.18455 735.1503,175.98355 373.30532,174.69855 373.30532,174.69855 L 372.96232,182.51115 289.19532,183.63275 288.89132,174.97655 227.25732,173.41265 C 227.25732,173.41265 71.326934,197.70665 35.985934,205.83645 -5.4182561,215.36105 -17.716476,241.61345 36.163934,268.05425 Z',
         width: 1214,
         height: 298,
@@ -420,7 +441,7 @@ module avionmakeApp {
         ]
       },
       {
-        name: 'fuselagePrint',    
+        name: 'fuselagePrint',
         path: 'M 36.163334,268.05405 C 66.863734,283.12005 96.096533,292.23085 128.32893,296.35125 227.56052,309.03685 308.34332,260.01885 428.73951,239.63145 518.73211,224.39245 569.65791,226.23405 569.65791,226.23405 L 1172.2356,226.23405 1214.0854,181.23895 1075.9722,186.12715 1076.0762,179.07545 1184.8716,174.58095 C 1184.8716,174.58095 1126.2232,0.78671926 1116.8226,0.38891926 1001.6776,-4.4842807 1042.305,86.144523 967.3809,129.11209 892.4567,172.07955 861.5963,176.24275 833.1677,176.18455 735.1503,175.98355 373.30532,174.69855 373.30532,174.69855 L 372.96232,182.51115 289.19532,183.63275 288.89132,174.97655 227.25732,173.41265 C 227.25732,173.41265 71.326934,197.70665 35.985934,205.83645 -5.4182561,215.36105 -17.716476,241.61345 36.163934,268.05425 Z',
         width: 1214,
         height: 298,
@@ -457,7 +478,7 @@ module avionmakeApp {
         },
         textureTop:true,
         drawTexture:false
-      }, 
+      },
       {
         name: 'aile3DLeft',
         path: 'M 249.16281,0.49999217 0.50069699,0.49999217 C 0.51100426,7.8992222 1.8396606,564.8707 173.69601,567.9961 267.87068,569.7088 249.20355,1.7361222 249.16281,0.49999217 Z',
@@ -475,7 +496,7 @@ module avionmakeApp {
         },
         textureTop:true,
         drawTexture:false
-      },             
+      },
       {
         name: 'aileron',
         path: 'M 15.688063,308.20569 C 15.688063,308.20569 0.23314336,313.38783 0.20104336,332.89695 -0.29499664,634.44763 176.2061,618.73523 176.2061,618.73523 L 178.71636,368.54755 151.10366,320.01617 151.07246,297.54839 178.71626,252.23957 182.9,0.37841151 C 182.9,0.37841151 -1.6456166,-16.488968 0.62650336,277.24601 0.83192336,303.80249 15.687963,308.20569 15.687963,308.20569 Z',
@@ -536,9 +557,9 @@ module avionmakeApp {
           x: 50,
           y: 500
         }
-      }  
+      }
     ];
-   
+
    static fighter1:Part[] = [{
       name: 'fuselage',
       path: 'M 2.6468171,118.48114 C 12.884717,103.16874 158.97412,68.233736 158.97412,68.233736 258.6931,24.640576 319.66074,-14.222064 446.65206,5.445636 L 782.09137,55.956736 864.49946,101.06474 C 864.49946,101.06474 1219.4809,95.858336 1222.7033,97.329536 1225.9257,98.800736 1225.0669,128.24354 1225.0669,128.24354 L 1168.6035,155.13954 1103.5512,159.61634 925.65362,211.74834 897.01128,189.70214 561.61106,190.11214 504.81738,151.07354 246.72716,160.53094 C 246.72716,160.53094 133.75748,162.97714 79.460557,153.06734 51.339177,147.93454 -13.113783,142.05314 2.6467171,118.48114 Z',
@@ -711,7 +732,7 @@ module avionmakeApp {
         }
       }
   ];
-  
+
   static biplane1:Part[] = [{
       name: 'fuselage',
       path: 'M 1211.0516,207.58236 C 1208.7815,210.51692 1205.6665,215.94834 1204.1295,217.5999 1202.5925,219.25148 1198.7375,225.27974 1196.4268,228.18748 1192.9779,231.14724 1190.3993,232.37392 1186.5003,234.69194 1124.0376,246.41718 1077.8796,250.65978 1022.7736,258.45812 965.5768,266.55804 965.19028,266.62508 944.28042,272.0825 871.97446,293.06726 813.58104,306.85408 747.79998,323.92324 731.18224,328.23294 696.12958,337.36088 669.90518,344.20774 L 622.22446,356.65644 C 547.28386,351.40144 478.80766,345.35672 416.95056,350.35676 414.66576,350.68492 400.61306,354.11046 385.71736,357.93644 L 358.63426,364.8928 346.25226,364.8084 C 331.62996,364.7088 316.49746,364.6332 300.16326,364.5783 214.24336,360.83896 114.26916,365.35656 28.202565,328.93058 25.924965,327.93534 22.526665,326.45854 20.650665,325.64848 18.774565,324.83844 15.214365,323.29994 12.739165,322.22964 10.263865,321.15936 7.0710647,319.0279 5.6440647,317.49308 3.3568647,315.03294 2.9142647,313.74776 1.9093647,306.64794 1.2823647,302.21782 0.81306473,295.93942 0.86666473,292.69566 0.92026473,289.45192 0.58746473,283.05 0.43286473,278.31682 -0.37193527,253.68892 0.62766473,249.08056 8.0657647,242.81452 43.960265,230.665 72.974965,222.11316 120.82036,209.39306 121.80886,209.08492 125.69936,207.71208 129.56396,206.78674 133.42866,205.86158 136.95296,204.75728 137.77616,204.51666 139.49616,204.42486 140.13186,205.1273 141.92906,216.77962 143.14686,224.67546 143.78636,230.25164 145.80466,232.32826 147.02746,233.52102 151.04326,232.69474 158.12956,232.16086 164.03066,231.7164 180.76786,230.30004 195.59336,228.57134 210.41876,227.28476 229.72726,225.8314 238.37996,225.11022 256.60136,223.59146 254.22416,223.31366 269.73376,209.8579 274.63946,205.60194 279.51186,201.98876 280.56136,201.82872 299.96616,200.5555 318.38146,200.85602 335.96646,200.60104 353.55146,200.34608 370.30626,199.53558 386.74366,199.92942 419.61856,200.71708 450.87036,202.43292 483.18786,203.59914 514.16362,204.71726 530.1648,205.25064 571.94814,206.55774 579.99808,206.80952 594.35258,206.39234 603.83732,206.72214 613.5764,207.06074 633.9231,206.87694 649.91334,206.66154 665.90354,206.44582 691.4934,206.04964 706.47404,205.7807 761.18996,204.98754 805.39224,204.99986 855.24352,203.6317 865.54798,203.42418 874.63588,201.36818 875.74434,200.89588 879.58676,199.25936 915.62014,159.7492 929.91112,141.50298 930.80186,140.36572 934.08448,136.31984 937.20596,132.51218 944.61262,123.47722 946.99662,120.47978 959.27878,104.76068 968.3975,93.090097 974.67244,85.152477 981.42362,76.747717 984.8634,72.465457 988.45084,68.212257 993.75538,62.127297 996.52112,58.954717 998.95074,56.109137 999.15446,55.803957 1000.3792,53.970157 1018.8393,33.573717 1022.1389,30.408737 1028.5106,24.296997 1039.4621,16.370537 1046.5722,12.724037 1082.7168,-1.7991227 1121.6936,-0.17304272 1158.8659,0.80771728 1159.0371,0.93531728 1159.0465,2.4690973 1158.8839,4.2181373 1158.7217,5.9671773 1158.5748,10.472997 1158.5575,14.231137 1158.5105,24.360177 1158.4203,31.452217 1158.2732,36.579397 1158.2008,39.094057 1158.1676,44.424977 1158.199,48.425937 1158.9906,80.982317 1157.4802,109.60078 1156.7221,139.46392 1156.6549,142.10298 1156.4826,149.5432 1156.3393,155.99776 1156.1031,166.6335 1155.8905,167.83972 1154.0703,168.86908 1152.9656,169.49374 1143.7107,172.09824 1133.5035,174.65676 1123.2964,177.21548 1108.6315,180.89136 1100.9149,182.8255 1066.2822,191.5056 1060.6117,193.47538 1059.012,194.85368 1057.0894,196.51024 1054.6961,201.11962 1056.2655,202.52004 1057.7054,203.80486 1059.8506,203.83018 1079.8347,202.79786 1115.8246,200.93892 1187.1665,197.40548 1195.0413,197.0922 1199.5206,196.914 1206.3281,196.55504 1210.169,196.29486 1214.0098,196.0345 1216.9506,197.26266 1217.0095,197.64902 1217.0685,198.03534 1217.0155,198.96372 1215.8308,200.22274 1214.4421,203.0028 1212.6944,205.43742 1211.0516,207.58236 Z',
@@ -959,10 +980,10 @@ module avionmakeApp {
         y: 400
       }
     }];
-        
+
   }
 
-  
+
   export class Plane {
     parts:Part[]=[];
     type:string;
@@ -978,7 +999,7 @@ module avionmakeApp {
       newsletter:boolean,
       emailSent:Date
     }
-    
+
     constructor(type:string, parts:Part[]){
       this.parts = angular.copy(parts);
       this.type = type;
@@ -987,15 +1008,15 @@ module avionmakeApp {
       this.parts.forEach((part:Part)=>{
         if(part && (part.textureTop || part.textureBottom)){
           if(!part.hasOwnProperty('drawTexture')){
-            part.drawTexture = true;  
+            part.drawTexture = true;
           }
           var canvas:HTMLCanvasElement = document.createElement('canvas');
           var ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           ctx.globalCompositeOperation = 'source-atop';
           canvas.width = part.width;
-          canvas.height = part.height;          
+          canvas.height = part.height;
           part.textureCanvas = canvas;
-          
+
           canvas = document.createElement('canvas');
           ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
           canvas.width = part.width;
@@ -1003,14 +1024,14 @@ module avionmakeApp {
           part.bumpTextureCanvas = canvas;
           if(!part.decals){
             part.decals = [];
-          }  
+          }
         }
       });
       this.createTextures();
       this.clearTextures();
       this.updateBumpTextures();
     }
-        
+
     getPart(name:string):Part{
       for(var p=0; p< this.parts.length; p++){
         if(this.parts[p].name === name){
@@ -1019,7 +1040,7 @@ module avionmakeApp {
       }
       return null;
     }
-    
+
     //TODO create part class?
     createTextures():void{
       this.parts.forEach((part:Part)=>{
@@ -1033,7 +1054,7 @@ module avionmakeApp {
         }
       });
     }
-            
+
     clearTextures():void{
       this.parts.forEach((part:Part)=>{
         if(part && part.drawTexture && (part.textureTop || part.textureBottom)){
@@ -1041,45 +1062,45 @@ module avionmakeApp {
             ctx.lineWidth = 4;
             ctx.stroke(new Path2D(part.path));
             ctx.clip(new Path2D(part.path), 'nonzero');
-            ctx.fillStyle = "#ffffff";            
+            ctx.fillStyle = "#ffffff";
             ctx.fillRect(0,0,part.width,part.height);
             part.textureBitmap = part.textureCanvas.toDataURL();
             part.texture.needsUpdate = true;
         }
       });
     }
-    
+
     updateBumpTextures():void{
       this.parts.forEach((part:Part)=>{
         if(part && (part.textureTop || part.textureBottom)){
              var ctx = <CanvasRenderingContext2D>  part.bumpTextureCanvas.getContext('2d');
              ctx.fillStyle = "#ffffff";
              ctx.rect( 0, 0, part.width, part.height );
-             ctx.fill(); 
-             
-             
+             ctx.fill();
+
+
              //DEBUG
              /*
              ctx.strokeStyle = 'black';
              ctx.lineWidth = 4;
              ctx.stroke(new Path2D(part.path));
             */
-            
+
              ctx.lineWidth = 1;
-            
-            
+
+
              if(part.decals){
                 part.decals.forEach((d:Decal)=>{
                   ctx.save();
-                  ctx.translate(d.x,d.y); 
+                  ctx.translate(d.x,d.y);
                   ctx.rotate(d.angle*Math.PI/180);
                   if(d.text){
                     ctx.font = d.size + 'px Arial';
                     ctx.strokeText(d.text, 0, d.size-8); //TODO check alignment
                   }
-                  if(d.path){                     
-                    ctx.scale(d.size,d.size); 
-                    ctx.stroke(new Path2D(d.path)); 
+                  if(d.path){
+                    ctx.scale(d.size,d.size);
+                    ctx.stroke(new Path2D(d.path));
                   }
                   ctx.restore();
                 });
@@ -1089,12 +1110,12 @@ module avionmakeApp {
       });
       this.fix3D();
     }
-    
+
     setId(id){
       this._id = id;
       this.setTailNumberDecal(id);
     }
-    
+
     setTailNumberDecal(id:string):void{
       if(!id){
         id = '??-???';
@@ -1106,15 +1127,15 @@ module avionmakeApp {
         if(decals){
           for(d=0; d<decals.length; d++){
             if(decals[d].locked === 'tailnumber'){
-              decals[d].text = id; 
+              decals[d].text = id;
             }
           }
         }
       }
       this.updateBumpTextures();
-      
+
     }
-    
+
     toJSON():string{
       var json = {
         type: this.type,
@@ -1139,9 +1160,9 @@ module avionmakeApp {
           });
         }
       });
-      return JSON.stringify(json); 
+      return JSON.stringify(json);
     }
-    
+
     fromJSON(obj):void{
       try{
         if(typeof obj === 'string'){
@@ -1161,7 +1182,7 @@ module avionmakeApp {
               //write texture
               var ctx = <CanvasRenderingContext2D>localPart.textureCanvas.getContext('2d');
               var img = new Image();
-              img.src = part.textureBitmap; 
+              img.src = part.textureBitmap;
               ctx.drawImage(img, 0, 0);
               localPart.textureBitmap = part.textureBitmap;
               localPart.texture.needsUpdate = true;
@@ -1170,11 +1191,11 @@ module avionmakeApp {
         this.setId(obj._id);
         this.updateBumpTextures();
       }catch(e){
-        
+
         console.log(e);
       }
     }
-    
+
     fix3D():any{
       if(this.type === 'plane1'){
         var a = this.getPart('aile');
@@ -1183,27 +1204,27 @@ module avionmakeApp {
         var ctx = <CanvasRenderingContext2D> al.textureCanvas.getContext('2d');
         ctx.drawImage(a.textureCanvas,0,0, a.width, a.height/2, 0,0,a.width,a.height/2);
         al.texture.needsUpdate = true;
-        
+
         ctx = <CanvasRenderingContext2D> ar.textureCanvas.getContext('2d');
         ctx.drawImage(a.textureCanvas,0, a.height/2, a.width, a.height/2, 0,0,a.width,a.height/2);
         ar.texture.needsUpdate = true;
-        
+
         ctx = <CanvasRenderingContext2D> al.bumpTextureCanvas.getContext('2d');
         ctx.drawImage(a.bumpTextureCanvas,0,0, a.width, a.height/2, 0,0,a.width,a.height/2);
         al.texture.needsUpdate = true;
-        
+
         ctx = <CanvasRenderingContext2D> ar.bumpTextureCanvas.getContext('2d');
         ctx.drawImage(a.bumpTextureCanvas,0, a.height/2, a.width, a.height/2, 0,0,a.width,a.height/2);
         ar.bumpTexture.needsUpdate = true;
       }
     }
-    
+
   };
-  
+
   export interface PlaneTemplateMap{
     [index: string]: Part[];
   }
-  
+
   export interface Part{
     name: string;
     path: string;
@@ -1234,8 +1255,8 @@ module avionmakeApp {
     decals?:Decal[];
     drawTexture?:boolean;
   }
-  
-  
+
+
   export interface Decal{
     x:number;
     y:number;

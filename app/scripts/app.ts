@@ -1,3 +1,24 @@
+/*
+
+This file is part of avionmake.
+
+Copyright (C) 2015  Boris Fritscher
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see http://www.gnu.org/licenses/.
+
+*/
+
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../typings/angularjs/angular-route.d.ts" />
 /// <reference path="../../typings/angular-material/angular-material.d.ts" />
@@ -13,8 +34,8 @@
 declare module angular.material {
   interface MDConfirmDialog{
      targetEvent:Function;
-     
-  }  
+
+  }
 }
 
 angular.module('avionmakeApp', [
@@ -29,8 +50,8 @@ angular.module('avionmakeApp', [
     'angulartics',
     'angulartics.google.analytics'
   ])
-  .constant('BASE_URL','https://j42.org/avionmake')
-  //.constant('BASE_URL','http://localhost:9001')
+  //.constant('BASE_URL','https://j42.org/avionmake')
+  .constant('BASE_URL','http://localhost:9001')
   .config(($httpProvider:ng.IHttpProvider)=>{
      $httpProvider.defaults.withCredentials = true;
   })
@@ -185,7 +206,7 @@ angular.module('avionmakeApp', [
          'CONFIRM_PRINT_CANCEL':'Annuler',
          'ALERT_PRINTOK_TITLE': 'Bien joué!',
          'ALERT_PRINTOK_CONTENT':'Votre avion "{{name}}" avec l\'immatriculation <<{{id}}>> a été envoyé à l\'imprimante. Allez le chercher et amenez le au poste de découpage laser.',
-         'ALERT_PRINTOK_OK':'Reçu!',         
+         'ALERT_PRINTOK_OK':'Reçu!',
          'DELETE':'Supprimer',
          'CANCEL':'Annuler',
          'SAVE':'Enregistrer',
@@ -198,7 +219,7 @@ angular.module('avionmakeApp', [
          'DISTANCE':'Distance',
          'PLANE':'Vol',
          'TYPE':'Type',
-         'NAME':'Nom', 
+         'NAME':'Nom',
          'ALL':'Tous',
          'ENABLE': 'Activer',
          'DISABLED': 'Desactivé',
@@ -209,7 +230,7 @@ angular.module('avionmakeApp', [
          'NONE': 'Aucun',
          'FILEINFO_CUT':'Fichier pour la découpeuse laser.',
          'FILEINFO_PRINT':'Fichier textures à imprimer avant de couper au laser.',
-         'FILEINFO_MERGED':'Fichier tout en un pour découper manuellement aux ciseaux.',     
+         'FILEINFO_MERGED':'Fichier tout en un pour découper manuellement aux ciseaux.',
          'plane1':'Planeur',
          'biplane1':'Biplan',
          'fighter1':'Chasseur',
@@ -277,13 +298,13 @@ angular.module('avionmakeApp', [
          'NONE': 'Kein',
          'FILEINFO_CUT':'Datei für den Laser-Cutter.',
          'FILEINFO_PRINT':'Druck datei vor dem Laser-Cutter.',
-         'FILEINFO_MERGED':'Alles in einer Datei um von Hand auszuschneiden.',          
+         'FILEINFO_MERGED':'Alles in einer Datei um von Hand auszuschneiden.',
          'plane1':'Segelflugzeug',
          'biplane1':'Doppeldecker',
          'fighter1':'Jagdflugzeug',
          'birdplane1':'Vogelflugzeug',
          'seaplane1':'Wasserflugzeug'
-      }) 
+      })
       .registerAvailableLanguageKeys(['en', 'de', 'fr'], {
         'en_US': 'en',
         'en_UK': 'en',
@@ -294,7 +315,7 @@ angular.module('avionmakeApp', [
       })
       .fallbackLanguage('fr')
       //BROKEN for now .useCookieStorage()
-      .determinePreferredLanguage();           
+      .determinePreferredLanguage();
   })
   .config(($sceDelegateProvider, BASE_URL) => {
         $sceDelegateProvider.resourceUrlWhitelist([

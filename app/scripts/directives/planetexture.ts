@@ -1,3 +1,24 @@
+/*
+
+This file is part of avionmake.
+
+Copyright (C) 2015  Boris Fritscher
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see http://www.gnu.org/licenses/.
+
+*/
+
 /// <reference path="../app.ts" />
 
 'use strict';
@@ -20,11 +41,11 @@ module avionmakeApp {
   export function distanceBetween(point1, point2) {
     return Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
   }
-  
+
   export function angleBetween(point1, point2) {
     return Math.atan2( point2.x - point1.x, point2.y - point1.y );
   }
-  
+
   export class Planetexture implements ng.IDirective {
     template = '<div class="texture md-whiteframe-z2" layout-padding ng-style="{width:isRotate? part.height : part.width, height: isRotate? part.width : part.height}"><md-button class="md-icon-button" aria-label="rotate" ng-click="isRotate = !isRotate"><md-icon md-svg-src="images/icons/ic_rotate_90_degrees_ccw_black_48px.svg"></md-icon></md-button><div class="rotationContainer" ng-style="getTransform()"></div></div>';
     restrict = 'E';
@@ -34,7 +55,7 @@ module avionmakeApp {
     };
 
     constructor(private planes: avionmakeApp.Planes,  private $mdDialog: ng.material.MDDialogService){}
-    
+
     link = (scope: ITextureScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void => {
       var itc = new InteractiveTextureCanvas(scope, this.planes, this.$mdDialog)
       scope.isRotate = false;
@@ -45,61 +66,61 @@ module avionmakeApp {
         }
         return styles;
       };
-      
+
       var canvas = scope.part.textureCanvas;
-      var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');      
+      var ctx = <CanvasRenderingContext2D>  scope.part.textureCanvas.getContext('2d');
       var rotationContainer =  element.find('.rotationContainer');
       rotationContainer.append(canvas);
-      
+
       itc.paper = Raphael(rotationContainer[0], scope.part.width, scope.part.height);
       itc.paper.canvas.style.position = 'absolute';
-      
-      //DEBUG
-      //rotationContainer.append(scope.part.bumpTextureCanvas); 
 
-      
+      //DEBUG
+      //rotationContainer.append(scope.part.bumpTextureCanvas);
+
+
       ctx.lineJoin = ctx.lineCap = 'round';
-      
+
       var isDrawing, lastPoint;
       var el = canvas;
       var x,y;
-      
+
       scope.part.textureCanvas = el;
-      
+
       var self:Planetexture = this;
-      
+
       var getPoint = (e) => {
         var touch = e.changedTouches[0];
         var totalOffsetX = 0;
   			var totalOffsetY = 0;
   			var currentElement = (<HTMLElement>touch.target);
-  			
+
   			do{
   				totalOffsetX += currentElement.offsetLeft;
   				totalOffsetY += currentElement.offsetTop;
   			} while(currentElement = <HTMLElement>currentElement.offsetParent)
         var $canvas = $(touch.target);
-        var points = {x: touch.clientX - $canvas.offset().left, y:touch.clientY - $canvas.offset().top}; 
+        var points = {x: touch.clientX - $canvas.offset().left, y:touch.clientY - $canvas.offset().top};
         if(scope.isRotate){
           return {x: points.y, y: scope.part.height - points.x};
-          
+
         }
         return points;
       };
-      
+
       el.onmousedown = function(e) {
         var action = self.planes.brushColor.join(',');
         lastPoint = { x: (e.offsetX != null) ? e.offsetX : e.layerX,
                       y: (e.offsetY != null) ? e.offsetY : e.layerY};
         if(action === 'text'){
-          itc.createTextDecal(e, lastPoint);  
+          itc.createTextDecal(e, lastPoint);
         }else if(action === 'decal'){
           itc.createSymbolDecal(e, lastPoint);
         }else{
-          isDrawing = true;  
+          isDrawing = true;
         }
       };
-      
+
       el.addEventListener( 'touchstart', (e)=>{
         e.preventDefault();
         var action = self.planes.brushColor.join(',');
@@ -109,73 +130,73 @@ module avionmakeApp {
         }else if(action === 'decal'){
           itc.createSymbolDecal(e, lastPoint);
         }else{
-          isDrawing = true;  
+          isDrawing = true;
         }
       }, false );
-      
+
 
       var draw = (currentPoint:any) =>{
         if (!isDrawing) return;
         var dist = distanceBetween(lastPoint, currentPoint);
         var angle = angleBetween(lastPoint, currentPoint);
         for (var i = 0; i < dist; i+=5) {
-          
+
           x = lastPoint.x + (Math.sin(angle) * i);
           y = lastPoint.y + (Math.cos(angle) * i);
-          
+
           var radgrad = ctx.createRadialGradient(x,y,self.planes.brushSize/4,x,y,self.planes.brushSize/2);
-          
+
           var color = 'rgba(' +  self.planes.brushColor.join(',');
-          
+
           radgrad.addColorStop(0, color + ',1)');
           radgrad.addColorStop(0.5, color + ',0.5)');
           radgrad.addColorStop(1, color + ',0)');
-          
+
           ctx.fillStyle = radgrad;
           ctx.fillRect(x-self.planes.brushSize/2, y-self.planes.brushSize/2, self.planes.brushSize, self.planes.brushSize);
         }
-        
+
         lastPoint = currentPoint;
         scope.part.texture.needsUpdate = true;
       };
-      
+
       el.onmousemove = (e) => {
         var currentPoint = { x: (e.offsetX != null) ? e.offsetX : e.layerX,
                              y: (e.offsetY != null) ? e.offsetY : e.layerY};
         draw(currentPoint);
       };
-      
+
       el.addEventListener('touchmove', (e)=>{
         e.preventDefault();
         draw(getPoint(e));
       }, false);
-            
+
       el.onmouseout = function() {
         scope.part.textureBitmap = canvas.toDataURL();
         self.planes.saveLocal();
         this.planes.currentPlane.updateBumpTextures();
       };
-            
+
       el.onmouseup = function() {
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
         self.planes.saveLocal();
         this.planes.currentPlane.updateBumpTextures();
       };
-      
+
       el.ontouchend = function(){
         isDrawing = false;
         scope.part.textureBitmap = canvas.toDataURL();
         self.planes.saveLocal();
         this.planes.currentPlane.updateBumpTextures();
       };
-      
+
       //handle decals
-     
+
       if(scope.part.decals){
         scope.part.decals.forEach(itc.drawDecal.bind(itc));
       }
-      
+
       scope.$watch('isRotate',(value)=>{
         itc.fts.forEach((ft)=>{
           ft.opts.rotated = value;
@@ -186,16 +207,16 @@ module avionmakeApp {
   }
 
 
-  
+
   class InteractiveTextureCanvas{
-        
-        
+
+
     fts = [];
     paper:RaphaelPaper;
     constructor(private scope:ITextureScope, private planes: avionmakeApp.Planes,  private $mdDialog: ng.material.MDDialogService){
-      
+
     }
-        
+
     openDecalDialog(event, decal:Decal):ng.IPromise<any>{
       return this.$mdDialog.show({
         templateUrl: 'views/drawdialog.html',
@@ -208,7 +229,7 @@ module avionmakeApp {
             var e = element[0].querySelector('[name=text]');
             if(e){
               e.focus();
-            } 
+            }
         }
       })
     }
@@ -219,10 +240,10 @@ module avionmakeApp {
         //add+save
         this.scope.part.decals.push(decal);
         this.drawDecal(decal);
-        this.planes.saveLocal();  
+        this.planes.saveLocal();
       })
     }
-    
+
     createTextDecal(event, point){
       var decal:Decal = {
           x: point.x,
@@ -233,7 +254,7 @@ module avionmakeApp {
         };
       this.createDecalDialog(event, decal);
     }
-    
+
     createSymbolDecal(event, point){
       var decal:Decal = {
           x: point.x,
@@ -244,7 +265,7 @@ module avionmakeApp {
         };
       this.createDecalDialog(event, decal);
     }
-        
+
     editDecal(event, decal:Decal, paperElement:RaphaelElement){
       this.openDecalDialog(event, decal)
       .then((d)=>{
@@ -253,7 +274,7 @@ module avionmakeApp {
           this.fts.forEach((ft)=>{
             if(ft.subject === paperElement){
               ft.unplug();
-              paperElement.remove();  
+              paperElement.remove();
             }
           })
         }else{
@@ -264,12 +285,12 @@ module avionmakeApp {
           if(d.path){
             decal.path = d.path;
             paperElement.attr('path', decal.path);
-          } 
+          }
         }
         this.planes.saveLocal();
       });
     }
-    
+
     drawDecal(d:Decal){
         var pp:RaphaelElement;
         var decal:Decal = d;
@@ -332,7 +353,7 @@ module avionmakeApp {
             ft.offset.translate.x = -ft.attrs.size.x/2;
             ft.offset.translate.y = -ft.attrs.size.y/2;
             ft.attrs.translate.x = d.x + ft.offset.translate.x - ft.attrs.x;
-            ft.attrs.translate.y = d.y + ft.offset.translate.y - ft.attrs.y;             
+            ft.attrs.translate.y = d.y + ft.offset.translate.y - ft.attrs.y;
             ft.apply();
             this.fts.push(ft);
             if(d.locked){
@@ -346,7 +367,7 @@ module avionmakeApp {
     directive.$inject = ['planes', '$mdDialog'];
     return directive;
   }
-  
+
 }
 
 /*@ngInject*/
@@ -361,14 +382,14 @@ function DrawDialogCtrl($scope, $mdDialog, decal) {
     'M21.871,9.814 15.684,16.001 21.871,22.188 18.335,25.725 8.612,16.001 18.335,6.276z',
     'M5.5,5.5h20v20h-20z',
     'M 13.386252,0.21358681 2.3862524,8.2135868 0.38625236,22.213587 6.3862524,28.213587 17.386252,29.213587 28.386252,19.213587 27.386252,9.2135868 13.386252,16.213587 Z M 8.0858224,8.3509098 C 8.0858224,8.3509098 3.0858224,28.85091 19.585822,18.60091'
-    
+
   ];
-  
+
   if($scope.decal.path === ''){
     //add default
     $scope.decal.path = $scope.decals[0];
   }
-  
+
   $scope.delete = function() {
     $mdDialog.hide('delete');
   };

@@ -1,3 +1,24 @@
+/*
+
+This file is part of avionmake.
+
+Copyright (C) 2015  Boris Fritscher
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see http://www.gnu.org/licenses/.
+
+*/
+
 /// <reference path="../app.ts" />
 'use strict';
 
@@ -7,13 +28,13 @@ module avionmakeApp {
   }
 
   export class StateCtrl {
-  
+
     state:string;
     brushSize:number;
     isLoading:boolean=false;
-    
+
     /*@ngInject*/
-    constructor (private $scope: IStateScope, 
+    constructor (private $scope: IStateScope,
       private $location:ng.ILocationService,
       private planes:Planes,
       private $mdSidenav:angular.material.MDSidenavService,
@@ -35,7 +56,7 @@ module avionmakeApp {
         this.changeLanguage(lang);
       }
     }
-    
+
     openMenu(){
       this.$mdSidenav('left').toggle();
     }
@@ -46,14 +67,14 @@ module avionmakeApp {
     isLockedOpen():boolean{
       return this.$mdSidenav('left').isLockedOpen();
     }
-    
+
     logout(){
       this.$http.get(this.BASE_URL + '/api/logout')
       .success(()=>{
         this.$location.path('/');
       });
     }
-    
+
     confirmPrintPlane(event){
       this.$mdDialog.show({
         templateUrl: 'views/printdialog.html',
@@ -88,12 +109,12 @@ module avionmakeApp {
               });
             });
           }
-          
-            
+
+
         });
       });
     }
-    
+
     getPDF(plane, type){
       return this.BASE_URL + '/api/finalpdf/'+ plane._id + '?type=' + type;
     }
