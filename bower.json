@@ -9,24 +9,21 @@
     "angular-sanitize": "^1.4.1",
     "angular-touch": "^1.4.1",
     "threejs": "*",
-    "angular-material": "~0.10.0",
-    "angular-translate": "~2.7.0",
+    "angular-material": "~0.11.0",
+    "angular-translate": "~2.8.0",
     "jquery": "~2.1.4",
     "raphael.free_transform": "*",
     "raphael": "~2.1.4",
-    "angular-translate-storage-cookie": "~2.7.0",
+    "angular-translate-storage-cookie": "~2.8.0",
     "canvas-5-polyfill": "~0.1.0",
     "tweenjs": "*",
     "angular-messages": "~1.4.1",
-    "angulartics": "~0.18.0"
+    "angulartics": "~0.20.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.1",
     "dat-gui": "~0.5.1"
   },
   "appPath": "app",
-  "moduleName": "avionmakeApp",
-  "resolutions": {
-    "angular-material": "~0.10.0"
-  }
+  "moduleName": "avionmakeApp"
 }
