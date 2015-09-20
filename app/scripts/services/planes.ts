@@ -130,6 +130,9 @@ module avionmakeApp {
           var c = plane.getPart('cockpit');
           var l = plane.getPart('left_side');
           var r = plane.getPart('right_side');
+          var aile = plane.getPart('aile');
+          var aile3DRight = plane.getPart('aile3DRight');
+          var aile3DLeft = plane.getPart('aile3DLeft');
 
           //copy decals
           var wy = 172;
@@ -167,6 +170,9 @@ module avionmakeApp {
           ctx.scale(1, -1);
           ctx.drawImage(img, 0, wy, ww, p.height-wy, 0, -0, ww, -(p.height-wy));
           c.textureBitmap = canvas.toDataURL();
+
+          //copy wings
+
 
           //copy left
           var wd = 360;

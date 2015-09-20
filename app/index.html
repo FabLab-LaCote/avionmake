@@ -18,7 +18,7 @@
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="android-chrome-192x192.png" sizes="192x192">
     <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">    
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -83,7 +83,7 @@
                 <md-select ng-model="app.planes.selectedPalette">
                   <md-option ng-value="key" ng-repeat="(key,values) in app.planes.palettes">{{ key }}</md-option>
                 </md-select>
-              </md-input-container>  
+              </md-input-container>
               -->
             </div>
           </div>
@@ -101,7 +101,7 @@
                 {{'MERGE_PDF'|translate}}
               </md-switch>
               <div layout="row" layout-align="center center">
-                <md-button analytics-on aria-label="print" ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>  
+                <md-button analytics-on aria-label="print" ng-click="app.confirmPrintPlane($event)" ng-disabled="app.planes.currentPlane.printState!=1" class="md-raised md-warn" translate="PRINT"></md-button>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@
             <md-button analytics-on aria-label="Français" ng-class="{active:app.$translate.use()=='fr'}" ng-click="app.changeLanguage('fr')">Français</md-button>
             <md-button analytics-on aria-label="Deutsch" ng-class="{active:app.$translate.use()=='de'}" ng-click="app.changeLanguage('de')">Deutsch</md-button>
             <md-button analytics-on aria-label="English" ng-class="{active:app.$translate.use()=='en'}" ng-click="app.changeLanguage('en')">English</md-button>
-          </p>                    
+          </p>
       </md-content>
     </md-sidenav>
     <div layout="column" flex>
@@ -192,41 +192,38 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/threejs/build/three.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
-    <script src="bower_components/raphael/raphael.js"></script>
     <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
-    <script src="bower_components/canvas-5-polyfill/canvas.js"></script>
-    <script src="bower_components/tweenjs/src/Tween.js"></script>
-    <script src="bower_components/angular-messages/angular-messages.js"></script>
-    <script src="bower_components/waypoints/waypoints.js"></script>
+    <script src="bower_components/waypoints/lib/noframework.waypoints.min.js"></script>
     <script src="bower_components/SHA-1/sha1.js"></script>
     <script src="bower_components/angulartics/src/angulartics.js"></script>
-    <script src="bower_components/angulartics/src/angulartics-adobe.js"></script>
-    <script src="bower_components/angulartics/src/angulartics-chartbeat.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-clicky.js"></script>
     <script src="bower_components/angulartics/src/angulartics-cnzz.js"></script>
-    <script src="bower_components/angulartics/src/angulartics-flurry.js"></script>
     <script src="bower_components/angulartics/src/angulartics-ga-cordova.js"></script>
-    <script src="bower_components/angulartics/src/angulartics-ga.js"></script>
     <script src="bower_components/angulartics/src/angulartics-gtm.js"></script>
-    <script src="bower_components/angulartics/src/angulartics-kissmetrics.js"></script>
-    <script src="bower_components/angulartics/src/angulartics-mixpanel.js"></script>
     <script src="bower_components/angulartics/src/angulartics-piwik.js"></script>
     <script src="bower_components/angulartics/src/angulartics-scroll.js"></script>
-    <script src="bower_components/angulartics/src/angulartics-segmentio.js"></script>
     <script src="bower_components/angulartics/src/angulartics-splunk.js"></script>
     <script src="bower_components/angulartics/src/angulartics-woopra.js"></script>
     <script src="bower_components/angulartics/src/angulartics-marketo.js"></script>
     <script src="bower_components/angulartics/src/angulartics-intercom.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-inspectlet.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-newrelic-insights.js"></script>
+    <script src="bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js"></script>
+    <script src="bower_components/canvas-5-polyfill/canvas.js"></script>
+    <script src="bower_components/raphael/raphael.js"></script>
+    <script src="bower_components/threejs/build/three.js"></script>
+    <script src="bower_components/tweenjs/src/Tween.js"></script>
     <!-- endbower -->
     <script src="bower_components/raphael.free_transform/raphael.free_transform.js"></script>
     <!-- endbuild -->
-    
+
     <!-- build:onlydev -->
     <script src="bower_components/dat-gui/build/dat.gui.min.js"></script>
     <!-- endbuild -->
